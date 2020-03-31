@@ -2,14 +2,6 @@ import ipfs from "ipfs";
 import OrbitDB from "orbit-db";
 import { globalIpfs, practiceIpfs } from "./config";
 
-interface Post {
-  hash: string;
-  // createdAt: Date;
-  // updatedAt:Date;
-  tags: string[];
-  content: any;
-}
-
 class Blog {
   node: any;
   orbitDb: any;
@@ -23,19 +15,17 @@ class Blog {
     this.node = await ipfs.create(practiceIpfs);
     // const peerInfo = await this.node.id();
     this.orbitDb = await OrbitDB.createInstance(this.node);
+    // TODO OrbitDB.open
 
     const defaultOptions = {
       accessController: { write: [this.orbitDb.identity.id] }
     };
-    // const customAuthOptions = {
-    //   ...defaultOptions,
-    //   accessController: NPPAccessController
-    // };
+
     const docStoreOptions = {
       ...defaultOptions,
       indexBy: "hash"
     };
-    this.posts = await this.orbitDb.docstore("posts", docStoreOptions);
+    this.posts = await this.orbitDb.docs("posts", docStoreOptions);
     await this.posts.load();
 
     // this.node.libp2p.on("peer:connect", this.handlePeerConnected.bind(this));
@@ -57,8 +47,8 @@ class Blog {
 
   getPostByHash = (hash: string) => this.posts.get(hash)[0] as Post;
 
-  // TODO
-  // searchPosts = (query: string) => {}
+  // TODO expand functionality: different types of search with fn ready
+  searchPosts = (queryFn: any) => this.posts.query(queryFn);
   //
 
   //
