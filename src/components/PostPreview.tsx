@@ -8,6 +8,7 @@ import Card from "@material-ui/core/Card";
 import Hidden from "@material-ui/core/Hidden";
 import CardMedia from "@material-ui/core/CardMedia";
 import { useHistory } from "react-router-dom";
+import { BlogPost } from "types/blog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,20 +25,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  post: {
-    title: string;
-    date: string;
-    description: string;
-    image: any;
-    imageTitle: string;
-    id: number;
-  };
+  post: BlogPost;
 }
 
 const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { title, date, description, image, imageTitle, id } = post;
+  //   TODO: When just hash use `pinata.cloud/${hash}`
+  const { title, createdAt, description, assetsHash, id } = post;
   const handleClick = () => {
     console.log("click");
     history.push(`/blog/${id}`);
@@ -52,7 +47,7 @@ const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
                 {title}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                {date}
+                {new Date(createdAt).toString()}
               </Typography>
               <Typography variant="subtitle1" paragraph>
                 {description}
@@ -63,11 +58,8 @@ const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
             </CardContent>
           </div>
           <Hidden xsDown>
-            <CardMedia
-              className={classes.cardMedia}
-              image={image}
-              title={imageTitle}
-            />
+            {/* TODO When just hash use `pinata.cloud/${hash}` */}
+            <CardMedia className={classes.cardMedia} image={assetsHash} />
           </Hidden>
         </Card>
       </CardActionArea>

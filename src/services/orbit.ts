@@ -11,18 +11,18 @@ const initOrbit = async () => {
   isLoading = true;
 
   // May Change in browser
-  //   TODO open existing logic
   const ipfsNode = await ipfs.create(practiceIpfs);
+  //   TODO open existing address logic | in docstore/posts
   const orbitdb = await OrbitDB.createInstance(ipfsNode);
-  const access = {
-    // Give write access to ourselves
-    write: [orbitdb.key.getPublic("hex")]
-  };
 
-  orbitInstance = { orbitdb, access, ipfs };
-  console.log("Finished Creating Orbit DB Instance");
+  //   const access = { // TODO use this and pass around or use const in ./config
+  //     // Give write access to ourselves
+  //     write: [orbitdb.key.getPublic("hex")]
+  //   };
+
+  orbitInstance = { db: orbitdb, node: ipfsNode };
+  console.log("Finished Creating Orbit DB Instance & IPFS Node");
   consumeQueue(null, orbitInstance);
-  isLoading = false;
 };
 
 const consumeQueue = (e: any, instance: any) => {

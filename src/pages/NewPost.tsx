@@ -18,7 +18,11 @@ const useStyles = makeStyles((theme: Theme) =>
 const NewPost: React.FunctionComponent = () => {
   const classes = useStyles();
   const [post, setPost] = React.useState<NewBlogPost>();
-  const initData = async () => {};
+  const [orbitDb, setOrbitDb] = React.useState<any>();
+  const initData = async () => {
+    const orbit = await getOrbit();
+    setOrbitDb(orbit);
+  };
 
   React.useEffect(() => {
     void initData();
@@ -28,9 +32,9 @@ const NewPost: React.FunctionComponent = () => {
 
   const submitPost = async () => {
     console.log("Submitting New Post");
-    const res = addNewPost(examplePost);
-    const orbit = await getOrbit();
-    console.log(orbit);
+    const cid = await addNewPost({ ...examplePost, title: "New Example" });
+    const res = await orbitDb.node.dag.get(cid);
+    console.log("res:", res.value.payload);
   };
 
   return (

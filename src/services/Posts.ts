@@ -7,21 +7,21 @@ let postsDb: any = null;
 const getPostsDb = async () => {
   const orbit: any = await getOrbit();
   if (!postsDb) {
-    postsDb = await orbit.orbitdb.docs("posts", docStoreOptions);
-    await postsDb.load();
+    postsDb = await orbit.db.docs("posts", docStoreOptions);
   }
+  await postsDb.load();
   return postsDb;
 };
 
 // Get Posts
-export const getAllPosts = async () => {
+export const getAllPosts = async (): Promise<BlogPost[]> => {
   const db = await getPostsDb();
   return db.get("");
 };
 
-export const getPostByHash = async (hash: string): Promise<BlogPost | null> => {
+export const getPostByID = async (id: number): Promise<BlogPost | null> => {
   const db = await getPostsDb();
-  return (db.get(hash)[0] as BlogPost) || null;
+  return (db.get(id)[0] as BlogPost) || null;
 };
 
 export const queryPosts = async (queryFn: any): Promise<BlogPost[] | []> => {
@@ -31,26 +31,36 @@ export const queryPosts = async (queryFn: any): Promise<BlogPost[] | []> => {
 //
 
 // Update Posts
-export const addNewPost = async (post: NewBlogPost) => {
-  //   const existingPost = getPostByHash(post.hash);
-  //   if (existingPost) {
-  //     console.log("Existing Piece:", existingPost);
-  //     //   return await updatePieceByHash(existingPost.hash, post.content);
-  //     throw "Post Already Exists";
-  //   }
+export const addNewPost = async (post: NewBlogPost & { id?: number }) => {
+  if (post.id) {
+    const existingPost = getPostByID(post.id);
+    if (existingPost) {
+      console.log("Existing Piece:", existingPost);
+      //   return await updatePieceByID(existingPost.id, post.content);
+      throw new Error("Post Already Exists");
+    }
+  }
   const db = await getPostsDb();
+  const id = (await getAllPosts()).length;
   const now = Date.now();
-  return await db.put({ ...post, createdAt: now, updatedAt: now } as BlogPost);
+  const _post: BlogPost = {
+    ...post,
+    createdAt: now,
+    updatedAt: now,
+    id
+  };
+  console.log("_post", _post);
+  return await db.put(_post);
 };
 
-export const updatePostsByHash = async (
-  hash: string,
+export const updatePostsByID = async (
+  id: number,
   content: any,
   tags: string[] = []
 ) => {
-  const post = await getPostByHash(hash);
+  const post = await getPostByID(id);
   if (!post) {
-    throw "Post Does Not Exist";
+    throw new Error("Post Does Not Exist");
   }
   console.log("Old Post:", post);
   const db = await getPostsDb();
@@ -62,8 +72,18 @@ export const updatePostsByHash = async (
   return db.put(post);
 };
 
-export const deletePostByHash = async (hash: string) => {
+export const deletePostByID = async (id: number) => {
   const db = await getPostsDb();
-  return db.del(hash);
+  return db.del(id);
+};
+
+export const clearDB = async () => {
+  console.log("clearing db");
+
+  const db = await getAllPosts();
+  for (let i = 0; i < db.length; i++) {
+    const id = db[i].id;
+    await deletePostByID(id);
+  }
 };
 //

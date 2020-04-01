@@ -1,6 +1,6 @@
 // Doc store settings **accessController
 export const docStoreOptions = {
-  indexBy: "createdAt",
+  indexBy: "_id",
   accessController: {
     write: ["*"] // Make write access public
   }
