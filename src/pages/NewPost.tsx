@@ -26,7 +26,6 @@ const NewPost: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     void initData();
-    // TODO get all posts from 3Box
     setPost(examplePost);
   }, []);
 

@@ -41,7 +41,7 @@ export const addNewPost = async (post: NewBlogPost & { id?: number }) => {
     }
   }
   const db = await getPostsDb();
-  const id = (await getAllPosts()).length;
+  const id = (await getAllPosts()).length + 1;
   const now = Date.now();
   const _post: BlogPost = {
     ...post,
@@ -49,7 +49,6 @@ export const addNewPost = async (post: NewBlogPost & { id?: number }) => {
     updatedAt: now,
     id
   };
-  console.log("_post", _post);
   return await db.put(_post);
 };
 
