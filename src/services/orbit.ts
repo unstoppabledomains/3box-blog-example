@@ -21,8 +21,8 @@ const initOrbit = async () => {
 
   orbitInstance = { orbitdb, access, ipfs };
   console.log("Finished Creating Orbit DB Instance");
-
   consumeQueue(null, orbitInstance);
+  isLoading = false;
 };
 
 const consumeQueue = (e: any, instance: any) => {

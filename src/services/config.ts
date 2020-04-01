@@ -1,3 +1,12 @@
+// Doc store settings **accessController
+export const docStoreOptions = {
+  indexBy: "createdAt",
+  accessController: {
+    write: ["*"] // Make write access public
+  }
+};
+
+// IPFS Configs
 export const practiceIpfs = {
   preload: { enabled: false },
   relay: { enabled: true, hop: { enabled: true, active: true } },

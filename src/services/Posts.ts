@@ -1,22 +1,13 @@
 import getOrbit from "./orbit";
+import { docStoreOptions } from "./config";
+import { BlogPost, NewBlogPost } from "types/blog";
 let postsDb: any = null;
-
-export interface NewPost {
-  hash: string;
-  tags: string[];
-  content: any;
-}
-
-export interface Post extends NewPost {
-  createdAt: number;
-  updatedAt: number;
-}
 
 // Get DB from orbit instance
 const getPostsDb = async () => {
   const orbit: any = await getOrbit();
   if (!postsDb) {
-    postsDb = await orbit.orbitdb.docs("posts", { indexBy: "createdAt" });
+    postsDb = await orbit.orbitdb.docs("posts", docStoreOptions);
     await postsDb.load();
   }
   return postsDb;
@@ -28,28 +19,28 @@ export const getAllPosts = async () => {
   return db.get("");
 };
 
-export const getPostByHash = async (hash: string): Promise<Post | null> => {
+export const getPostByHash = async (hash: string): Promise<BlogPost | null> => {
   const db = await getPostsDb();
-  return (db.get(hash)[0] as Post) || null;
+  return (db.get(hash)[0] as BlogPost) || null;
 };
 
-export const queryPosts = async (queryFn: any): Promise<Post[] | []> => {
+export const queryPosts = async (queryFn: any): Promise<BlogPost[] | []> => {
   const db = await getPostsDb();
   return db.query(queryFn);
 };
 //
 
 // Update Posts
-export const addNewPost = async (post: NewPost) => {
-  const existingPost = getPostByHash(post.hash);
-  if (existingPost) {
-    console.log("Existing Piece:", existingPost);
-    //   return await updatePieceByHash(existingPost.hash, post.content);
-    throw "Post Already Exists";
-  }
+export const addNewPost = async (post: NewBlogPost) => {
+  //   const existingPost = getPostByHash(post.hash);
+  //   if (existingPost) {
+  //     console.log("Existing Piece:", existingPost);
+  //     //   return await updatePieceByHash(existingPost.hash, post.content);
+  //     throw "Post Already Exists";
+  //   }
   const db = await getPostsDb();
   const now = Date.now();
-  return await db.put({ ...post, createdAt: now, updatedAt: now } as Post);
+  return await db.put({ ...post, createdAt: now, updatedAt: now } as BlogPost);
 };
 
 export const updatePostsByHash = async (
