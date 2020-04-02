@@ -2,7 +2,8 @@
 export const docStoreOptions = {
   indexBy: "id",
   accessController: {
-    write: ["*"] // Make write access public
+    type: "web3-auth"
+    // write: ["*"] // Make write access public
   }
 };
 

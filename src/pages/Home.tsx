@@ -3,7 +3,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { getAllPosts } from "services/Posts";
+import { getAllPosts, clearDB } from "services/Posts";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

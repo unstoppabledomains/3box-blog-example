@@ -1,6 +1,7 @@
 import ipfs from "ipfs";
 import OrbitDB from "orbit-db";
 import { practiceIpfs } from "./config";
+import CustomAccessController from "./CustomAccessController";
 
 let orbitInstance: any;
 let isLoading: boolean = false;
@@ -13,12 +14,9 @@ const initOrbit = async () => {
   // May Change in browser
   const ipfsNode = await ipfs.create(practiceIpfs);
   //   TODO open existing address logic | in docstore/posts
-  const orbitdb = await OrbitDB.createInstance(ipfsNode);
-
-  //   const access = { // TODO use this and pass around or use const in ./config
-  //     // Give write access to ourselves
-  //     write: [orbitdb.key.getPublic("hex")]
-  //   };
+  const orbitdb = await OrbitDB.createInstance(ipfsNode, {
+    AccessControllers: CustomAccessController
+  });
 
   orbitInstance = { db: orbitdb, node: ipfsNode };
   console.log("Finished Creating Orbit DB Instance & IPFS Node");

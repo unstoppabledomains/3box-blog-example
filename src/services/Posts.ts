@@ -7,6 +7,7 @@ let postsDb: any = null;
 const getPostsDb = async () => {
   const orbit: any = await getOrbit();
   if (!postsDb) {
+    console.log("create posts db");
     postsDb = await orbit.db.docs("posts", docStoreOptions);
   }
   await postsDb.load();
@@ -16,6 +17,9 @@ const getPostsDb = async () => {
 // Get Posts
 export const getAllPosts = async (): Promise<BlogPost[]> => {
   const db = await getPostsDb();
+  console.log("loaded db");
+  console.log(db);
+
   return db.get("");
 };
 

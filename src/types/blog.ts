@@ -12,6 +12,14 @@ export interface BlogPost extends NewBlogPost {
   updatedAt: number;
 }
 
+export const emptyPost: NewBlogPost = {
+  title: "",
+  description: "",
+  tags: [],
+  content: "",
+  assetsHash: ""
+};
+
 export const examplePost: NewBlogPost = {
   title: "Example post",
   description:
