@@ -18,7 +18,10 @@ const App: React.FunctionComponent = () => {
           <Home />
         </Route>
       </Switch>
-      <Footer title="Unstoppable Blog" description="3Box Blog - By Don Stolz" />
+      <Footer
+        title="Unstoppable Blog"
+        description="Orbit & 3Box Blog - By Don Stolz"
+      />
     </Router>
   );
 };
