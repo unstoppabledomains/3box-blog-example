@@ -29,13 +29,8 @@ const NewPost: React.FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
   const [post, setPost] = React.useState<NewBlogPost>(emptyPost);
-  const initData = async () => {
-    setPost({
-      ...post,
-      tags: ["test", "example"],
-      assetsHash: "https://source.unsplash.com/random"
-    });
-  };
+
+  //   const initData = async () => {};
 
   const handleChange = (e: any) => {
     const { value, id } = e.target;
@@ -43,7 +38,12 @@ const NewPost: React.FunctionComponent = () => {
   };
 
   React.useEffect(() => {
-    void initData();
+    // void initData();
+    setPost({
+      ...post,
+      tags: ["test", "example"],
+      assetsHash: "https://source.unsplash.com/random"
+    });
   }, []);
 
   const submitPost = async () => {

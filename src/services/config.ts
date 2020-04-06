@@ -2,9 +2,9 @@
 export const docStoreOptions = {
   indexBy: "id",
   accessController: {
-    type: "web3-auth"
-    // write: ["*"] // Make write access public
-  }
+    type: "web3-auth",
+    write: ["*"], // Make write access public
+  },
 };
 
 // IPFS Configs
@@ -13,11 +13,13 @@ export const practiceIpfs = {
   relay: { enabled: true, hop: { enabled: true, active: true } },
   EXPERIMENTAL: { pubsub: true },
   repo: "./ipfs",
-  config: { Bootstrap: [], Addresses: { Swarm: [] } }
+  config: { Bootstrap: [], Addresses: { Swarm: [] } },
+  // start: true
 };
 
 export const globalIpfs = {
   relay: { enabled: true, hop: { enabled: true, active: true } },
   EXPERIMENTAL: { pubsub: true },
-  repo: "./ipfs"
+  repo: "./ipfs",
+  start: true,
 };

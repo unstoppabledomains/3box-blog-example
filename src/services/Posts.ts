@@ -5,21 +5,25 @@ let postsDb: any = null;
 
 // Get DB from orbit instance
 const getPostsDb = async () => {
-  const orbit: any = await getOrbit();
   if (!postsDb) {
+    const orbit: any = await getOrbit();
     console.log("create posts db");
+    // postsDb = await orbit.db.open(process.env.REACT_APP_ORBIT_DB_ADDRESS);
     postsDb = await orbit.db.docs("posts", docStoreOptions);
+    postsDb.events.on("replicated", dataReplicated);
+    console.log(postsDb.address.toString());
   }
   await postsDb.load();
   return postsDb;
 };
 
+const dataReplicated = (address: any) => {
+  console.log(address);
+};
+
 // Get Posts
 export const getAllPosts = async (): Promise<BlogPost[]> => {
   const db = await getPostsDb();
-  console.log("loaded db");
-  console.log(db);
-
   return db.get("");
 };
 

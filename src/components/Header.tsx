@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,7 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Header: React.FunctionComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
 
+  const toPosts = () => {
+    history.push("/post");
+  };
   return (
     <AppBar position="static">
       <Toolbar>
@@ -32,7 +37,7 @@ const Header: React.FunctionComponent = () => {
           color="inherit"
           aria-label="menu"
         >
-          <MenuIcon />
+          <MenuIcon onClick={toPosts} />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
           News
