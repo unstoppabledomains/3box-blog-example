@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import NewPost from "./pages/NewPost";
+import NewPost from "./pages/Write";
 
 const App: React.FunctionComponent = () => {
   return (
