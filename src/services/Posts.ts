@@ -41,7 +41,7 @@ export const queryPosts = async (queryFn: any): Promise<BlogPost[] | []> => {
 // Update Posts
 export const addNewPost = async (post: NewBlogPost & { id?: number }) => {
   if (post.id) {
-    const existingPost = getPostByID(post.id);
+    const existingPost = await getPostByID(post.id);
     if (existingPost) {
       console.log("Existing Piece:", existingPost);
       //   return await updatePieceByID(existingPost.id, post.content);
@@ -55,7 +55,7 @@ export const addNewPost = async (post: NewBlogPost & { id?: number }) => {
     ...post,
     createdAt: now,
     updatedAt: now,
-    id
+    id,
   };
   return await db.put(_post);
 };
