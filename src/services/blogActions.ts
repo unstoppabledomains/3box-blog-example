@@ -1,4 +1,5 @@
 import getBlog from "./Blog";
+import { BlogPost } from "types/blog";
 
 export const getPosts = async () => {
   const blog = await getBlog();
@@ -12,7 +13,15 @@ export const getPost = async (postId: string) => {
   return post;
 };
 
-export const addPost = async (newPost: string) => {
+export const addPost = async (post: BlogPost) => {
+  const newPost = `---
+createdAt: ${new Date().getTime()}
+updatedAt: ${new Date().getTime()}
+title: ${post.title}
+description: ${post.description}
+tags: ${post.tags.join(",")}
+---
+${post.body}`;
   const blog = await getBlog();
   const postId = await blog.addPost(newPost);
   return postId;

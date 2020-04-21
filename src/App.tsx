@@ -3,7 +3,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import NewPost from "./pages/Write";
+import Write from "./pages/Write";
+import Read from "./pages/Read";
 import initBlog from "services/Blog";
 // import { initThread } from "services/initBlog";
 
@@ -20,9 +21,11 @@ const App: React.FunctionComponent = () => {
       <Header />
       <Switch>
         <Route path="/new">
-          <NewPost />
+          <Write />
         </Route>
-        <Route path="/posts/:postId">Blog</Route>
+        <Route path="/posts/:postId">
+          <Read />
+        </Route>
         <Route path="/">
           <Home />
         </Route>

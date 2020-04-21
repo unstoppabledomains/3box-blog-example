@@ -2,7 +2,7 @@ import { ThreadObject, BlogPost } from "types/blog";
 import fm from "front-matter";
 
 export default (postThread: ThreadObject): BlogPost => {
-  const parsedMessage: any = fm(postThread?.message);
+  const parsedMessage: any = fm(postThread.message);
   const tags = parsedMessage.attributes.tags
     ? parsedMessage.attributes.tags.split(",")
     : [];

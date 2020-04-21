@@ -22,44 +22,27 @@ const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [post, setPost] = React.useState<BlogPost>({} as BlogPost);
+  const [post, setPost] = React.useState<BlogPost>({
+    title: "TITLE",
+    description: "lorem ipsum stuff",
+    tags: ["test", "new", "don"],
+  } as BlogPost);
 
   const setPostBody = (body: string) => setPost({ ...post, body });
   //   const setPostAttributes = (body: string) => setPost({ ...post, body });
 
   const onSave = async () => {
     setLoading(true);
-    // const attributes = `---
-    // title: ${post.title}
-    // description: ${post.description}
-    // tags: ${post.tags.join(",")}
-    // ---
-    // `;
-    const attributes = `---
-	title: TITLE
-	description: lorem ipsum stuff
-	tags: test, new, don
-	---
-	`;
-    const _post = attributes.concat("\n", post.body);
     try {
-      console.log("log from /write");
-      const postId = await addPost(_post);
-      console.log("id", postId);
-
+      const postId = await addPost(post);
       setPost({ ...post, threadData: { postId } as ThreadObject });
       setLoading(false);
-      const _posts = await getPosts();
-      console.log("Check", _posts);
-
       //   history.push(`/posts/${id}`);
     } catch (error) {
       // TODO handle error
     }
   };
-  React.useEffect(() => {
-    getPosts().then((res: any) => console.log("init write", res));
-  }, []);
+  //   React.useEffect(() => {}, []);
 
   const onDestroy = () => {
     console.log("Destroy");
