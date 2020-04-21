@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "private": true,
   "dependencies": {
-    "3box": "^1.17.1",
+    "3box": "^1.18.0",
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "@types/react": "latest",

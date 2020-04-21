@@ -1,48 +1,45 @@
 import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import PostPreview from "components/PostPreview";
+import PreviewCard from "components/PreviewCard";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { getAllPosts, clearDB } from "services/Posts";
-import { getIpfsPeers, sendMessage } from "services/ipfs";
+import { BlogPost } from "types/blog";
+import { getPosts } from "services/blogActions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       padding: theme.spacing(2),
-      maxWidth: "100%"
+      maxWidth: "100%",
     },
     center: {
       height: "50vh",
       width: "100%",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
-    }
+      alignItems: "center",
+    },
   })
 );
 
 const Home: React.FunctionComponent = () => {
   const classes = useStyles();
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [posts, setPosts] = React.useState<any[]>([]);
+  const [posts, setPosts] = React.useState<BlogPost[]>([]);
 
   const initData = async () => {
-    (window as any).LOG = "orbit*";
-    const peers = await getIpfsPeers();
-    console.log("peers", peers);
-
-    const _posts = await getAllPosts();
-    console.log("_posts:", _posts);
+    console.log("log from /home");
+    const _posts = await getPosts();
     setPosts(_posts);
+
+    console.log(_posts);
+
     setLoading(false);
-    sendMessage("QmXG8yk8UJjMT6qtE2zSxzz3U7z5jSYRgVWLCUFqAVnByM", {
-      hello: "world"
-    });
   };
 
   React.useEffect(() => {
+    setLoading(true);
     void initData();
   }, []);
 
@@ -53,7 +50,9 @@ const Home: React.FunctionComponent = () => {
           <CircularProgress />
         </div>
       ) : (
-        posts.map(post => <PostPreview key={post.id} post={post} />)
+        posts.map((post: BlogPost, index: number) => (
+          <PreviewCard key={index} post={post} />
+        ))
       )}
     </Grid>
   );

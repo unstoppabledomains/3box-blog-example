@@ -1,11 +1,23 @@
 import Box from "3box";
+import getSpaceName from "utils/getSpaceName";
 
-export const initThread = async (address: string, domain: string) => {
-  const box = await Box.open(address, (window as any).ethereum);
-  const space = await box.openSpace(`unstoppable-domains-${domain}`);
+export const initThread = async (domain: string, address?: string) => {
+  const spaceName = getSpaceName(domain);
+  if (!address) {
+    address = (await (window as any).ethereum.enable())[0];
+  }
+
+  const provider = await Box.get3idConnectProvider();
+  const box = await Box.create(provider);
+  await box.auth([spaceName], { address });
+  await box.syncDone;
+
+  const space = await box.openSpace(spaceName);
   await space.syncDone;
-  const thread = await space.joinThread("blog", {
+
+  const thread = await space.joinThread("blog-posts", {
     members: true,
   });
+
   return thread.address;
 };

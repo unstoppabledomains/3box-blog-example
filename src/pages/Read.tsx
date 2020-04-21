@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { BlogPost } from "types/blog";
 import Markdown from "react-showdown";
 import { showdownOptions } from "config/showdown";
 import { useHistory, useParams } from "react-router-dom";
-import AppContext, { AppState } from "../services/AppContext";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { getPost } from "services/blogActions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,23 +22,25 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();
+  const [loading, setLoading] = React.useState<boolean>(true);
   const history = useHistory();
-  const { blog } = useContext<AppState>(AppContext);
   const { postId } = useParams();
   const [post, setPost] = React.useState<BlogPost>({} as BlogPost);
 
   const initData = async () => {
-    const _post = await blog.getPost(postId as string);
+    const _post = await getPost(postId as string);
     setPost(_post);
+    setLoading(false);
   };
 
   React.useEffect(() => {
+    setLoading(true);
     void initData();
   }, []);
 
   return (
     <div className={classes.root}>
-      {blog.loading ? (
+      {loading ? (
         <CircularProgress />
       ) : (
         <>

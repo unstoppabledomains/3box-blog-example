@@ -1,11 +1,11 @@
 import Box from "3box";
 import { ThreadObject, FAILED_TO_LOAD, BlogPost } from "types/blog";
 import parseMessage from "utils/parseMessage";
+import getSpaceName from "utils/getSpaceName";
 
 interface BlogInterface {
   domain: string;
   threadAddress: string;
-  loading: boolean;
   // 3Box
   box: any;
   space: any;
@@ -22,7 +22,6 @@ interface BlogInterface {
 class Blog implements BlogInterface {
   domain: string;
   threadAddress: string;
-  loading: boolean;
   // 3Box
   box: any;
   space: any;
@@ -32,34 +31,34 @@ class Blog implements BlogInterface {
   constructor() {
     this.domain = process.env.REACT_APP_DOMAIN as string;
     this.threadAddress = process.env.REACT_APP_THREAD_ADDRESS as string;
-    this.loading = true;
   }
 
   init = async () => {
-    this.loading = true;
-    this.box = await Box.create((window as any).ethereum);
-    this.loading = false;
+    const provider = await Box.get3idConnectProvider();
+    this.box = await Box.create(provider);
   };
 
   authenticate = async (address?: string) => {
     try {
-      this.loading = true;
       if (!this.box) {
         await this.init();
       }
       if (!address) {
-        address = await (window as any).ethereum.enable();
+        address = (await (window as any).ethereum.enable())[0];
       }
-      const spaces = [`unstoppable-domains-blog-${this.domain}`];
-      await this.box.auth(spaces, { address });
-      this.space = await this.box.openSpace(
-        `unstoppable-domains-blog-${this.domain}`
-      );
-      this.thread = await this.space.joinThreadByAddress(this.threadAddress);
-      this.loading = false;
+      const spaceName = getSpaceName(this.domain);
+      await this.box.auth([spaceName], { address });
+      await this.box.syncDone;
+      this.space = await this.box.openSpace(spaceName);
+      await this.space.syncDone;
+      this.thread = await this.space.joinThread(this.threadAddress);
+      this.thread.onUpdate = (update: any) => {
+        console.log("UPDATE", update);
+      };
+
+      console.log("authenticated");
       return true;
     } catch (error) {
-      this.loading = false;
       console.error(error);
       return false;
     }
@@ -67,7 +66,6 @@ class Blog implements BlogInterface {
 
   getPost = async (postId: string) => {
     try {
-      this.loading = true;
       if (!this.posts) {
         await this.getPosts();
       }
@@ -75,13 +73,11 @@ class Blog implements BlogInterface {
         (post) => post.postId === postId
       )[0];
       if (postThread) {
-        this.loading = false;
         return parseMessage(postThread);
       }
-      this.loading = false;
+
       return FAILED_TO_LOAD;
     } catch (error) {
-      this.loading = false;
       console.error(error);
       return FAILED_TO_LOAD;
     }
@@ -89,56 +85,94 @@ class Blog implements BlogInterface {
 
   getPosts = async (forceUpdate?: boolean) => {
     try {
-      this.loading = true;
+      await this.authenticate;
       if (!this.posts || forceUpdate) {
+        console.log("this.thread", this.thread);
+
         if (!this.thread) {
-          this.thread = await Box.getThreadByAddress(this.threadAddress);
+          console.log("no thread", this.threadAddress);
+          const res = await Box.getThreadByAddress(this.threadAddress);
+          console.log(res);
+          console.log("this.box", this.box);
+          console.log("Box", Box);
+
+          this.posts = res;
+        } else {
+          console.log("is thread");
+          this.posts = await this.thread.getPosts();
         }
-        this.posts = await this.thread.getPosts();
       }
-      this.loading = false;
+      console.log("this.posts", this.posts);
+
       return (this.posts || []).map((post) => parseMessage(post));
     } catch (error) {
       console.error(error);
-      this.loading = false;
-      return [];
+      throw error;
     }
   };
 
   addPost = async (newPost: string) => {
     try {
-      this.loading = true;
       if (!this.box) {
         await this.init();
       }
       if (!this.space || !this.thread) {
         await this.authenticate();
       }
-      this.loading = false;
-      return await this.thread.post(newPost);
+
+      console.log("add post - this.thread", this.thread);
+      const postId = (await this.thread.post(newPost)) as string;
+      //   console.log("add post - this.posts", this.posts);
+
+      return postId;
     } catch (error) {
-      this.loading = false;
       console.error(error);
-      return error;
+      throw error;
     }
   };
 
   deletePost = async (postId: string) => {
     try {
-      this.loading = true;
       if (!this.box) {
         await this.init();
       }
       if (!this.space || !this.thread) {
         await this.authenticate();
       }
-      this.loading = false;
+
       return await this.thread.deletePost(postId);
     } catch (error) {
-      this.loading = false;
       return error;
     }
   };
 }
 
-export default Blog;
+let blogInstance: Blog;
+let isLoading: boolean = false;
+const resolverQueue: any[] = [];
+
+const initBlog = async () => {
+  isLoading = true;
+  blogInstance = new Blog();
+  await blogInstance.init();
+  consumeQueue(null, blogInstance);
+};
+
+const consumeQueue = (e: any, instance: any) => {
+  for (const resolver of resolverQueue) {
+    resolver(e, instance);
+  }
+};
+
+const createBlog = async (callBack: any) => {
+  if (blogInstance) callBack(null, blogInstance);
+  if (!isLoading) initBlog();
+  resolverQueue.push(callBack);
+};
+
+const getBlog = (): Promise<Blog> =>
+  new Promise((resolve, reject) =>
+    createBlog((e: any, instance: any) => (e ? reject(e) : resolve(instance)))
+  );
+
+export default getBlog;

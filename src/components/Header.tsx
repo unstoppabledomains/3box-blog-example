@@ -10,14 +10,14 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2)
+      marginRight: theme.spacing(2),
     },
     title: {
-      flexGrow: 1
-    }
+      flexGrow: 1,
+    },
   })
 );
 
@@ -26,7 +26,10 @@ const Header: React.FunctionComponent = () => {
   const history = useHistory();
 
   const toPosts = () => {
-    history.push("/post");
+    history.push("/new");
+  };
+  const toHome = () => {
+    history.push("/");
   };
   return (
     <AppBar position="static">
@@ -36,10 +39,11 @@ const Header: React.FunctionComponent = () => {
           className={classes.menuButton}
           color="inherit"
           aria-label="menu"
+          onClick={toPosts}
         >
-          <MenuIcon onClick={toPosts} />
+          <MenuIcon />
         </IconButton>
-        <Typography variant="h6" className={classes.title}>
+        <Typography onClick={toHome} variant="h6" className={classes.title}>
           News
         </Typography>
       </Toolbar>
