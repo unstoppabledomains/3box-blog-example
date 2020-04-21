@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import { NewBlogPost, emptyPost } from "types/blog";
-import TextField from "@material-ui/core/TextField";
-import { useHistory } from "react-router-dom";
+import { BlogPost } from "types/blog";
+import Markdown from "react-showdown";
+import { showdownOptions } from "config/showdown";
+import { useHistory, useParams } from "react-router-dom";
+import AppContext, { AppState } from "../services/AppContext";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,15 +23,35 @@ const useStyles = makeStyles((theme: Theme) =>
 const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [post, setPost] = React.useState<NewBlogPost>(emptyPost);
+  const { blog } = useContext<AppState>(AppContext);
+  const { postId } = useParams();
+  const [post, setPost] = React.useState<BlogPost>({} as BlogPost);
 
-  //   const initData = async () => {};
+  const initData = async () => {
+    const _post = await blog.getPost(postId as string);
+    setPost(_post);
+  };
 
-  //   React.useEffect(() => {
-  // void initData();
-  //   }, []);
+  React.useEffect(() => {
+    void initData();
+  }, []);
 
-  return <div className={classes.root}></div>;
+  return (
+    <div className={classes.root}>
+      {blog.loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Typography variant="h2">{post.title}</Typography>
+          <Markdown
+            dangerouslySetInnerHTML
+            markdown={post.body}
+            options={showdownOptions}
+          />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ReadPost;
