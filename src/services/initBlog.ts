@@ -18,6 +18,5 @@ export const initThread = async (domain: string, address?: string) => {
   const thread = await space.joinThread("blog-posts", {
     members: true,
   });
-
   return thread.address;
 };

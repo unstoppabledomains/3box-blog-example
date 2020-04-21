@@ -46,17 +46,15 @@ class Blog implements BlogInterface {
       if (!address) {
         address = (await (window as any).ethereum.enable())[0];
       }
+
       const spaceName = getSpaceName(this.domain);
       await this.box.auth([spaceName], { address });
       await this.box.syncDone;
+
       this.space = await this.box.openSpace(spaceName);
       await this.space.syncDone;
-      this.thread = await this.space.joinThread(this.threadAddress);
-      this.thread.onUpdate = (update: any) => {
-        console.log("UPDATE", update);
-      };
 
-      console.log("authenticated");
+      this.thread = await this.space.joinThreadByAddress(this.threadAddress);
       return true;
     } catch (error) {
       console.error(error);
@@ -85,25 +83,13 @@ class Blog implements BlogInterface {
 
   getPosts = async (forceUpdate?: boolean) => {
     try {
-      await this.authenticate;
       if (!this.posts || forceUpdate) {
-        console.log("this.thread", this.thread);
-
         if (!this.thread) {
-          console.log("no thread", this.threadAddress);
-          const res = await Box.getThreadByAddress(this.threadAddress);
-          console.log(res);
-          console.log("this.box", this.box);
-          console.log("Box", Box);
-
-          this.posts = res;
+          this.posts = await Box.getThreadByAddress(this.threadAddress);
         } else {
-          console.log("is thread");
           this.posts = await this.thread.getPosts();
         }
       }
-      console.log("this.posts", this.posts);
-
       return (this.posts || []).map((post) => parseMessage(post));
     } catch (error) {
       console.error(error);
@@ -119,11 +105,7 @@ class Blog implements BlogInterface {
       if (!this.space || !this.thread) {
         await this.authenticate();
       }
-
-      console.log("add post - this.thread", this.thread);
       const postId = (await this.thread.post(newPost)) as string;
-      //   console.log("add post - this.posts", this.posts);
-
       return postId;
     } catch (error) {
       console.error(error);

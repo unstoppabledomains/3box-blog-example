@@ -4,13 +4,15 @@ import Footer from "./components/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import NewPost from "./pages/Write";
-
-import { initThread } from "services/initBlog";
-import getBlog from "services/Blog";
+import initBlog from "services/Blog";
+// import { initThread } from "services/initBlog";
 
 const App: React.FunctionComponent = () => {
   React.useEffect(() => {
-    getBlog();
+    // initThread(process.env.REACT_APP_DOMAIN as string).then((res) => {
+    //   console.log("return", res);
+    // });
+    initBlog();
   }, []);
 
   return (
