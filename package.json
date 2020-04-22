@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "3box": "^1.18.0",
+    "3box-comments-react": "^2.0.2",
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "@types/react": "latest",

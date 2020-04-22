@@ -6,13 +6,16 @@ import getSpaceName from "utils/getSpaceName";
 interface BlogInterface {
   domain: string;
   threadAddress: string;
+  spaceName: string;
+  userWallet: string;
+  adminWallet: string;
   // 3Box
   box: any;
   space: any;
   thread: any;
   posts: ThreadObject[] | undefined;
   init: () => Promise<void>;
-  authenticate: (address?: string) => Promise<boolean>;
+  authenticate: (address?: string) => Promise<string>;
   getPost: (postId: string) => Promise<BlogPost>;
   getPosts: () => Promise<BlogPost[] | []>;
   addPost: (newPost: string) => Promise<string>;
@@ -22,7 +25,10 @@ interface BlogInterface {
 class Blog implements BlogInterface {
   domain: string;
   threadAddress: string;
-  // 3Box
+  spaceName: string;
+  userWallet: string;
+  adminWallet: string;
+  // 3Box Connected
   box: any;
   space: any;
   thread: any;
@@ -31,6 +37,9 @@ class Blog implements BlogInterface {
   constructor() {
     this.domain = process.env.REACT_APP_DOMAIN as string;
     this.threadAddress = process.env.REACT_APP_THREAD_ADDRESS as string;
+    this.adminWallet = process.env.REACT_APP_ADMIN_WALLET as string;
+    this.spaceName = getSpaceName(this.domain);
+    this.userWallet = "";
   }
 
   init = async () => {
@@ -38,27 +47,25 @@ class Blog implements BlogInterface {
     this.box = await Box.create(provider);
   };
 
-  authenticate = async (address?: string) => {
+  authenticate = async () => {
     try {
       if (!this.box) {
         await this.init();
       }
-      if (!address) {
-        address = (await (window as any).ethereum.enable())[0];
+      if (this.userWallet === "") {
+        this.userWallet = (await (window as any).ethereum.enable())[0];
       }
 
-      const spaceName = getSpaceName(this.domain);
-      await this.box.auth([spaceName], { address });
+      await this.box.auth([this.spaceName], { address: this.userWallet });
       await this.box.syncDone;
 
-      this.space = await this.box.openSpace(spaceName);
+      this.space = await this.box.openSpace(this.spaceName);
       await this.space.syncDone;
 
       this.thread = await this.space.joinThreadByAddress(this.threadAddress);
-      return true;
+      return this.userWallet;
     } catch (error) {
-      console.error(error);
-      return false;
+      throw error;
     }
   };
 
