@@ -44,7 +44,7 @@ const Header: React.FunctionComponent = () => {
           <MenuIcon />
         </IconButton>
         <Typography onClick={toHome} variant="h6" className={classes.title}>
-          News
+          Blog
         </Typography>
       </Toolbar>
     </AppBar>

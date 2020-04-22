@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import appContext from "services/appContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
+  const { state, dispatch } = React.useContext(appContext);
   const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [post, setPost] = React.useState<BlogPost>({
@@ -65,7 +67,6 @@ const WritePost: React.FunctionComponent = () => {
   } as BlogPost);
 
   const handleBodyChange = (body: string) => setPost({ ...post, body });
-  //   const setPostAttributes = (body: string) => setPost({ ...post, body });
   const handleChange = ({
     target: { value, id },
   }: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +76,7 @@ const WritePost: React.FunctionComponent = () => {
   const onSave = async () => {
     setLoading(true);
     try {
-      const postId = await addPost(post);
+      const postId = await addPost({ state, dispatch })(post);
       setPost({ ...post, threadData: { postId } as ThreadObject });
       history.push(`/posts/${postId}`);
     } catch (error) {
