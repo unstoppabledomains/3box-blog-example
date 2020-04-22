@@ -9,6 +9,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import appContext from "services/appContext";
+import config from "config/blogConfig.json";
+import { login } from "services/userActions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,10 +63,34 @@ const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
   const history = useHistory();
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [post, setPost] = React.useState<BlogPost>({
     tags: [""],
   } as BlogPost);
+
+  React.useEffect(() => {
+    if (!state.user.loggedIn) {
+      handleLogin();
+    } else if (
+      state.user.walletAddress?.toLowerCase() !==
+      config.adminWallet.toLowerCase()
+    ) {
+      history.push("/");
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const handleLogin = async () => {
+    const user = await login({ state, dispatch })();
+    if (
+      user &&
+      user.walletAddress.toLowerCase() !== config.adminWallet.toLowerCase()
+    ) {
+      history.push("/");
+    }
+    setLoading(false);
+  };
 
   const handleBodyChange = (body: string) => setPost({ ...post, body });
   const handleChange = ({

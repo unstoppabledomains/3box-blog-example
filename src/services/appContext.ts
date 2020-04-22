@@ -29,7 +29,7 @@ export const initialState = {
   user: {
     loggedIn: false,
   },
-  posts: [],
+  posts: undefined,
 };
 
 const appContext = React.createContext<AppContext>({

@@ -82,7 +82,10 @@ const ReadPost: React.FunctionComponent = () => {
   }, []);
 
   const handleLogin = async () => {
-    await login({ state, dispatch })();
+    console.log("In Read login()");
+
+    const res = await login({ state, dispatch })();
+    console.log("res", res);
   };
 
   return (

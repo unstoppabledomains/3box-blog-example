@@ -31,12 +31,8 @@ const Home: React.FunctionComponent = () => {
   const { state, dispatch } = React.useContext(appContext);
 
   const initData = async () => {
-    console.log("log from /home");
     const _posts = await getPosts({ state, dispatch })();
     setPosts(_posts);
-
-    console.log(_posts);
-
     setLoading(false);
   };
 
