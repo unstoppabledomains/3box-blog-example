@@ -3,12 +3,12 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { BlogPost, ThreadObject } from "types/blog";
 import Markdown from "react-showdown";
 import { showdownOptions } from "config/showdown";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPost } from "services/blogActions";
 import Comments from "3box-comments-react";
-import * as config from "config/blogConfig.json";
+import config from "config/blogConfig.json";
 import { login } from "services/userActions";
 import appContext from "services/appContext";
 
@@ -82,8 +82,7 @@ const ReadPost: React.FunctionComponent = () => {
   }, []);
 
   const handleLogin = async () => {
-    console.log("In Read login()");
-
+    console.log("handleLogin");
     const res = await login({ state, dispatch })();
     console.log("res", res);
   };
@@ -120,15 +119,11 @@ const ReadPost: React.FunctionComponent = () => {
           </div>
           <div className={classes.commentContainer}>
             <Comments
-              // required
               spaceName={spaceName}
               threadName={`comments-${postId}`}
               adminEthAddr={process.env.REACT_APP_ADMIN_WALLET as string}
-              // Required props for context A) & B)
-              // FIXME: issues with null instance right after login; Can't update with auth box or authenticate box issues
               box={box}
               currentUserAddr={walletAddress}
-              // Required prop for context B)
               loginFunction={handleLogin}
             />
           </div>

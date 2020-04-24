@@ -4,10 +4,9 @@ import { AppContext } from "services/appContext";
 import { ADD_BOX, LOG_IN } from "./appReducer";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
-  const _state = { ...state };
   const provider = await Box.get3idConnectProvider();
-  _state.box = await Box.create(provider);
-  dispatch({ type: ADD_BOX, value: { box: _state.box } });
+  const box = await Box.create(provider);
+  dispatch({ type: ADD_BOX, value: { box } });
   return true;
 };
 
@@ -33,8 +32,6 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       loggedIn: true,
       profileImg: profile.image[0],
     };
-    console.log(profile);
-    console.log(thread);
 
     dispatch({
       type: LOG_IN,

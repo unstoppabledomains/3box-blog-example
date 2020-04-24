@@ -15,7 +15,7 @@ const App: React.FunctionComponent = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    initApp({ state, dispatch })().then(() => setLoading(false));
+    void initApp({ state, dispatch })().then(() => setLoading(false));
   }, []);
 
   return (

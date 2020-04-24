@@ -34,7 +34,7 @@ export const addPost = ({ state, dispatch }: AppContext) => async (
   const { thread } = state;
   const timestamp = new Date().getTime();
   if (!thread) {
-    throw "No thread found. Must authenticate";
+    throw new Error("No thread found. Must authenticate");
   }
   const newPost = `---
 createdAt: ${timestamp}
@@ -69,7 +69,7 @@ export const deletePost = ({ state, dispatch }: AppContext) => async (
 ) => {
   const { thread } = state;
   if (!thread) {
-    throw "No thread found. Must authenticate";
+    throw new Error("No thread found. Must authenticate");
   }
   await thread.deletePost(postId);
   dispatch({ type: DELETE_POST, value: { postId } });
