@@ -1,28 +1,11 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PreviewCard from "components/PreviewCard";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { BlogPost } from "types/blog";
 import { getPosts } from "services/blogActions";
 import appContext from "services/appContext";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      padding: theme.spacing(2),
-      maxWidth: "100%",
-    },
-    center: {
-      height: "50vh",
-      width: "100%",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  })
-);
+import useStyles from "styles/Home.styles";
 
 const Home: React.FunctionComponent = () => {
   const classes = useStyles();

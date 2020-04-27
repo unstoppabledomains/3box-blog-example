@@ -7,12 +7,12 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
   const provider = await Box.get3idConnectProvider();
   const box = await Box.create(provider);
   dispatch({ type: ADD_BOX, value: { box } });
-  return true;
+  return box;
 };
 
 export const login = ({ state, dispatch }: AppContext) => async () => {
   try {
-    const { box } = state;
+    const box = state.box || (await initApp({ state, dispatch })());
     const { spaceName, threadAddress } = config;
     const walletAddress = (await (window as any).ethereum.enable())[0];
 
