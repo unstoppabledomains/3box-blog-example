@@ -1,7 +1,7 @@
 import Box from "3box";
 import config from "config/blogConfig.json";
 import { AppContext } from "services/appContext";
-import { ADD_BOX, LOG_IN } from "./appReducer";
+import { ADD_BOX, LOG_IN, LOG_OUT } from "./appReducer";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
   const provider = await Box.get3idConnectProvider();
@@ -27,10 +27,12 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
     // TODO onUpdate for thread
 
     const profile = await profilePromise;
+    const profileImg = `${process.env.REACT_APP_PINATA_BASE_URL}/${profile.image[0].contentUrl["/"]}`;
+
     const user = {
       walletAddress,
       loggedIn: true,
-      profileImg: profile.image[0],
+      profileImg,
     };
 
     dispatch({
@@ -46,4 +48,13 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const logout = ({ state, dispatch }: AppContext) => async () => {
+  const { box } = state;
+  console.log("logout");
+
+  await box.logout();
+  console.log("logout 2");
+  dispatch({ type: LOG_OUT });
 };

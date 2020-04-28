@@ -22,10 +22,6 @@ export interface AppAction {
 }
 
 const appReducer = (state: AppState, action: AppAction) => {
-  console.log("in reducer");
-  console.log("state", state);
-  console.log("action", action);
-
   switch (action.type) {
     case ADD_BOX: {
       return { ...state, box: action.value.box } as AppState;

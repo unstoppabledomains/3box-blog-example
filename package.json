@@ -2,6 +2,7 @@
   "name": "create-react-app-with-typescript",
   "version": "4.0.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "3box": "^1.18.0",
     "3box-comments-react": "^2.0.3",

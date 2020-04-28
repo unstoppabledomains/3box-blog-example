@@ -1,6 +1,5 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import PreviewCard from "components/PreviewCard";
+import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { BlogPost } from "types/blog";
 import { getPosts } from "services/blogActions";
@@ -25,17 +24,17 @@ const Home: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <Grid container spacing={2} className={classes.root}>
+    <div className={classes.root}>
       {loading ? (
         <div className={classes.center}>
           <CircularProgress />
         </div>
       ) : (
         posts.map((post: BlogPost, index: number) => (
-          <PreviewCard key={index} post={post} />
+          <PostPreview key={index} post={post} />
         ))
       )}
-    </Grid>
+    </div>
   );
 };
 
