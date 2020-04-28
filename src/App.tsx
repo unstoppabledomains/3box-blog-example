@@ -7,15 +7,26 @@ import Write from "./pages/Write";
 import Read from "./pages/Read";
 import Context, { initialState } from "./services/appContext";
 import appReducer from "services/appReducer";
-import { initApp } from "services/userActions";
-// import { initThread } from "services/initBlog";
+import { initBox } from "services/blogActions";
+/* 
+NOTE: Need to run this on first start up, needs to be created by admin
+
+import createThread from "utils/createThread";
+import config from "config/blogConfig.json";
+
+React.useEffect(() => {
+	void createThread(config.domain).then((res) => {
+		console.log(res);
+	});
+}, []);	
+*/
 
 const App: React.FunctionComponent = () => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    void initApp({ state, dispatch })().then(() => setLoading(false));
+    void initBox({ state, dispatch })().then(() => setLoading(false));
   }, []);
 
   return (

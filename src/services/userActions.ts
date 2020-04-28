@@ -1,18 +1,11 @@
-import Box from "3box";
 import config from "config/blogConfig.json";
 import { AppContext } from "services/appContext";
-import { ADD_BOX, LOG_IN, LOG_OUT } from "./appReducer";
-
-export const initApp = ({ state, dispatch }: AppContext) => async () => {
-  const provider = await Box.get3idConnectProvider();
-  const box = await Box.create(provider);
-  dispatch({ type: ADD_BOX, value: { box } });
-  return box;
-};
+import { LOG_IN, LOG_OUT } from "./appReducer";
+import { initBox } from "./blogActions";
 
 export const login = ({ state, dispatch }: AppContext) => async () => {
   try {
-    const box = state.box || (await initApp({ state, dispatch })());
+    const box = state.box || (await initBox({ state, dispatch })());
     const { spaceName, threadAddress } = config;
     const walletAddress = (await (window as any).ethereum.enable())[0];
 
@@ -52,9 +45,6 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
 
 export const logout = ({ state, dispatch }: AppContext) => async () => {
   const { box } = state;
-  console.log("logout");
-
   await box.logout();
-  console.log("logout 2");
   dispatch({ type: LOG_OUT });
 };

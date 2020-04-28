@@ -1,6 +1,17 @@
 {
   "domain": "reseller-test-don0.crypto",
-  "threadAddress": "/orbitdb/zdpuArMbucHdVSEmLsg9CaV4R4fdEYR93VaDXXU8zJ328CcMW/3box.thread.draft-blog-reseller-test-don0.blog-posts",
-  "spaceName": "draft-blog-reseller-test-don0",
-  "adminWallet": "0x47b0FdE4622577cb10ED2c79108D79CBb582eE5C"
+  "threadAddress": "/orbitdb/zdpuAsWFwTvGFTQsKpjF48jGjsBeDLrtdpGvaMxhFYvaZHNvv/3box.thread.draft-blog-reseller-test-don0#crypto.blog-posts",
+  "spaceName": "draft-blog-reseller-test-don0#crypto",
+  "adminWallet": "0x47b0FdE4622577cb10ED2c79108D79CBb582eE5C",
+  "theme": {
+    "primary": {
+      "main": "",
+      "contrast": ""
+    },
+    "secondary": {
+      "main": "",
+      "contrast": ""
+    },
+    "background": ""
+  }
 }

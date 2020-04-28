@@ -2,8 +2,15 @@ import Box from "3box";
 import { BlogPost, ThreadObject } from "types/blog";
 import { AppContext } from "./appContext";
 import config from "config/blogConfig.json";
-import { SET_POSTS, DELETE_POST, ADD_POST } from "./appReducer";
+import { SET_POSTS, DELETE_POST, ADD_POST, ADD_BOX } from "./appReducer";
 import parseMessage from "utils/parseMessage";
+
+export const initBox = ({ state, dispatch }: AppContext) => async () => {
+  const provider = await Box.get3idConnectProvider();
+  const box = await Box.create(provider);
+  dispatch({ type: ADD_BOX, value: { box } });
+  return box;
+};
 
 export const getPosts = ({ state, dispatch }: AppContext) => async () => {
   const { thread } = state;
@@ -29,9 +36,11 @@ export const getPost = ({ state, dispatch }: AppContext) => async (
       ? state.posts
       : await getPosts({ state, dispatch })();
   const post = posts?.filter((post) => post.threadData?.postId === postId)[0];
-  // TODO fetch post if not found?
-
-  return post;
+  if (post) {
+    return post;
+  } else {
+    throw new Error("No post found");
+  }
 };
 
 export const addPost = ({ state, dispatch }: AppContext) => async (
