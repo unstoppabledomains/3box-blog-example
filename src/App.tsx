@@ -5,33 +5,42 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Write from "./pages/Write";
 import Read from "./pages/Read";
-import initBlog from "services/Blog";
+import Context, { initialState } from "./services/appContext";
+import appReducer from "services/appReducer";
+import { initApp } from "services/userActions";
 // import { initThread } from "services/initBlog";
 
 const App: React.FunctionComponent = () => {
+  const [state, dispatch] = React.useReducer(appReducer, initialState);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
   React.useEffect(() => {
-    // initThread(process.env.REACT_APP_DOMAIN as string).then((res) => {
-    //   console.log("return", res);
-    // });
-    initBlog();
+    void initApp({ state, dispatch })().then(() => setLoading(false));
   }, []);
 
   return (
-    <Router>
-      <Header />
-      <Switch>
-        <Route path="/new">
-          <Write />
-        </Route>
-        <Route path="/posts/:postId">
-          <Read />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-      <Footer title="Unstoppable Blog" description="3Box Blog - By Don Stolz" />
-    </Router>
+    <Context.Provider value={{ state, dispatch }}>
+      <Router>
+        <Header />
+        {!loading && (
+          <Switch>
+            <Route path="/new">
+              <Write />
+            </Route>
+            <Route path="/posts/:postId">
+              <Read />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        )}
+        <Footer
+          title="Unstoppable Blog"
+          description="3Box Blog - By Don Stolz"
+        />
+      </Router>
+    </Context.Provider>
   );
 };
 

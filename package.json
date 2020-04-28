@@ -2,9 +2,10 @@
   "name": "create-react-app-with-typescript",
   "version": "4.0.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "3box": "^1.18.0",
-    "3box-comments-react": "^2.0.2",
+    "3box-comments-react": "^2.0.3",
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "@types/react": "latest",
