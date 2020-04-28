@@ -4,7 +4,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { BlogPost } from "types/blog";
 import { getPosts } from "services/blogActions";
 import appContext from "services/appContext";
-import useStyles from "styles/Home.styles";
+import useStyles from "styles/pages/Home.styles";
 
 const Home: React.FunctionComponent = () => {
   const classes = useStyles();

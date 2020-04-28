@@ -11,7 +11,12 @@ export const getPosts = ({ state, dispatch }: AppContext) => async () => {
   const postThreads: ThreadObject[] = thread
     ? await thread.getPosts()
     : await Box.getThreadByAddress(threadAddress);
-  const posts = postThreads.map((post) => parseMessage(post));
+  const posts = postThreads
+    .map((post) => parseMessage(post))
+    .sort((a: any, b: any) =>
+      a.threadData.timestamp < b.threadData.timestamp ? 1 : -1
+    );
+
   dispatch({ type: SET_POSTS, value: { posts } });
   return posts;
 };
@@ -25,6 +30,7 @@ export const getPost = ({ state, dispatch }: AppContext) => async (
       : await getPosts({ state, dispatch })();
   const post = posts?.filter((post) => post.threadData?.postId === postId)[0];
   // TODO fetch post if not found?
+
   return post;
 };
 

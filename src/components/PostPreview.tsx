@@ -1,27 +1,10 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import { BlogPost, ThreadObject } from "types/blog";
 import Button from "@material-ui/core/Button";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(4),
-    },
-    date: {},
-    title: {},
-    description: {},
-    readButton: {
-      maxWidth: 200,
-      borderRadius: 25,
-    },
-  })
-);
+import timeConverter from "utils/timeConverter";
+import useStyles from "styles/components/PostPreview.styles";
 
 interface Props {
   post: BlogPost;
@@ -32,6 +15,7 @@ const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
   const history = useHistory();
   const { title, description, threadData } = post;
   const { timestamp, postId } = threadData as ThreadObject;
+  const date = timeConverter(timestamp);
 
   const handleClick = () => {
     history.push(`/posts/${postId}`);
@@ -40,18 +24,19 @@ const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
   return (
     <div className={classes.container}>
       <Typography className={classes.date} variant="caption">
-        {timestamp}
+        {date}
       </Typography>
-      <Typography className={classes.title} variant="h6">
+      <Typography className={classes.title} variant="h6" gutterBottom>
         {title}
       </Typography>
-      <Typography className={classes.description} variant="subtitle2">
+      <Typography className={classes.description} variant="subtitle1">
         {description}
       </Typography>
       <Button
         onClick={handleClick}
         className={classes.readButton}
         variant="outlined"
+        color="primary"
       >
         Read More
       </Button>

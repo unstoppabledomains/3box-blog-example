@@ -10,7 +10,7 @@ import Comments from "3box-comments-react";
 import config from "config/blogConfig.json";
 import { login } from "services/userActions";
 import appContext from "services/appContext";
-import useStyles from "styles/Read.styles";
+import useStyles from "styles/pages/Read.styles";
 
 const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();

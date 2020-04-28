@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import useStyles from "styles/Header.styles";
+import useStyles from "styles/components/Header.styles";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 
@@ -75,6 +75,7 @@ const Header: React.FunctionComponent = () => {
                 onClick={handleOpen}
                 aria-controls="profile-menu"
                 aria-haspopup="true"
+                className={classes.avatarButton}
               >
                 <Avatar src={profileImg} />
               </Button>

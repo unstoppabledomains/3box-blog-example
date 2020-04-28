@@ -15,7 +15,7 @@ export default makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     avatarButton: {
-      borderRadius: "50%",
+      borderRadius: "100%",
     },
   })
 );

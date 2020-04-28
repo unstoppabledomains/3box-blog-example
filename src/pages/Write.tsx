@@ -10,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import appContext from "services/appContext";
 import config from "config/blogConfig.json";
 import { login } from "services/userActions";
-import useStyles from "styles/Write.styles";
+import useStyles from "styles/pages/Write.styles";
 
 const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
