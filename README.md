@@ -1,5 +1,7 @@
 # 3Box React Blog
 
+A React & Typescript blog that uses decentralized storage and 3Box profiles.
+
 ## How to use
 
 ```sh
