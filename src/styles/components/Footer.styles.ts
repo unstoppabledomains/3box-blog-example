@@ -6,5 +6,21 @@ export default makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.primary.main,
       padding: theme.spacing(6, 0),
     },
+    footerContainer: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    socialRow: {
+      display: "flex",
+    },
+    socialIcon: {
+      margin: theme.spacing(0, 1),
+    },
+    divider: {
+      width: "100%",
+      maxWidth: 400,
+    },
   })
 );

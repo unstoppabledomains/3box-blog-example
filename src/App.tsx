@@ -8,6 +8,8 @@ import Read from "./pages/Read";
 import Context, { initialState } from "./services/appContext";
 import appReducer from "services/appReducer";
 import { initBox } from "services/blogActions";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import useStyles from "styles/App.styles";
 /* 
 NOTE: Need to run this on first start up, needs to be created by admin
 
@@ -22,30 +24,40 @@ React.useEffect(() => {
 */
 
 const App: React.FunctionComponent = () => {
+  const classes = useStyles();
   const [state, dispatch] = React.useReducer(appReducer, initialState);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    void initBox({ state, dispatch })().then(() => setLoading(false));
+    void initBox({ state, dispatch })().then(() => {
+      setLoading(false);
+    });
   }, []);
 
   return (
     <Context.Provider value={{ state, dispatch }}>
       <Router>
         <Header />
-        {!loading && (
-          <Switch>
-            <Route path="/new">
-              <Write />
-            </Route>
-            <Route path="/posts/:postId">
-              <Read />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        )}
+        <div className={classes.root}>
+          {loading && (
+            <div className={classes.loadingContainer}>
+              <CircularProgress />
+            </div>
+          )}
+          {!loading && (
+            <Switch>
+              <Route path="/new">
+                <Write />
+              </Route>
+              <Route path="/posts/:postId">
+                <Read />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          )}
+        </div>
         <Footer
           title="Unstoppable Blog"
           description="3Box Blog - By Don Stolz"

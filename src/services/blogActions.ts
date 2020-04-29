@@ -4,17 +4,26 @@ import { AppContext } from "./appContext";
 import config from "config/blogConfig.json";
 import { SET_POSTS, DELETE_POST, ADD_POST, ADD_BOX } from "./appReducer";
 import parseMessage from "utils/parseMessage";
+import { login } from "./userActions";
 
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
-  const provider = await Box.get3idConnectProvider();
-  const box = await Box.create(provider);
-  dispatch({ type: ADD_BOX, value: { box } });
-  return box;
+  if (!state.box) {
+    const provider = await Box.get3idConnectProvider();
+    const box = await Box.create(provider);
+    dispatch({ type: ADD_BOX, value: { box } });
+    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      await login({ state, dispatch })(box);
+    }
+    return box;
+  }
+  return state.box;
 };
 
 export const getPosts = ({ state, dispatch }: AppContext) => async () => {
   const { thread } = state;
   const { threadAddress } = config;
+
   const postThreads: ThreadObject[] = thread
     ? await thread.getPosts()
     : await Box.getThreadByAddress(threadAddress);

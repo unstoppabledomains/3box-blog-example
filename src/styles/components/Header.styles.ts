@@ -2,9 +2,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
+    root: {},
     toolBar: {
       maxWidth: 1000,
       width: "100%",
@@ -16,6 +14,9 @@ export default makeStyles((theme: Theme) =>
     },
     avatarButton: {
       borderRadius: "100%",
+      padding: theme.spacing(0.25),
+      height: 56,
+      width: 56,
     },
   })
 );

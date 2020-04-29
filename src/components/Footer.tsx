@@ -1,7 +1,13 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "styles/components/Footer.styles";
+import FacebookLogo from "images/facebook.svg";
+import InstagramLogo from "images/instagram.svg";
+import LinkedInLogo from "images/linkedIn.svg";
+import MediumLogo from "images/medium.svg";
+import TelegramLogo from "images/telegram.svg";
+import TwitterLogo from "images/twitter.svg";
+import Divider from "@material-ui/core/Divider";
 
 interface Props {
   description: string;
@@ -13,7 +19,32 @@ const Footer: React.FunctionComponent<Props> = ({ description, title }) => {
 
   return (
     <footer className={classes.footer}>
-      <Container maxWidth="lg">
+      <div className={classes.footerContainer}>
+        <div className={classes.socialRow}>
+          <img
+            alt="facebook"
+            src={FacebookLogo}
+            className={classes.socialIcon}
+          />
+          <img
+            alt="instagram"
+            src={InstagramLogo}
+            className={classes.socialIcon}
+          />
+          <img
+            alt="linkedIn"
+            src={LinkedInLogo}
+            className={classes.socialIcon}
+          />
+          <img alt="medium" src={MediumLogo} className={classes.socialIcon} />
+          <img
+            alt="telegram"
+            src={TelegramLogo}
+            className={classes.socialIcon}
+          />
+          <img alt="twitter" src={TwitterLogo} className={classes.socialIcon} />
+        </div>
+        <Divider style={{ margin: 16 }} className={classes.divider} />
         <Typography variant="h6" align="center" gutterBottom>
           {title}
         </Typography>
@@ -25,7 +56,7 @@ const Footer: React.FunctionComponent<Props> = ({ description, title }) => {
         >
           {description}
         </Typography>
-      </Container>
+      </div>
     </footer>
   );
 };

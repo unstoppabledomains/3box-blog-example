@@ -3,9 +3,12 @@ import { AppContext } from "services/appContext";
 import { LOG_IN, LOG_OUT } from "./appReducer";
 import { initBox } from "./blogActions";
 
-export const login = ({ state, dispatch }: AppContext) => async () => {
+export const login = ({ state, dispatch }: AppContext) => async (
+  initialBox?: any
+) => {
   try {
-    const box = state.box || (await initBox({ state, dispatch })());
+    const box =
+      initialBox || state.box || (await initBox({ state, dispatch })());
     const { spaceName, threadAddress } = config;
     const walletAddress = (await (window as any).ethereum.enable())[0];
 
@@ -28,6 +31,7 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       profileImg,
     };
 
+    window.localStorage.setItem("isLoggedIn", "true");
     dispatch({
       type: LOG_IN,
       value: {
@@ -46,5 +50,6 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
 export const logout = ({ state, dispatch }: AppContext) => async () => {
   const { box } = state;
   await box.logout();
+  window.localStorage.setItem("isLoggedIn", "false");
   dispatch({ type: LOG_OUT });
 };

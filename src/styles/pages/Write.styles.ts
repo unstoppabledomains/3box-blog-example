@@ -5,11 +5,11 @@ export default makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexDirection: "column",
-      maxWidth: 1200,
+      maxWidth: 800,
       marginRight: "auto",
       marginLeft: "auto",
       marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(4),
+      marginBottom: theme.spacing(8),
       paddingRight: theme.spacing(2),
       paddingLeft: theme.spacing(2),
     },
