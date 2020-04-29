@@ -1,8 +1,7 @@
 import Box from "3box";
-import { BlogPost, ThreadObject } from "types/blog";
-import { AppContext } from "./appContext";
+import { BlogPost, ThreadObject, AppContext } from "types/app";
 import config from "config/blogConfig.json";
-import { SET_POSTS, DELETE_POST, ADD_POST, ADD_BOX } from "./appReducer";
+import { SET_POSTS, DELETE_POST, ADD_POST, ADD_BOX } from "types/actions";
 import parseMessage from "utils/parseMessage";
 import { login } from "./userActions";
 

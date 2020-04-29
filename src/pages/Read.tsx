@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogPost, ThreadObject } from "types/blog";
+import { BlogPost, ThreadObject } from "types/app";
 import Markdown from "react-showdown";
 import { showdownOptions } from "config/showdown";
 import { useParams } from "react-router-dom";
@@ -74,7 +74,7 @@ const ReadPost: React.FunctionComponent = () => {
             <Comments
               spaceName={spaceName}
               threadName={`comments-${postId}`}
-              adminEthAddr={process.env.REACT_APP_ADMIN_WALLET as string}
+              adminEthAddr={config.adminWallet}
               box={walletAddress ? box : null}
               currentUserAddr={walletAddress}
               loginFunction={handleLogin}

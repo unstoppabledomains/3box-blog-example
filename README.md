@@ -1,25 +1,52 @@
-# Create React App example with TypeScript
+# 3Box React Blog
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
-
 ```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/create-react-app-with-typescript
-cd create-react-app-with-typescript
+yarn
+yarn start
 ```
 
-Install it and run:
+This will run the website with whatever blog is specified in `src/config/blogConfig.json`.
 
-```sh
-npm install
-npm start
+To create a new blog you will have run `src/utils/createThread.ts` and then update `src/config/blogConfig.json` with the new _domain, threadAddress, spaceName, & adminWallet_.
+
+## How It Works
+
+**Make sure the [`blogConfig.json`](src/config/blogConfig.json) is set up properly**
+
+The app use's React [`useContext`](src/services/appContext.ts) & [`useReducer`](src/services/appReducer.ts) function to maintain a global app state.
+
+```ts
+// State:
+interface AppState {
+  box: any;
+  space: any;
+  thread: any;
+  user: {
+    loggedIn: boolean;
+    walletAddress?: string;
+    profileImg?: string;
+  };
+  posts?: BlogPost[];
+}
+
+// Actions:
+type ActionTypes =
+  | typeof ADD_BOX
+  | typeof LOG_IN
+  | typeof LOG_OUT
+  | typeof ADD_POST
+  | typeof SET_POSTS
+  | typeof DELETE_POST;
 ```
 
-or:
+## Libraries
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui-org/material-ui/tree/master/examples/create-react-app-with-typescript)
+- [Material UI - React & Typescript](https://github.com/mui-org/material-ui/tree/master/examples/create-react-app-with-typescript)
 
-## The idea behind the example
-
-This example demonstrates how you can use [Create React App](https://github.com/facebookincubator/create-react-app) with [TypeScript](https://github.com/Microsoft/TypeScript).
+- [3Box](https://docs.3box.io/api/index)
+  - [auth](https://docs.3box.io/api/auth)
+  - [profiles](https://docs.3box.io/api/profiles/get)
+  - [threads](https://docs.3box.io/api/messaging)
+  - [3box-comments-react](https://github.com/3box/3box-comments-react)

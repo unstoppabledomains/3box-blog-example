@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
-import { BlogPost, ThreadObject } from "types/blog";
+import { BlogPost, ThreadObject } from "types/app";
 import Button from "@material-ui/core/Button";
 import timeConverter from "utils/timeConverter";
 import useStyles from "styles/components/PostPreview.styles";

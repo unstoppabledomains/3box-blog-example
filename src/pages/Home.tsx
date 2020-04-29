@@ -1,7 +1,7 @@
 import React from "react";
 import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { BlogPost } from "types/blog";
+import { BlogPost } from "types/app";
 import { getPosts } from "services/blogActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Home.styles";

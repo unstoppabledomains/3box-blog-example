@@ -1,7 +1,7 @@
 import config from "config/blogConfig.json";
-import { AppContext } from "services/appContext";
-import { LOG_IN, LOG_OUT } from "./appReducer";
+import { LOG_IN, LOG_OUT } from "types/actions";
 import { initBox } from "./blogActions";
+import { AppContext } from "types/app";
 
 export const login = ({ state, dispatch }: AppContext) => async (
   initialBox?: any
@@ -23,7 +23,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
     // TODO onUpdate for thread
 
     const profile = await profilePromise;
-    const profileImg = `${process.env.REACT_APP_PINATA_BASE_URL}/${profile.image[0].contentUrl["/"]}`;
+    const profileImg = `${config.ipfsUrl}/${profile.image[0].contentUrl["/"]}`;
 
     const user = {
       walletAddress,

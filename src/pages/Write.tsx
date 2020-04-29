@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { BlogPost, ThreadObject } from "types/blog";
+import { BlogPost, ThreadObject } from "types/app";
 import Editor from "components/Editor";
 import { addPost } from "services/blogActions";
 import Button from "@material-ui/core/Button";

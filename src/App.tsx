@@ -5,11 +5,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Write from "./pages/Write";
 import Read from "./pages/Read";
-import Context, { initialState } from "./services/appContext";
+import Context from "./services/appContext";
 import appReducer from "services/appReducer";
 import { initBox } from "services/blogActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import useStyles from "styles/App.styles";
+import { initialState } from "types/app";
 /* 
 NOTE: Need to run this on first start up, needs to be created by admin
 

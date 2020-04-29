@@ -1,4 +1,4 @@
-import { ThreadObject, BlogPost } from "types/blog";
+import { ThreadObject, BlogPost } from "types/app";
 import fm from "front-matter";
 
 export default (postThread: ThreadObject): BlogPost => {
