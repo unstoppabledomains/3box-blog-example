@@ -21,6 +21,11 @@ export default makeStyles((theme: Theme) =>
     divider: {
       width: "100%",
       maxWidth: 400,
+      backgroundColor: `${theme.palette.primary.contrastText} !important`,
+      margin: `${theme.spacing(2)}px !important`,
+    },
+    textColor: {
+      color: theme.palette.primary.contrastText,
     },
   })
 );

@@ -15,7 +15,9 @@ export interface ConfigFile {
   threadAddress: string;
   adminWallet: string;
   spaceName: string;
+  socials: SocialMedia;
 }
+
 export interface AppContext {
   state: AppState;
   dispatch: Dispatch<AppAction>;
@@ -32,7 +34,20 @@ export interface AppState {
   threadAddress: string;
   adminWallet: string;
   spaceName: string;
+  socials: SocialMedia;
 }
+
+export interface SocialMedia extends Partial<{ [S in Socials]: string }> {
+  iconColor: string;
+}
+
+export type Socials =
+  | "facebook"
+  | "instagram"
+  | "linkedIn"
+  | "medium"
+  | "telegram"
+  | "twitter";
 
 export interface User {
   loggedIn: boolean;
@@ -70,6 +85,9 @@ export const initialState = {
   threadAddress: "",
   adminWallet: "",
   spaceName: "",
+  socials: {
+    iconColor: "#fff",
+  },
 };
 
 export const FAILED_TO_LOAD: BlogPost = {

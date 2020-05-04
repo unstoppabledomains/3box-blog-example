@@ -17,16 +17,18 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
   ).then((res) => res.json());
   const { primary, secondary, background } = config.theme;
   const theme = createTheme(primary, secondary, background);
+  console.log("theme.palette");
+  console.log(theme.palette);
+  console.log("theme.palette.type");
+  console.log(theme.palette.type);
+  console.log("theme.palette.text");
+  console.log(theme.palette.text);
+
   dispatch({
     type: SET_CONFIG,
     value: {
       ...config,
       theme,
-      //   domain: config.domain,
-      //   title: config.title,
-      //   threadAddress: config.threadAddress,
-      //   adminWallet: config.adminWallet,
-      //   spaceName: config.spaceName,
     },
   });
   await initBox({ state, dispatch })();

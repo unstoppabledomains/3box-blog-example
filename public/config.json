@@ -5,8 +5,17 @@
   "adminWallet": "0x47b0FdE4622577cb10ED2c79108D79CBb582eE5C",
   "spaceName:": "draft-blog-reseller-test-don0#crypto",
   "theme": {
-    "primary": "#000",
-    "secondary": "#fff",
-    "background": "#fff"
+    "primary": "#fff",
+    "secondary": "#ffeb3b",
+    "background": "#000"
+  },
+  "socials": {
+    "facebook": "facebook.com",
+    "instagram": "instagram.com",
+    "linkedIn": "linkedIn.com",
+    "medium": "medium.com",
+    "telegram": "telegram.com",
+    "twitter": "twitter.com",
+    "iconColor": "#000"
   }
 }

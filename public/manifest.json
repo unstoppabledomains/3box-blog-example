@@ -1,6 +1,6 @@
 {
-  "short_name": "Your Orders",
-  "name": "Your Orders",
+  "short_name": "reseller-test-don0.crypto",
+  "name": "Don's Amazing Blog",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,12 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme": {
+    "colors": {
+      "primary": "#fff",
+      "secondary": "#ffeb3b",
+      "background": "#000",
+      "icon_color": "#000"
+    }
+  }
 }

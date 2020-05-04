@@ -5,6 +5,10 @@ import { createMuiTheme } from "@material-ui/core/styles";
 const createTheme = (primary: string, secondary: string, background: string) =>
   createMuiTheme({
     palette: {
+      type:
+        parseInt(background.replace("#", ""), 16) > 0xffffff / 2
+          ? "light"
+          : "dark",
       primary: {
         main: primary,
       },
@@ -17,7 +21,6 @@ const createTheme = (primary: string, secondary: string, background: string) =>
       background: {
         default: background,
       },
-      // TODO: TEXT?
     },
   });
 
