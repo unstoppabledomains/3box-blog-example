@@ -1,4 +1,3 @@
-import config from "config/blogConfig.json";
 import { LOG_IN, LOG_OUT } from "types/actions";
 import { initBox, getPosts } from "./blogActions";
 import { AppContext } from "types/app";
@@ -9,7 +8,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
   try {
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
-    const { spaceName, threadAddress } = config;
+    const { spaceName, threadAddress } = state;
     let walletAddress = "";
     try {
       walletAddress = (await (window as any).ethereum.enable())[0];
@@ -33,7 +32,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
     thread.onUpdate(() => getPosts({ state, dispatch })());
 
     const profile = await profilePromise;
-    const profileImg = `${config.ipfsUrl}/${profile.image[0].contentUrl["/"]}`;
+    const profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image[0].contentUrl["/"]}`;
 
     const user = {
       walletAddress,

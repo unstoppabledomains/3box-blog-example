@@ -7,10 +7,14 @@ import {
   ADD_POST,
   SET_POSTS,
   DELETE_POST,
+  SET_CONFIG,
 } from "types/actions";
 
 const appReducer = (state: AppState, action: AppAction) => {
   switch (action.type) {
+    case SET_CONFIG: {
+      return { ...state, ...action.value } as AppState;
+    }
     case ADD_BOX: {
       return { ...state, box: action.value.box } as AppState;
     }

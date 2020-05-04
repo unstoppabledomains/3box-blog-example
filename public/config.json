@@ -1,17 +1,12 @@
 {
-  "domain": "",
-  "title": "",
-  "threadAddress": "",
-  "adminWallet": "",
+  "domain": "reseller-test-don0.crypto",
+  "title": "Don's Amazing Blog",
+  "threadAddress": "/orbitdb/zdpuAsWFwTvGFTQsKpjF48jGjsBeDLrtdpGvaMxhFYvaZHNvv/3box.thread.draft-blog-reseller-test-don0#crypto.blog-posts",
+  "adminWallet": "0x47b0FdE4622577cb10ED2c79108D79CBb582eE5C",
+  "spaceName:": "draft-blog-reseller-test-don0#crypto",
   "theme": {
-    "primary": {
-      "main": "",
-      "contrast": ""
-    },
-    "secondary": {
-      "main": "",
-      "contrast": ""
-    },
-    "background": ""
+    "primary": "#000",
+    "secondary": "#fff",
+    "background": "#fff"
   }
 }

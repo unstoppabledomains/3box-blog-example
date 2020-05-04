@@ -8,7 +8,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import appContext from "services/appContext";
-import config from "config/blogConfig.json";
 import { login } from "services/userActions";
 import useStyles from "styles/pages/Write.styles";
 import useAsyncEffect from "use-async-effect";
@@ -27,7 +26,7 @@ const WritePost: React.FunctionComponent = () => {
       await handleLogin();
     } else if (
       state.user.walletAddress?.toLowerCase() !==
-      config.adminWallet.toLowerCase()
+      state.adminWallet.toLowerCase()
     ) {
       void history.push("/");
     } else {
@@ -40,7 +39,7 @@ const WritePost: React.FunctionComponent = () => {
     if (
       !user ||
       !user.loggedIn ||
-      user.walletAddress.toLowerCase() !== config.adminWallet.toLowerCase()
+      user.walletAddress.toLowerCase() !== state.adminWallet.toLowerCase()
     ) {
       history.push("/");
     }

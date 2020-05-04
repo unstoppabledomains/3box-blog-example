@@ -1,9 +1,36 @@
 import Box from "3box";
-import { BlogPost, ThreadObject, AppContext } from "types/app";
-import config from "config/blogConfig.json";
-import { SET_POSTS, DELETE_POST, ADD_POST, ADD_BOX } from "types/actions";
+import { BlogPost, ThreadObject, AppContext, ConfigFile } from "types/app";
+import {
+  SET_POSTS,
+  DELETE_POST,
+  ADD_POST,
+  ADD_BOX,
+  SET_CONFIG,
+} from "types/actions";
 import parseMessage from "utils/parseMessage";
 import { login } from "./userActions";
+import createTheme from "utils/createTheme";
+
+export const initApp = ({ state, dispatch }: AppContext) => async () => {
+  const config: ConfigFile = await fetch(
+    `${process.env.PUBLIC_URL}/config.json`
+  ).then((res) => res.json());
+  const { primary, secondary, background } = config.theme;
+  const theme = createTheme(primary, secondary, background);
+  dispatch({
+    type: SET_CONFIG,
+    value: {
+      ...config,
+      theme,
+      //   domain: config.domain,
+      //   title: config.title,
+      //   threadAddress: config.threadAddress,
+      //   adminWallet: config.adminWallet,
+      //   spaceName: config.spaceName,
+    },
+  });
+  await initBox({ state, dispatch })();
+};
 
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
   if (!state.box) {
@@ -20,8 +47,7 @@ export const initBox = ({ state, dispatch }: AppContext) => async () => {
 };
 
 export const getPosts = ({ state, dispatch }: AppContext) => async () => {
-  const { thread } = state;
-  const { threadAddress } = config;
+  const { thread, threadAddress } = state;
 
   const postThreads: ThreadObject[] = thread
     ? await thread.getPosts()
@@ -54,7 +80,7 @@ export const getPost = ({ state, dispatch }: AppContext) => async (
 export const addPost = ({ state, dispatch }: AppContext) => async (
   post: BlogPost
 ) => {
-  const { thread } = state;
+  const { thread, adminWallet } = state;
   const timestamp = new Date().getTime();
   if (!thread) {
     throw new Error("No thread found. Must authenticate");
@@ -69,6 +95,8 @@ tags: ${post.tags.join(",")}
 ${post.body}`;
 
   const postId: string = await thread.post(newPost);
+  // TODO covert adminWallet to user name
+  // TODO covert adminWallet/3ID to user name in Read
 
   dispatch({
     type: ADD_POST,
@@ -79,7 +107,7 @@ ${post.body}`;
           postId,
           timestamp,
           message: newPost,
-          author: config.adminWallet,
+          author: adminWallet,
         },
       },
     },

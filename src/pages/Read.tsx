@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPost } from "services/blogActions";
 import Comments from "3box-comments-react";
-import config from "config/blogConfig.json";
 import { login } from "services/userActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Read.styles";
@@ -22,8 +21,9 @@ const ReadPost: React.FunctionComponent = () => {
   const {
     box,
     user: { walletAddress },
+    spaceName,
+    adminWallet,
   } = state;
-  const { spaceName } = config;
 
   useAsyncEffect(async () => {
     const _post = await getPost({ state, dispatch })(postId as string);
@@ -69,7 +69,7 @@ const ReadPost: React.FunctionComponent = () => {
             <Comments
               spaceName={spaceName}
               threadName={`comments-${postId}`}
-              adminEthAddr={config.adminWallet}
+              adminEthAddr={adminWallet}
               box={walletAddress ? box : null}
               currentUserAddr={walletAddress}
               loginFunction={handleLogin}

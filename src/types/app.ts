@@ -1,8 +1,24 @@
+import { Theme } from "@material-ui/core/styles/createMuiTheme";
+import { defaultTheme } from "utils/createTheme";
+import { Dispatch } from "react";
+import { AppAction } from "./actions";
+
 // Interfaces
+export interface ConfigFile {
+  theme: {
+    primary: string;
+    secondary: string;
+    background: string;
+  };
+  domain: string;
+  title: string;
+  threadAddress: string;
+  adminWallet: string;
+  spaceName: string;
+}
 export interface AppContext {
   state: AppState;
-  dispatch: any;
-  //   dispatch: (state: AppState, action: AppAction) => AppState;
+  dispatch: Dispatch<AppAction>;
 }
 export interface AppState {
   box: any;
@@ -10,6 +26,12 @@ export interface AppState {
   thread: any;
   user: User;
   posts?: BlogPost[];
+  theme: Theme;
+  domain: string;
+  title: string;
+  threadAddress: string;
+  adminWallet: string;
+  spaceName: string;
 }
 
 export interface User {
@@ -42,6 +64,12 @@ export const initialState = {
     loggedIn: false,
   },
   posts: undefined,
+  theme: defaultTheme,
+  domain: "",
+  title: "",
+  threadAddress: "",
+  adminWallet: "",
+  spaceName: "",
 };
 
 export const FAILED_TO_LOAD: BlogPost = {

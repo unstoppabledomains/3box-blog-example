@@ -11,7 +11,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import useStyles from "styles/components/Header.styles";
 import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
-import config from "config/blogConfig.json";
 
 const Header: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -19,6 +18,7 @@ const Header: React.FunctionComponent = () => {
   const { state, dispatch } = React.useContext(appContext);
   const {
     user: { loggedIn, walletAddress, profileImg },
+    adminWallet,
   } = state;
   const [loading, setLoading] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState(false);
@@ -89,8 +89,7 @@ const Header: React.FunctionComponent = () => {
               >
                 <MenuItem onClick={handleProfile}>Profile</MenuItem>
                 {walletAddress &&
-                  walletAddress.toLowerCase() ===
-                    config.adminWallet.toLowerCase() && (
+                  walletAddress.toLowerCase() === adminWallet.toLowerCase() && (
                     <MenuItem onClick={handlePost}>Add Post</MenuItem>
                   )}
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
