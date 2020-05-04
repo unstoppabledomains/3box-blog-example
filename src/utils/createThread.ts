@@ -2,6 +2,8 @@ import Box from "3box";
 import getSpaceName from "utils/getSpaceName";
 
 export default async (domain: string, address?: string) => {
+  console.log("create space");
+
   const spaceName = getSpaceName(domain);
   if (!address) {
     address = (await (window as any).ethereum.enable())[0];
@@ -18,5 +20,9 @@ export default async (domain: string, address?: string) => {
   const thread = await space.joinThread("blog-posts", {
     members: true,
   });
-  return thread.address;
+  return {
+    adminWallet: address as string,
+    threadAddress: thread.address as string,
+    spaceName,
+  };
 };
