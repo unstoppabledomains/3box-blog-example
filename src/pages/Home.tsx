@@ -5,6 +5,7 @@ import { BlogPost } from "types/app";
 import { getPosts } from "services/blogActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Home.styles";
+import useAsyncEffect from "use-async-effect";
 
 const Home: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -12,16 +13,16 @@ const Home: React.FunctionComponent = () => {
   const [posts, setPosts] = React.useState<BlogPost[]>([]);
   const { state, dispatch } = React.useContext(appContext);
 
-  const initData = async () => {
-    const _posts = await getPosts({ state, dispatch })();
-    setPosts(_posts);
-    setLoading(false);
-  };
-
-  React.useEffect(() => {
-    setLoading(true);
-    void initData();
-  }, []);
+  useAsyncEffect(async () => {
+    if (!state.posts) {
+      setLoading(true);
+      const _posts = await getPosts({ state, dispatch })();
+      setPosts(_posts);
+      setLoading(false);
+    } else {
+      setPosts(state.posts);
+    }
+  }, [state.posts]);
 
   return (
     <div className={classes.root}>

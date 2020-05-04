@@ -11,6 +11,7 @@ import appContext from "services/appContext";
 import config from "config/blogConfig.json";
 import { login } from "services/userActions";
 import useStyles from "styles/pages/Write.styles";
+import useAsyncEffect from "use-async-effect";
 
 const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -21,14 +22,14 @@ const WritePost: React.FunctionComponent = () => {
     tags: [""],
   } as BlogPost);
 
-  React.useEffect(() => {
+  useAsyncEffect(async () => {
     if (!state.user.loggedIn) {
-      handleLogin();
+      await handleLogin();
     } else if (
       state.user.walletAddress?.toLowerCase() !==
       config.adminWallet.toLowerCase()
     ) {
-      history.push("/");
+      void history.push("/");
     } else {
       setLoading(false);
     }
@@ -37,7 +38,8 @@ const WritePost: React.FunctionComponent = () => {
   const handleLogin = async () => {
     const user = await login({ state, dispatch })();
     if (
-      user &&
+      !user ||
+      !user.loggedIn ||
       user.walletAddress.toLowerCase() !== config.adminWallet.toLowerCase()
     ) {
       history.push("/");
@@ -59,7 +61,6 @@ const WritePost: React.FunctionComponent = () => {
       setPost({ ...post, threadData: { postId } as ThreadObject });
       history.push(`/posts/${postId}`);
     } catch (error) {
-      // TODO handle error
       console.error(error);
     }
   };

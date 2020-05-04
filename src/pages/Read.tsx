@@ -11,6 +11,7 @@ import config from "config/blogConfig.json";
 import { login } from "services/userActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Read.styles";
+import useAsyncEffect from "use-async-effect";
 
 const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -24,20 +25,14 @@ const ReadPost: React.FunctionComponent = () => {
   } = state;
   const { spaceName } = config;
 
-  const initData = async () => {
+  useAsyncEffect(async () => {
     const _post = await getPost({ state, dispatch })(postId as string);
     setPost(_post);
     setLoading(false);
-  };
-
-  React.useEffect(() => {
-    void initData();
   }, []);
 
   const handleLogin = async () => {
-    console.log("handleLogin");
-    const res = await login({ state, dispatch })();
-    console.log("res", res);
+    await login({ state, dispatch })();
   };
 
   return (

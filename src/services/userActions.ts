@@ -1,6 +1,6 @@
 import config from "config/blogConfig.json";
 import { LOG_IN, LOG_OUT } from "types/actions";
-import { initBox } from "./blogActions";
+import { initBox, getPosts } from "./blogActions";
 import { AppContext } from "types/app";
 
 export const login = ({ state, dispatch }: AppContext) => async (
@@ -10,17 +10,27 @@ export const login = ({ state, dispatch }: AppContext) => async (
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
     const { spaceName, threadAddress } = config;
-    const walletAddress = (await (window as any).ethereum.enable())[0];
+    let walletAddress = "";
+    try {
+      walletAddress = (await (window as any).ethereum.enable())[0];
+    } catch (e) {
+      console.error(e);
+      window.localStorage.setItem("isLoggedIn", "false");
+      await logout({ state, dispatch })();
+      return { loggedIn: false, walletAddress: "" };
+    }
 
     await box.auth([spaceName], { address: walletAddress });
+    console.log("got auth");
     await box.syncDone;
+    console.log("got box sync");
     const profilePromise = box.public.all();
 
     const space = await box.openSpace(spaceName);
     await space.syncDone;
 
     const thread = await space.joinThreadByAddress(threadAddress);
-    // TODO onUpdate for thread
+    thread.onUpdate(() => getPosts({ state, dispatch })());
 
     const profile = await profilePromise;
     const profileImg = `${config.ipfsUrl}/${profile.image[0].contentUrl["/"]}`;

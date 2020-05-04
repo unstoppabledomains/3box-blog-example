@@ -11,6 +11,7 @@ import { initBox } from "services/blogActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import useStyles from "styles/App.styles";
 import { initialState } from "types/app";
+import useAsyncEffect from "use-async-effect";
 /* 
 NOTE: Need to run this on first start up, needs to be created by admin
 
@@ -29,10 +30,9 @@ const App: React.FunctionComponent = () => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);
   const [loading, setLoading] = React.useState<boolean>(true);
 
-  React.useEffect(() => {
-    void initBox({ state, dispatch })().then(() => {
-      setLoading(false);
-    });
+  useAsyncEffect(async () => {
+    await initBox({ state, dispatch })();
+    setLoading(false);
   }, []);
 
   return (

@@ -1,5 +1,5 @@
 {
-  "name": "create-react-app-with-typescript",
+  "name": "3box-blog",
   "version": "4.0.0",
   "private": true,
   "homepage": "./",
@@ -20,7 +20,8 @@
     "react-scripts": "latest",
     "react-showdown": "^2.0.3",
     "showdown": "^1.9.1",
-    "typescript": "latest"
+    "typescript": "latest",
+    "use-async-effect": "^2.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
