@@ -1,31 +1,20 @@
 import React, { useEffect } from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Write from "./pages/Write";
-import Read from "./pages/Read";
-import Context from "./services/appContext";
+import Context from "services/appContext";
 import appReducer from "services/appReducer";
 import { initApp } from "services/blogActions";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import useStyles from "styles/App.styles";
 import { initialState } from "types/app";
-import useAsyncEffect from "use-async-effect";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import useStyles from "styles/App.styles";
 import { ThemeProvider, Theme } from "@material-ui/core/styles";
 import { defaultTheme } from "utils/createTheme";
-/* 
-NOTE: Need to run this on first start up, needs to be created by admin
-
-import createThread from "utils/createThread";
-
-React.useEffect(() => {
-	void createThread(config.domain).then((res) => {
-		console.log(res);
-	});
-}, []);	
-*/
+import useAsyncEffect from "use-async-effect";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Header from "components/Header";
+import Footer from "components/Footer";
+import Home from "pages/Home";
+import Write from "pages/Write";
+import Read from "pages/Read";
 
 const App: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -46,15 +35,14 @@ const App: React.FunctionComponent = () => {
     <Context.Provider value={{ state, dispatch }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Router>
-          <Header />
-          <div className={classes.root}>
-            {loading && (
-              <div className={classes.loadingContainer}>
-                <CircularProgress />
-              </div>
-            )}
-            {!loading && (
+        {loading ? (
+          <div className={classes.loadingContainer}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <Router>
+            <Header />
+            <div className={classes.root}>
               <Switch>
                 <Route path="/new">
                   <Write />
@@ -66,13 +54,10 @@ const App: React.FunctionComponent = () => {
                   <Home />
                 </Route>
               </Switch>
-            )}
-          </div>
-          <Footer
-            title="Unstoppable Blog"
-            description="3Box Blog - By Don Stolz"
-          />
-        </Router>
+            </div>
+            <Footer />
+          </Router>
+        )}
       </ThemeProvider>
     </Context.Provider>
   );

@@ -4,27 +4,24 @@ export default makeStyles((theme: Theme) =>
   createStyles({
     footer: {
       backgroundColor: theme.palette.primary.main,
-      padding: theme.spacing(6, 0),
-    },
-    footerContainer: {
+      padding: theme.spacing(4, 2),
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
+      [theme.breakpoints.up("sm")]: {
+        flexDirection: "row-reverse",
+        justifyContent: "space-between",
+        padding: theme.spacing(5, 10, 9),
+      },
     },
-    socialRow: {
+    logosContainer: {
       display: "flex",
+      alignItems: "center",
     },
-    socialIcon: {
-      margin: theme.spacing(0, 1),
-    },
-    divider: {
-      width: "100%",
-      maxWidth: 400,
-      backgroundColor: `${theme.palette.primary.contrastText} !important`,
-      margin: `${theme.spacing(2)}px !important`,
-    },
-    textColor: {
+    logo: {},
+    creditContainer: {},
+    creditText: {
       color: theme.palette.primary.contrastText,
     },
   })

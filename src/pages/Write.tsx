@@ -39,7 +39,7 @@ const WritePost: React.FunctionComponent = () => {
     if (
       !user ||
       !user.loggedIn ||
-      user.walletAddress.toLowerCase() !== state.adminWallet.toLowerCase()
+      user.walletAddress?.toLowerCase() !== state.adminWallet.toLowerCase()
     ) {
       history.push("/");
     }

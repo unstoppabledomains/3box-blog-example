@@ -20,7 +20,7 @@ const App: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <div className={classes.initContainer}>
+    <div className={classes.loadingContainer}>
       {loading ? (
         <CircularProgress />
       ) : (

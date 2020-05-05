@@ -6,37 +6,49 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import useStyles from "styles/components/Header.styles";
-import Avatar from "@material-ui/core/Avatar";
-import Menu from "@material-ui/core/Menu";
+import AvatarMenu from "./AvatarMenu";
+import Divider from "@material-ui/core/Divider";
+import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import CreateIcon from "@material-ui/icons/Create";
+import SocialLogo from "./SocialLogo";
+import IconButton from "@material-ui/core/IconButton";
+import LockIcon from "@material-ui/icons/Lock";
+import { Socials } from "types/app";
 
 const Header: React.FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
   const { state, dispatch } = React.useContext(appContext);
+  const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
+  const { title } = state;
   const {
     user: { loggedIn, walletAddress, profileImg },
     adminWallet,
   } = state;
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-    setOpen(true);
-  };
-
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    setAnchorEl(null);
-    setOpen(false);
-  };
+  React.useEffect(() => {
+    setIsAdmin(
+      Boolean(
+        walletAddress &&
+          walletAddress.toLowerCase() === adminWallet.toLowerCase()
+      )
+    );
+  }, [walletAddress]);
 
   const toHome = () => {
     history.push("/");
+  };
+
+  const handleSocials = ({ target }: any) => {
+    const logo = target.id;
+    console.log(logo);
+  };
+
+  const handleBookmarks = () => {
+    history.push("/bookmarks");
   };
 
   const handleLogin = async () => {
@@ -44,18 +56,14 @@ const Header: React.FunctionComponent = () => {
     await login({ state, dispatch })();
     setLoading(false);
   };
+
   const handleLogout = async () => {
     setLoading(true);
     await logout({ state, dispatch })();
-    setAnchorEl(null);
-    setOpen(false);
     setLoading(false);
   };
 
-  const handleProfile = () => {
-    console.log("redirect to 3Box");
-  };
-  const handlePost = () => {
+  const handleAddPost = () => {
     history.push("/new");
   };
 
@@ -63,43 +71,77 @@ const Header: React.FunctionComponent = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.toolBar}>
-          <Typography onClick={toHome} variant="h6" className={classes.title}>
-            Title
-          </Typography>
-
-          {loading ? (
-            <CircularProgress color="secondary" />
-          ) : loggedIn ? (
-            <div>
-              <Button
-                ref={anchorRef}
-                onClick={handleOpen}
-                aria-controls="profile-menu"
-                aria-haspopup="true"
-                className={classes.avatarButton}
-              >
-                <Avatar src={profileImg} />
-              </Button>
-              <Menu
-                id="profile-menu"
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                anchorEl={anchorEl}
-              >
-                <MenuItem onClick={handleProfile}>Profile</MenuItem>
-                {walletAddress &&
-                  walletAddress.toLowerCase() === adminWallet.toLowerCase() && (
-                    <MenuItem onClick={handlePost}>Add Post</MenuItem>
-                  )}
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </Menu>
+          <div className={classes.leftContainer}>
+            <Typography onClick={toHome} variant="h6" className={classes.title}>
+              {title}
+            </Typography>
+            {!loggedIn && (
+              <>
+                <Divider
+                  className={classes.bookmarksDivider}
+                  flexItem
+                  orientation="vertical"
+                />
+                <Button
+                  className={classes.bookmarksButton}
+                  variant="text"
+                  startIcon={<BookmarksIcon />}
+                  onClick={handleBookmarks}
+                >
+                  Bookmarks
+                </Button>
+              </>
+            )}
+          </div>
+          <div className={classes.rightContainer}>
+            <div className={classes.socialRow}>
+              {Object.keys(state.socials).map((key: string) =>
+                key !== "iconColor" ? (
+                  <IconButton
+                    key={key}
+                    id={key}
+                    onClick={handleSocials}
+                    className={classes.socialIcon}
+                  >
+                    <SocialLogo
+                      logo={key as Socials}
+                      iconColor={state.socials.iconColor}
+                    />
+                  </IconButton>
+                ) : null
+              )}
             </div>
-          ) : (
-            <Button color="inherit" onClick={handleLogin}>
-              Login
-            </Button>
-          )}
+            {isAdmin && (
+              <Button
+                variant="contained"
+                className={classes.headerButton}
+                onClick={handleAddPost}
+                startIcon={<CreateIcon />}
+                color="secondary"
+              >
+                Add Post
+              </Button>
+            )}
+            {loading ? (
+              <CircularProgress color="secondary" />
+            ) : loggedIn ? (
+              <AvatarMenu
+                onLogout={handleLogout}
+                profileImg={profileImg as string}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Button
+                variant="contained"
+                className={classes.headerButton}
+                onClick={handleLogin}
+                color="secondary"
+                startIcon={<LockIcon />}
+              >
+                Sign In
+              </Button>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
     </div>
