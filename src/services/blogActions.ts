@@ -1,5 +1,11 @@
 import Box from "3box";
-import { BlogPost, ThreadObject, AppContext, ConfigFile } from "types/app";
+import {
+  BlogPost,
+  ThreadObject,
+  AppContext,
+  ConfigFile,
+  DraftPost,
+} from "types/app";
 import {
   SET_POSTS,
   DELETE_POST,
@@ -17,13 +23,6 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
   ).then((res) => res.json());
   const { primary, secondary, background } = config.theme;
   const theme = createTheme(primary, secondary, background);
-  console.log("theme.palette");
-  console.log(theme.palette);
-  console.log("theme.palette.type");
-  console.log(theme.palette.type);
-  console.log("theme.palette.text");
-  console.log(theme.palette.text);
-
   dispatch({
     type: SET_CONFIG,
     value: {
@@ -48,6 +47,7 @@ export const initBox = ({ state, dispatch }: AppContext) => async () => {
   return state.box;
 };
 
+// Posts
 export const getPosts = ({ state, dispatch }: AppContext) => async () => {
   const { thread, threadAddress } = state;
 
@@ -126,4 +126,118 @@ export const deletePost = ({ state, dispatch }: AppContext) => async (
   }
   await thread.deletePost(postId);
   dispatch({ type: DELETE_POST, value: { postId } });
+};
+
+// Drafts
+export const addDraft = ({ state, dispatch }: AppContext) => async (
+  post: BlogPost
+) => {
+  const { space, adminWallet, user } = state;
+  const timestamp = new Date().getTime();
+  if (!space) {
+    throw new Error("No space found. Must authenticate");
+  }
+  if (user.walletAddress?.toLowerCase() && adminWallet.toLowerCase()) {
+    throw new Error("Not admin user");
+  }
+  const newPost = `---
+createdAt: ${timestamp}
+updatedAt: ${timestamp}
+title: ${post.title}
+description: ${post.description}
+tags: ${post.tags.join(",")}
+---
+${post.body}`;
+  const drafts: DraftPost[] = [].concat(
+    JSON.parse(await space.private.get("drafts"))
+  );
+  const draftId = drafts.length.toString();
+  drafts.unshift({ id: draftId, post: newPost });
+  await space.private.set("drafts", drafts);
+};
+
+export const removeDraft = ({ state, dispatch }: AppContext) => async (
+  draftId: string
+) => {
+  const { space, adminWallet, user } = state;
+  if (!space) {
+    throw new Error("No space found. Must authenticate");
+  }
+  if (user.walletAddress?.toLowerCase() && adminWallet.toLowerCase()) {
+    throw new Error("Not admin user");
+  }
+  const drafts: DraftPost[] = [].concat(
+    JSON.parse(await space.private.get("drafts"))
+  );
+  drafts.filter((draft) => draft.id !== draftId);
+  await space.private.set("drafts", drafts);
+};
+
+export const getDrafts = ({ state, dispatch }: AppContext) => async () => {
+  const { space, adminWallet, user } = state;
+  if (!space) {
+    throw new Error("No space found. Must authenticate");
+  }
+  if (user.walletAddress?.toLowerCase() && adminWallet.toLowerCase()) {
+    throw new Error("Not admin user");
+  }
+  const drafts: DraftPost[] = [].concat(
+    JSON.parse(await space.private.get("drafts"))
+  );
+  return drafts.map((draft) =>
+    parseMessage({
+      author: adminWallet,
+      message: draft.post,
+      postId: draft.id,
+      timestamp: new Date().getTime(),
+    })
+  );
+};
+
+// Likes
+export const getLikes = ({ state, dispatch }: AppContext) => async (
+  postId: string
+) => {
+  const { box, spaceName, adminWallet } = state;
+  const likesThread = box.openThread(
+    spaceName,
+    `${spaceName}-${postId}-likes`,
+    {
+      firstModerator: adminWallet,
+      members: false,
+    }
+  );
+  return (await likesThread.getPosts()).length;
+};
+
+export const addLike = ({ state, dispatch }: AppContext) => async (
+  postId: string
+) => {
+  const { user, spaceName, space, adminWallet } = state;
+  if (!user.loggedIn) {
+    throw new Error("User must be logged in to add likes");
+  }
+  const likesThread = space.joinThread(`${spaceName}-${postId}-likes`, {
+    firstModerator: adminWallet,
+    members: false,
+  });
+  await likesThread.push(user.walletAddress?.toLowerCase());
+};
+
+export const removeLike = ({ state, dispatch }: AppContext) => async (
+  postId: string
+) => {
+  const { user, spaceName, space, adminWallet } = state;
+  if (!user.loggedIn) {
+    throw new Error("User must be logged in to add likes");
+  }
+  const likesThread = space.joinThread(`${spaceName}-${postId}-likes`, {
+    firstModerator: adminWallet,
+    members: false,
+  });
+  const post = (await likesThread.getPosts()).filter(
+    (like: { message: string }) =>
+      like.message.toLowerCase() === user.walletAddress?.toLowerCase()
+  );
+  await likesThread.deletePost(post[0].postId);
 };

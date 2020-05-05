@@ -53,6 +53,7 @@ export interface User {
   loggedIn: boolean;
   walletAddress?: string;
   profileImg?: string;
+  bookmarks?: string[];
 }
 
 export interface BlogPost {
@@ -61,6 +62,11 @@ export interface BlogPost {
   tags: string[];
   body: string;
   threadData?: ThreadObject;
+}
+
+export interface DraftPost {
+  id: string;
+  post: string;
 }
 
 export interface ThreadObject {
