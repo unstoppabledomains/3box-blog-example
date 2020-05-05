@@ -6,11 +6,12 @@ export default makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
-      marginRight: theme.spacing(-1),
+      justifyContent: "space-between",
     },
-    icon: {
-      padding: `${theme.spacing(1)}px !important`,
-      marginLeft: theme.spacing(1),
-    },
+    leftButtons: {},
+    shareRow: {},
+    shareText: {},
+    icon: {},
+    iconText: {},
   })
 );

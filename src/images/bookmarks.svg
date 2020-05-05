@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>24 / basic / bookmarks</title>
+    <g id="24-/-basic-/-bookmarks" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
+        <path d="M15,5 C16.1045695,5 17,5.8954305 17,7 L17,22.618034 L10,19.118034 L3,22.618034 L3,7 C3,5.8954305 3.8954305,5 5,5 L15,5 Z M15,7 L5,7 L5,19.381966 L10,16.881966 L15,19.381966 L15,7 Z M19,1 C20.1045695,1 21,1.91055224 21,3.03377535 L21,18.9324493 L19,17.9155616 L19,3 L8.00027023,3 C8.01800608,1.89235536 8.9065233,1 10,1 L19,1 Z" id="icon" fill="#000000"></path>
+    </g>
+</svg>

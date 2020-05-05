@@ -11,6 +11,11 @@ import { login } from "services/userActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Read.styles";
 import useAsyncEffect from "use-async-effect";
+import Paper from "@material-ui/core/Paper";
+import BookmarkShare from "components/BookmarkShare";
+import timeConverter from "utils/timeConverter";
+import Divider from "@material-ui/core/Divider";
+import LikeShare from "components/LikeShare";
 
 const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -36,28 +41,28 @@ const ReadPost: React.FunctionComponent = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <Paper className={classes.root}>
       {loading ? (
         <div className={classes.loadingContainer}>
           <CircularProgress />
         </div>
       ) : (
         <>
-          <div className={classes.titleContainer}>
+          <div className={classes.headerRow}>
             <Typography className={classes.title} variant="h2" gutterBottom>
               {post.title}
             </Typography>
-            <Typography
-              className={classes.author}
-              variant="subtitle2"
-              gutterBottom
-            >
-              By {(post.threadData as ThreadObject).author}
-            </Typography>
-            <Typography className={classes.description} variant="subtitle1">
-              {post.description}
+            <BookmarkShare postId={postId as string} />
+          </div>
+          <div className={classes.dateAuthorRow}>
+            <Typography className={classes.caption} variant="caption">
+              {timeConverter(post.threadData?.timestamp as number)} • By{" "}
+              {post.threadData?.author}
             </Typography>
           </div>
+          <Typography className={classes.description} variant="subtitle1">
+            {post.description}
+          </Typography>
           <div className={classes.bodyContainer}>
             <Markdown
               dangerouslySetInnerHTML
@@ -65,19 +70,23 @@ const ReadPost: React.FunctionComponent = () => {
               options={showdownOptions}
             />
           </div>
+          <Divider className={classes.divider} />
+          <LikeShare postId={postId as string} />
           <div className={classes.commentContainer}>
-            <Comments
-              spaceName={spaceName}
-              threadName={`comments-${postId}`}
-              adminEthAddr={adminWallet}
-              box={walletAddress ? box : null}
-              currentUserAddr={walletAddress}
-              loginFunction={handleLogin}
-            />
+            <div className={classes.comments}>
+              <Comments
+                spaceName={spaceName}
+                threadName={`comments-${postId}`}
+                adminEthAddr={adminWallet}
+                box={walletAddress ? box : null}
+                currentUserAddr={walletAddress}
+                loginFunction={handleLogin}
+              />
+            </div>
           </div>
         </>
       )}
-    </div>
+    </Paper>
   );
 };
 

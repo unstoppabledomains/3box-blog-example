@@ -5,27 +5,37 @@ export default makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexDirection: "column",
-      maxWidth: 800,
-      marginRight: "auto",
-      marginLeft: "auto",
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(4),
-      paddingRight: theme.spacing(2),
-      paddingLeft: theme.spacing(2),
+      padding: theme.spacing(4),
+      margin: theme.spacing(0, 2, 10),
     },
-    titleContainer: {
+    headerRow: {
       display: "flex",
-      flexDirection: "column",
+      justifyContent: "space-between",
       marginBottom: theme.spacing(2),
     },
     title: {},
-    author: {},
-    description: {},
+    dateAuthorRow: {},
+    caption: {},
+    description: {
+      marginBottom: theme.spacing(4),
+    },
     bodyContainer: {
       display: "flex",
       marginBottom: theme.spacing(4),
     },
+    divider: {
+      margin: theme.spacing(3, 0),
+    },
     commentContainer: {
+      display: "flex",
+      flex: 1,
+      paddingTop: theme.spacing(9),
+      margin: theme.spacing(0, -4, -4),
+      background: "#f7f7f7",
+      borderBottomLeftRadius: 4,
+      borderBottomRightRadius: 4,
+    },
+    comments: {
       marginRight: "auto",
       marginLeft: "auto",
       maxWidth: 616,

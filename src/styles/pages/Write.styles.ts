@@ -5,16 +5,14 @@ export default makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexDirection: "column",
-      maxWidth: 800,
-      marginRight: "auto",
-      marginLeft: "auto",
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(8),
-      paddingRight: theme.spacing(2),
-      paddingLeft: theme.spacing(2),
+      padding: theme.spacing(4),
+      margin: theme.spacing(0, 2, 10),
     },
     title: {
-      fontSize: 36,
+      fontFamily: "Merriweather",
+      fontSize: 32,
+      fontWeight: "bold",
+      margin: 0,
     },
     buttonRow: {
       display: "flex",
@@ -22,14 +20,24 @@ export default makeStyles((theme: Theme) =>
       justifyContent: "space-between",
       marginTop: theme.spacing(3),
     },
+    draftPublishGroup: {
+      display: "flex",
+      alignItems: "center",
+    },
+    label: {
+      fontWeight: "bold",
+      fontSize: 16,
+      margin: theme.spacing(3, 0, 1),
+    },
     textField: {
-      marginBottom: theme.spacing(2),
+      borderRadius: 0,
+      width: "100%",
     },
     button: {
       height: 56,
       fontWeight: "bold",
-      fontSize: 18,
-      color: "#fff",
+      fontSize: 16,
+      borderRadius: 28,
     },
     destroyBtn: {
       backgroundColor: "#d60000",
@@ -37,12 +45,6 @@ export default makeStyles((theme: Theme) =>
         backgroundColor: "#9b0000",
       },
       marginRight: theme.spacing(8),
-    },
-    saveBtn: {
-      backgroundColor: "#28a745",
-      "&:hover": {
-        backgroundColor: "#007717",
-      },
     },
   })
 );

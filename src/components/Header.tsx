@@ -75,7 +75,7 @@ const Header: React.FunctionComponent = () => {
             <Typography onClick={toHome} variant="h6" className={classes.title}>
               {title}
             </Typography>
-            {!loggedIn && (
+            {loggedIn && (
               <>
                 <Divider
                   className={classes.bookmarksDivider}

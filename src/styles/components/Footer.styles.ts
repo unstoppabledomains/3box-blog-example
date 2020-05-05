@@ -9,6 +9,7 @@ export default makeStyles((theme: Theme) =>
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
+      marginBottom: theme.spacing(-2.5),
       [theme.breakpoints.up("sm")]: {
         flexDirection: "row-reverse",
         justifyContent: "space-between",

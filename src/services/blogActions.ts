@@ -199,7 +199,7 @@ export const getLikes = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
   const { box, spaceName, adminWallet } = state;
-  const likesThread = box.openThread(
+  const likesThread = await box.openThread(
     spaceName,
     `${spaceName}-${postId}-likes`,
     {
@@ -210,31 +210,67 @@ export const getLikes = ({ state, dispatch }: AppContext) => async (
   return (await likesThread.getPosts()).length;
 };
 
+export const checkLiked = ({ state, dispatch }: AppContext) => async (
+  postId: string
+) => {
+  const {
+    user: { walletAddress, loggedIn },
+    spaceName,
+    adminWallet,
+    box,
+  } = state;
+  if (!loggedIn || !walletAddress) {
+    return false;
+  }
+  const likesThread = await box.openThread(
+    spaceName,
+    `${spaceName}-${postId}-likes`,
+    {
+      firstModerator: adminWallet,
+      members: false,
+    }
+  );
+  console.log(likesThread);
+  const likes = await likesThread.getPosts();
+  return (
+    likes.filter((tObj: ThreadObject) => tObj.message === walletAddress)
+      .length > 0
+  );
+};
+
 export const addLike = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
-  const { user, spaceName, space, adminWallet } = state;
+  const { user, spaceName, box, adminWallet } = state;
   if (!user.loggedIn) {
     throw new Error("User must be logged in to add likes");
   }
-  const likesThread = space.joinThread(`${spaceName}-${postId}-likes`, {
-    firstModerator: adminWallet,
-    members: false,
-  });
-  await likesThread.push(user.walletAddress?.toLowerCase());
+  const likesThread = await box.openThread(
+    spaceName,
+    `${spaceName}-${postId}-likes`,
+    {
+      firstModerator: adminWallet,
+      members: false,
+    }
+  );
+  await likesThread.post(user.walletAddress?.toLowerCase());
 };
 
 export const removeLike = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
-  const { user, spaceName, space, adminWallet } = state;
+  const { user, spaceName, box, adminWallet } = state;
   if (!user.loggedIn) {
-    throw new Error("User must be logged in to add likes");
+    throw new Error("User must be logged in to remove likes");
   }
-  const likesThread = space.joinThread(`${spaceName}-${postId}-likes`, {
-    firstModerator: adminWallet,
-    members: false,
-  });
+  const likesThread = await box.openThread(
+    spaceName,
+    `${spaceName}-${postId}-likes`,
+    {
+      firstModerator: adminWallet,
+      members: false,
+    }
+  );
   const post = (await likesThread.getPosts()).filter(
     (like: { message: string }) =>
       like.message.toLowerCase() === user.walletAddress?.toLowerCase()
