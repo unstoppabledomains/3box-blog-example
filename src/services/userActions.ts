@@ -1,6 +1,6 @@
 import { LOG_IN, LOG_OUT } from "types/actions";
 import { initBox, getPosts } from "./blogActions";
-import { AppContext, User, BlogPost } from "types/app";
+import { AppContext, User } from "types/app";
 
 export const login = ({ state, dispatch }: AppContext) => async (
   initialBox?: any

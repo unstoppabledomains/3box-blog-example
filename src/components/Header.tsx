@@ -16,6 +16,7 @@ import SocialLogo from "./SocialLogo";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 import { Socials } from "types/app";
+import CustomIcon from "./CustomIcon";
 
 const Header: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -25,6 +26,7 @@ const Header: React.FunctionComponent = () => {
   const { title } = state;
   const {
     user: { loggedIn, walletAddress, profileImg },
+    theme: { palette },
     adminWallet,
   } = state;
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -36,7 +38,7 @@ const Header: React.FunctionComponent = () => {
           walletAddress.toLowerCase() === adminWallet.toLowerCase()
       )
     );
-  }, [walletAddress]);
+  }, [walletAddress, adminWallet]);
 
   const toHome = () => {
     history.push("/");
@@ -85,7 +87,12 @@ const Header: React.FunctionComponent = () => {
                 <Button
                   className={classes.bookmarksButton}
                   variant="text"
-                  startIcon={<BookmarksIcon />}
+                  startIcon={
+                    <CustomIcon
+                      color={palette.primary.contrastText}
+                      type="bookmarks"
+                    />
+                  }
                   onClick={handleBookmarks}
                 >
                   Bookmarks

@@ -45,5 +45,6 @@ export default makeStyles((theme: Theme) =>
     bookmarksButton: {
       color: theme.palette.primary.contrastText,
     },
+    menuIcon: {},
   })
 );

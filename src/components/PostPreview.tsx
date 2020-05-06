@@ -6,9 +6,9 @@ import Button from "@material-ui/core/Button";
 import timeConverter from "utils/timeConverter";
 import useStyles from "styles/components/PostPreview.styles";
 import Paper from "@material-ui/core/Paper";
-import ArrowForward from "@material-ui/icons/ArrowForward";
 import BookmarkShare from "components/BookmarkShare";
 import CustomIcon from "components/CustomIcon";
+import appContext from "services/appContext";
 
 interface Props {
   post: BlogPost;
@@ -26,6 +26,10 @@ const PostPreview: React.FunctionComponent<Props> = ({
   const { title, description, threadData } = post;
   const { timestamp, postId } = threadData as ThreadObject;
   const date = timeConverter(timestamp);
+  const { state } = React.useContext(appContext);
+  const {
+    theme: { palette },
+  } = state;
 
   const handleRead = () => {
     history.push(`/posts/${postId}`);
@@ -67,7 +71,12 @@ const PostPreview: React.FunctionComponent<Props> = ({
               className={classes.containedButton}
               variant="contained"
               color="secondary"
-              startIcon={<CustomIcon type="edit" />}
+              startIcon={
+                <CustomIcon
+                  color={palette.secondary.contrastText}
+                  type="edit"
+                />
+              }
             >
               EDIT
             </Button>
@@ -75,7 +84,9 @@ const PostPreview: React.FunctionComponent<Props> = ({
               onClick={onRemoveDraft}
               className={classes.destroyButton}
               variant="text"
-              startIcon={<CustomIcon type="trash-empty" />}
+              startIcon={
+                <CustomIcon color={palette.error.main} type="trash-empty" />
+              }
             >
               DESTROY
             </Button>
@@ -86,7 +97,12 @@ const PostPreview: React.FunctionComponent<Props> = ({
             className={classes.containedButton}
             variant="contained"
             color="secondary"
-            endIcon={<CustomIcon type="arrow-right" />}
+            endIcon={
+              <CustomIcon
+                color={palette.secondary.contrastText}
+                type="arrow-right"
+              />
+            }
           >
             Read More
           </Button>

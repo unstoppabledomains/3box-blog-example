@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogPost, ThreadObject } from "types/app";
+import { BlogPost } from "types/app";
 import Markdown from "react-showdown";
 import { showdownOptions } from "config/showdown";
 import { useParams } from "react-router-dom";

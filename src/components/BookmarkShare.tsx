@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { ThreadObject } from "types/app";
 import useStyles from "styles/components/BookmarkShare.styles";
 import {
   addBookmark,

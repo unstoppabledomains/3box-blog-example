@@ -1,11 +1,16 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import useStyles from "styles/components/Header.styles";
 import Avatar from "@material-ui/core/Avatar";
-import Menu from "@material-ui/core/Menu";
 import Divider from "@material-ui/core/Divider";
+import Popper from "@material-ui/core/Popper";
+import Grow from "@material-ui/core/Grow";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Paper from "@material-ui/core/Paper";
+import MenuList from "@material-ui/core/MenuList";
+import CustomIcon from "./CustomIcon";
+import appContext from "services/appContext";
 
 interface Props {
   onLogout: () => void;
@@ -21,26 +26,33 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { state } = React.useContext(appContext);
+  const {
+    theme: { palette },
+  } = state;
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    setAnchorEl(null);
+  const handleClose = () => {
     setOpen(false);
   };
 
   const handleLogout = async () => {
     setOpen(false);
-    setAnchorEl(null);
     onLogout();
   };
 
   const handleProfile = () => {
     console.log("redirect to 3Box");
+  };
+
+  const handleListKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setOpen(false);
+    }
   };
 
   return (
@@ -54,17 +66,64 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
       >
         <Avatar src={profileImg} />
       </Button>
-      <Menu
-        id="profile-menu"
-        keepMounted
+      <Popper
         open={open}
-        onClose={handleClose}
-        anchorEl={anchorEl}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
       >
-        <MenuItem onClick={handleProfile}>Profile</MenuItem>
-        <Divider />
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      </Menu>
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === "bottom" ? "left top" : "left bottom",
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList
+                  autoFocusItem={open}
+                  id="profile-menu"
+                  onKeyDown={handleListKeyDown}
+                >
+                  <MenuItem onClick={handleProfile}>
+                    <CustomIcon color={palette.text.primary} type="user" />
+                    Profile
+                  </MenuItem>
+                  {isAdmin && (
+                    <>
+                      <MenuItem onClick={handleProfile}>
+                        <CustomIcon
+                          color={palette.text.primary}
+                          type="pencil-create"
+                        />
+                        Add Posts
+                      </MenuItem>
+                      <MenuItem onClick={handleProfile}>
+                        <CustomIcon
+                          color={palette.text.primary}
+                          type="file-draft"
+                        />
+                        Drafts
+                      </MenuItem>
+                    </>
+                  )}
+                  <Divider />
+                  <MenuItem onClick={handleLogout}>
+                    <CustomIcon
+                      color={palette.text.primary}
+                      type="logout-circle"
+                    />
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </div>
   );
 };
