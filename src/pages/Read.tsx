@@ -16,6 +16,7 @@ import BookmarkShare from "components/BookmarkShare";
 import timeConverter from "utils/timeConverter";
 import Divider from "@material-ui/core/Divider";
 import LikeShare from "components/LikeShare";
+import PostPagination from "components/PostPagination";
 
 const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -31,62 +32,66 @@ const ReadPost: React.FunctionComponent = () => {
   } = state;
 
   useAsyncEffect(async () => {
+    window.scroll({ top: 0, behavior: "smooth" });
     const _post = await getPost({ state, dispatch })(postId as string);
     setPost(_post);
     setLoading(false);
-  }, []);
+  }, [postId]);
 
   const handleLogin = async () => {
     await login({ state, dispatch })();
   };
 
   return (
-    <Paper className={classes.root}>
-      {loading ? (
-        <div className={classes.loadingContainer}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <>
-          <div className={classes.headerRow}>
-            <Typography className={classes.title} variant="h2" gutterBottom>
-              {post.title}
+    <>
+      <Paper className={classes.root}>
+        {loading ? (
+          <div className={classes.loadingContainer}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <>
+            <div className={classes.headerRow}>
+              <Typography className={classes.title} variant="h2" gutterBottom>
+                {post.title}
+              </Typography>
+              <BookmarkShare postId={postId as string} />
+            </div>
+            <div className={classes.dateAuthorRow}>
+              <Typography className={classes.caption} variant="caption">
+                {timeConverter(post.threadData?.timestamp as number)} • By{" "}
+                {post.threadData?.author}
+              </Typography>
+            </div>
+            <Typography className={classes.description} variant="subtitle1">
+              {post.description}
             </Typography>
-            <BookmarkShare postId={postId as string} />
-          </div>
-          <div className={classes.dateAuthorRow}>
-            <Typography className={classes.caption} variant="caption">
-              {timeConverter(post.threadData?.timestamp as number)} • By{" "}
-              {post.threadData?.author}
-            </Typography>
-          </div>
-          <Typography className={classes.description} variant="subtitle1">
-            {post.description}
-          </Typography>
-          <div className={classes.bodyContainer}>
-            <Markdown
-              dangerouslySetInnerHTML
-              markdown={post.body}
-              options={showdownOptions}
-            />
-          </div>
-          <Divider className={classes.divider} />
-          <LikeShare postId={postId as string} />
-          <div className={classes.commentContainer}>
-            <div className={classes.comments}>
-              <Comments
-                spaceName={spaceName}
-                threadName={`comments-${postId}`}
-                adminEthAddr={adminWallet}
-                box={walletAddress ? box : null}
-                currentUserAddr={walletAddress}
-                loginFunction={handleLogin}
+            <div className={classes.bodyContainer}>
+              <Markdown
+                dangerouslySetInnerHTML
+                markdown={post.body}
+                options={showdownOptions}
               />
             </div>
-          </div>
-        </>
-      )}
-    </Paper>
+            <Divider className={classes.divider} />
+            <LikeShare postId={postId as string} />
+            <div className={classes.commentContainer}>
+              <div className={classes.comments}>
+                <Comments
+                  spaceName={spaceName}
+                  threadName={`comments-${postId}`}
+                  adminEthAddr={adminWallet}
+                  box={walletAddress ? box : null}
+                  currentUserAddr={walletAddress}
+                  loginFunction={handleLogin}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </Paper>
+      <PostPagination postId={postId as string} />
+    </>
   );
 };
 

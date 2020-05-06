@@ -36,8 +36,7 @@ const PostPreview: React.FunctionComponent<Props> = ({
   };
 
   const handleEdit = () => {
-    // TODO handle in Write
-    history.push(`/new?draft=${postId}`);
+    history.push(`/new?draftId=${postId}`);
   };
 
   const onRemoveDraft = () => {
@@ -56,7 +55,11 @@ const PostPreview: React.FunctionComponent<Props> = ({
         <BookmarkShare postId={post.threadData?.postId as string} />
       </div>
       <div className={classes.dateAuthorRow}>
-        <Typography className={classes.caption} variant="caption">
+        <Typography
+          color="textSecondary"
+          className={classes.caption}
+          variant="caption"
+        >
           {date} • By {threadData?.author}
         </Typography>
       </div>

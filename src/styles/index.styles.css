@@ -1,7 +1,7 @@
 @font-face {
   font-family: "Merriweather";
   src: local("Merriweather"),
-    url(./fonts/Merriweather-Regular.ttf) format("truetype");
+    url(../fonts/Merriweather-Regular.ttf) format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -9,7 +9,7 @@
 @font-face {
   font-family: "Merriweather";
   src: local("Merriweather"),
-    url(./fonts/Merriweather-Bold.ttf) format("truetype");
+    url(../fonts/Merriweather-Bold.ttf) format("truetype");
   font-weight: bold;
   font-style: normal;
 }
@@ -17,28 +17,28 @@
 @font-face {
   font-family: "Merriweather";
   src: local("Merriweather"),
-    url(./fonts/Merriweather-Black.ttf) format("truetype");
+    url(../fonts/Merriweather-Black.ttf) format("truetype");
   font-weight: 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: "OpenSans";
-  src: local("OpenSans"), url(./fonts/OpenSans-Regular.ttf) format("truetype");
+  src: local("OpenSans"), url(../fonts/OpenSans-Regular.ttf) format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "OpenSans";
-  src: local("OpenSans"), url(./fonts/OpenSans-Bold.ttf) format("truetype");
+  src: local("OpenSans"), url(../fonts/OpenSans-Bold.ttf) format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: "OpenSans";
-  src: local("OpenSans"), url(./fonts/OpenSans-SemiBold.ttf) format("truetype");
+  src: local("OpenSans"), url(../fonts/OpenSans-SemiBold.ttf) format("truetype");
   font-weight: semi-bold;
   font-style: normal;
 }

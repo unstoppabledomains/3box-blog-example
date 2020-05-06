@@ -5,7 +5,7 @@ export default makeStyles((theme: Theme) =>
     container: {
       display: "flex",
       flexDirection: "column",
-      margin: theme.spacing(0, 2, 1),
+      marginBottom: theme.spacing(1),
       padding: theme.spacing(4),
       maxWidth: 960,
     },
@@ -16,8 +16,6 @@ export default makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
     },
     title: {
-      // TODO: font
-      fontFamily: "Merriweather",
       fontSize: 32,
       fontWeight: "bold",
       wordWrap: "break-word",
@@ -27,7 +25,10 @@ export default makeStyles((theme: Theme) =>
       alignItems: "center",
       marginBottom: theme.spacing(3),
     },
-    caption: {},
+    caption: {
+      fontFamily: "OpenSans",
+      fontSize: 14,
+    },
     description: {},
     buttonRow: {
       display: "flex",

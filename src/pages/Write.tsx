@@ -23,6 +23,7 @@ const WritePost: React.FunctionComponent = () => {
   } as BlogPost);
 
   useAsyncEffect(async () => {
+    //   TODO check for draftId query param
     if (!state.user.loggedIn) {
       await handleLogin();
     } else if (

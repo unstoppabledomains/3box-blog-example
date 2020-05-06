@@ -5,7 +5,7 @@ export default makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing(4),
+      padding: theme.spacing(0, 4),
       margin: theme.spacing(0, 2, 10),
     },
     title: {

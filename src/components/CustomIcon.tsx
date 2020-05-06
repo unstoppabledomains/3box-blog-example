@@ -35,6 +35,7 @@ interface Props {
     | "trash-empty"
     | "edit"
     | "arrow-right"
+    | "arrow-left"
     | "user"
     | "file-draft"
     | "logout-circle";
@@ -56,9 +57,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-logos-/-facebook"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -80,9 +81,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-logos-/-instagram"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -104,9 +105,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-logos-/-linkedin"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -128,9 +129,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-logos-/-medium"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -152,9 +153,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-logos-/-telegram"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -176,9 +177,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-logos-/-twitter"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -199,9 +200,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-basic-/-bookmarks"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -222,9 +223,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-basic-/-bookmark-add"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -246,9 +247,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-software-/-cloud-upload"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -270,9 +271,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-editing-/-pencil-create"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -294,9 +295,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-basic-/-thumbs-up"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -318,9 +319,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-basic-/-trash-empty"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -342,9 +343,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-editing-/-pencil-edit"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -365,9 +366,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-arrows-/-arrow-right"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <polygon
@@ -389,9 +390,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-editing-/-user"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -413,9 +414,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-file-/-file-draft"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -437,9 +438,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
           <g
             id="24-/-basic-/-logout-circle"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -447,6 +448,30 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
               id="icon"
               fill={color}
             ></path>
+          </g>
+        </svg>
+      ) : type === "arrow-left" ? (
+        <svg
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>24 / arrows / arrow-left</title>
+          <g
+            id="24-/-arrows-/-arrow-left"
+            stroke="none"
+            strokeWidth="1"
+            fill="none"
+            fillRule="evenodd"
+          >
+            <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
+            <polygon
+              id="icon"
+              fill={color}
+              points="6.41421356 13 12.7071068 19.2928932 11.2928932 20.7071068 2.58578644 12 11.2928932 3.29289322 12.7071068 4.70710678 6.41421356 11 21 11 21 13"
+            ></polygon>
           </g>
         </svg>
       ) : null}

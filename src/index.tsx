@@ -7,6 +7,7 @@ import "fonts/Merriweather-Regular.ttf";
 import "fonts/OpenSans-Bold.ttf";
 import "fonts/OpenSans-SemiBold.ttf";
 import "fonts/OpenSans-Regular.ttf";
+import "styles/index.styles.css";
 // import Init from "./Init";
 
 ReactDOM.render(<App />, document.querySelector("#root"));

@@ -11,6 +11,8 @@ import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
 import CustomIcon from "./CustomIcon";
 import appContext from "services/appContext";
+import Typography from "@material-ui/core/Typography";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   onLogout: () => void;
@@ -24,11 +26,13 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
   isAdmin,
 }) => {
   const classes = useStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const { state } = React.useContext(appContext);
   const {
     theme: { palette },
+    user: { walletAddress },
   } = state;
 
   const handleOpen = () => {
@@ -45,7 +49,7 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
   };
 
   const handleProfile = () => {
-    console.log("redirect to 3Box");
+    window.open(`https://3box.io/${walletAddress}`, "_blank");
   };
 
   const handleListKeyDown = (event: React.KeyboardEvent) => {
@@ -53,6 +57,12 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
       event.preventDefault();
       setOpen(false);
     }
+  };
+  const handleAddPosts = () => {
+    history.push("/new");
+  };
+  const handleDrafts = () => {
+    history.push("/drafts");
   };
 
   return (
@@ -89,34 +99,48 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
                   onKeyDown={handleListKeyDown}
                 >
                   <MenuItem onClick={handleProfile}>
-                    <CustomIcon color={palette.text.primary} type="user" />
-                    Profile
+                    <div className={classes.menuIcon}>
+                      <CustomIcon color={palette.text.primary} type="user" />
+                    </div>
+                    <Typography className={classes.menuItem}>
+                      Profile
+                    </Typography>
                   </MenuItem>
                   {isAdmin && (
                     <>
-                      <MenuItem onClick={handleProfile}>
-                        <CustomIcon
-                          color={palette.text.primary}
-                          type="pencil-create"
-                        />
-                        Add Posts
+                      <MenuItem onClick={handleAddPosts}>
+                        <div className={classes.menuIcon}>
+                          <CustomIcon
+                            color={palette.text.primary}
+                            type="pencil-create"
+                          />
+                        </div>
+                        <Typography className={classes.menuItem}>
+                          Add Posts
+                        </Typography>
                       </MenuItem>
-                      <MenuItem onClick={handleProfile}>
-                        <CustomIcon
-                          color={palette.text.primary}
-                          type="file-draft"
-                        />
-                        Drafts
+                      <MenuItem onClick={handleDrafts}>
+                        <div className={classes.menuIcon}>
+                          <CustomIcon
+                            color={palette.text.primary}
+                            type="file-draft"
+                          />
+                        </div>
+                        <Typography className={classes.menuItem}>
+                          Drafts
+                        </Typography>
                       </MenuItem>
                     </>
                   )}
-                  <Divider />
+                  <Divider className={classes.menuDivider} />
                   <MenuItem onClick={handleLogout}>
-                    <CustomIcon
-                      color={palette.text.primary}
-                      type="logout-circle"
-                    />
-                    Logout
+                    <div className={classes.menuIcon}>
+                      <CustomIcon
+                        color={palette.text.primary}
+                        type="logout-circle"
+                      />
+                    </div>
+                    <Typography className={classes.menuItem}>Logout</Typography>
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>

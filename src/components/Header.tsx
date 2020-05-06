@@ -70,11 +70,11 @@ const Header: React.FunctionComponent = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <>
+      <AppBar className={classes.root} position="fixed">
         <Toolbar className={classes.toolBar}>
           <div className={classes.leftContainer}>
-            <Typography onClick={toHome} variant="h6" className={classes.title}>
+            <Typography onClick={toHome} className={classes.title}>
               {title}
             </Typography>
             {loggedIn && (
@@ -110,9 +110,9 @@ const Header: React.FunctionComponent = () => {
                     onClick={handleSocials}
                     className={classes.socialIcon}
                   >
-                    <SocialLogo
-                      logo={key as Socials}
-                      iconColor={state.socials.iconColor}
+                    <CustomIcon
+                      type={key as Socials}
+                      color={palette.primary.contrastText}
                     />
                   </IconButton>
                 ) : null
@@ -151,7 +151,7 @@ const Header: React.FunctionComponent = () => {
           </div>
         </Toolbar>
       </AppBar>
-    </div>
+    </>
   );
 };
 
