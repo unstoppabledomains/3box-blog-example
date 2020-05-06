@@ -15,6 +15,8 @@ import Footer from "components/Footer";
 import Home from "pages/Home";
 import Write from "pages/Write";
 import Read from "pages/Read";
+import Bookmarks from "pages/Bookmarks";
+import Drafts from "pages/Drafts";
 
 const App: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -46,6 +48,12 @@ const App: React.FunctionComponent = () => {
               <Switch>
                 <Route path="/new">
                   <Write />
+                </Route>
+                <Route path="/drafts">
+                  <Drafts />
+                </Route>
+                <Route path="/bookmarks">
+                  <Bookmarks />
                 </Route>
                 <Route path="/posts/:postId">
                   <Read />

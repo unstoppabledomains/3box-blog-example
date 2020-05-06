@@ -29,11 +29,22 @@ export default makeStyles((theme: Theme) =>
     },
     caption: {},
     description: {},
-    readButton: {
+    buttonRow: {
+      display: "flex",
+      flexGrow: 1,
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginTop: theme.spacing(4),
+    },
+    containedButton: {
       display: "flex",
       alignItems: "center",
-      marginTop: theme.spacing(4),
       width: 158,
+      borderRadius: 25,
+      fontSize: 16,
+    },
+    destroyButton: {
+      color: theme.palette.error.main,
       borderRadius: 25,
       fontSize: 16,
     },

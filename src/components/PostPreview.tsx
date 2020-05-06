@@ -8,20 +8,38 @@ import useStyles from "styles/components/PostPreview.styles";
 import Paper from "@material-ui/core/Paper";
 import ArrowForward from "@material-ui/icons/ArrowForward";
 import BookmarkShare from "components/BookmarkShare";
+import CustomIcon from "components/CustomIcon";
 
 interface Props {
   post: BlogPost;
+  draft?: boolean;
+  handleRemoveDraft?: (draftId: string) => void;
 }
 
-const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
+const PostPreview: React.FunctionComponent<Props> = ({
+  post,
+  draft = false,
+  handleRemoveDraft,
+}) => {
   const classes = useStyles();
   const history = useHistory();
   const { title, description, threadData } = post;
   const { timestamp, postId } = threadData as ThreadObject;
   const date = timeConverter(timestamp);
 
-  const handleClick = () => {
+  const handleRead = () => {
     history.push(`/posts/${postId}`);
+  };
+
+  const handleEdit = () => {
+    // TODO handle in Write
+    history.push(`/new?draft=${postId}`);
+  };
+
+  const onRemoveDraft = () => {
+    if (handleRemoveDraft) {
+      handleRemoveDraft(post.threadData?.postId as string);
+    }
   };
   //   TODO author to human readable or wallet
 
@@ -41,15 +59,39 @@ const PostPreview: React.FunctionComponent<Props> = ({ post }) => {
       <Typography className={classes.description} variant="subtitle1">
         {description}
       </Typography>
-      <Button
-        onClick={handleClick}
-        className={classes.readButton}
-        variant="contained"
-        color="secondary"
-        endIcon={<ArrowForward />}
-      >
-        Read More
-      </Button>
+      <div className={classes.buttonRow}>
+        {draft ? (
+          <>
+            <Button
+              onClick={handleEdit}
+              className={classes.containedButton}
+              variant="contained"
+              color="secondary"
+              startIcon={<CustomIcon type="edit" />}
+            >
+              EDIT
+            </Button>
+            <Button
+              onClick={onRemoveDraft}
+              className={classes.destroyButton}
+              variant="text"
+              startIcon={<CustomIcon type="trash-empty" />}
+            >
+              DESTROY
+            </Button>
+          </>
+        ) : (
+          <Button
+            onClick={handleRead}
+            className={classes.containedButton}
+            variant="contained"
+            color="secondary"
+            endIcon={<CustomIcon type="arrow-right" />}
+          >
+            Read More
+          </Button>
+        )}
+      </div>
     </Paper>
   );
 };

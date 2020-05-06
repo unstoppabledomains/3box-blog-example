@@ -16,7 +16,7 @@ const createTheme = (primary: string, secondary: string, background: string) =>
         main: secondary,
       },
       error: {
-        main: red.A400,
+        main: "#d61e1e",
       },
       background: {
         default: background,
@@ -33,7 +33,7 @@ export const defaultTheme = createMuiTheme({
       main: "#19857b",
     },
     error: {
-      main: red.A400,
+      main: "#d61e1e",
     },
     background: {
       default: "#fff",
