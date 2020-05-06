@@ -20,10 +20,14 @@ export default makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
     },
-    logo: {},
+    unstoppableLogo: {
+      marginRight: theme.spacing(7),
+    },
     creditContainer: {},
     creditText: {
       color: theme.palette.primary.contrastText,
+      fontFamily: "OpenSans",
+      fontSize: 14,
     },
   })
 );

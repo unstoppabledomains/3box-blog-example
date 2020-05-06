@@ -1,16 +1,21 @@
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { getThemeType } from "utils/createTheme";
 
 export default makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
-      padding: theme.spacing(2),
-      maxWidth: 800,
-      marginLeft: "auto",
-      marginRight: "auto",
       flexDirection: "column",
     },
-    title: {},
+    title: {
+      fontFamily: "OpenSans",
+      fontSize: 40,
+      marginBottom: theme.spacing(4),
+      color:
+        getThemeType(theme.palette.background.default) === "dark"
+          ? "#FFF"
+          : theme.palette.text.primary,
+    },
     center: {
       height: "50vh",
       width: "100%",

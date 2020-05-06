@@ -8,15 +8,13 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import useStyles from "styles/components/Header.styles";
-import AvatarMenu from "./AvatarMenu";
+import AvatarMenu from "components/AvatarMenu";
 import Divider from "@material-ui/core/Divider";
-import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import CreateIcon from "@material-ui/icons/Create";
-import SocialLogo from "./SocialLogo";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 import { Socials } from "types/app";
-import CustomIcon from "./CustomIcon";
+import CustomIcon from "components/CustomIcon";
 
 const Header: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -28,6 +26,7 @@ const Header: React.FunctionComponent = () => {
     user: { loggedIn, walletAddress, profileImg },
     theme: { palette },
     adminWallet,
+    socials,
   } = state;
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -45,8 +44,10 @@ const Header: React.FunctionComponent = () => {
   };
 
   const handleSocials = ({ target }: any) => {
-    const logo = target.id;
-    console.log(logo);
+    const key = target.id;
+    const url = socials[key as Socials];
+    console.log(url);
+    window.open(url, "_blank");
   };
 
   const handleBookmarks = () => {

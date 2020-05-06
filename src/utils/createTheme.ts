@@ -1,5 +1,7 @@
-import red from "@material-ui/core/colors/red";
 import { createMuiTheme } from "@material-ui/core/styles";
+
+export const getThemeType = (color: string) =>
+  parseInt(color.replace("#", ""), 16) > 0xffffff / 2 ? "light" : "dark";
 
 // A custom theme for this app
 const createTheme = (primary: string, secondary: string, background: string) =>
@@ -9,9 +11,6 @@ const createTheme = (primary: string, secondary: string, background: string) =>
     },
     palette: {
       type: "light",
-      // parseInt(background.replace("#", ""), 16) > 0xffffff / 2
-      //   ? "light"
-      //   : "dark",
       primary: {
         main: primary,
       },
@@ -27,7 +26,6 @@ const createTheme = (primary: string, secondary: string, background: string) =>
     },
     overrides: {
       MuiButton: {
-        // Name of the rule
         contained: {
           fontFamily: "OpenSans",
           fontSize: 16,
@@ -36,6 +34,11 @@ const createTheme = (primary: string, secondary: string, background: string) =>
           height: 40,
         },
       },
+      //   MuiSvgIcon: {
+      //     root: {
+      //       fontSize: "24px !important",
+      //     },
+      //   },
     },
   });
 

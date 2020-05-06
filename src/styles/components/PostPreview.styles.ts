@@ -45,9 +45,13 @@ export default makeStyles((theme: Theme) =>
       fontSize: 16,
     },
     destroyButton: {
+      fontFamily: "OpenSans",
+      fontWeight: 600,
       color: theme.palette.error.main,
       borderRadius: 25,
       fontSize: 16,
+      paddingRight: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
     },
   })
 );

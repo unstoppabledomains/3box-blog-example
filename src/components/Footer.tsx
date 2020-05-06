@@ -2,25 +2,38 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "styles/components/Footer.styles";
 import appContext from "services/appContext";
-import UnstoppableLight from "images/unstoppable-domains-logo-light.svg";
 import UnstoppableDark from "images/unstoppable-domains-logo-dark.svg";
+import UnstoppableLight from "images/unstoppable-domains-logo-light.svg";
+import ThreeBoxDark from "images/three-box-logo-dark.svg";
+import ThreeBoxLight from "images/three-box-logo-light.svg";
+import { getThemeType } from "utils/createTheme";
 
 const Footer: React.FunctionComponent = () => {
   const classes = useStyles();
   const { state } = React.useContext(appContext);
+  const { main } = state.theme.palette.primary;
+  const themeType = getThemeType(main);
+
   return (
     <div className={classes.footer}>
       <div className={classes.logosContainer}>
-        <img
-          className={classes.logo}
-          alt="Unstoppable Domains Logo"
-          src={
-            state.theme.palette.type === "dark"
-              ? UnstoppableDark
-              : UnstoppableLight
-          }
-        />
-        <img className={classes.logo} alt="3Box Logo" />
+        <a
+          href="https://unstoppabledomains.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            className={classes.unstoppableLogo}
+            alt="Unstoppable Domains Logo"
+            src={themeType === "light" ? UnstoppableDark : UnstoppableLight}
+          />
+        </a>
+        <a href="https://3box.io/" target="_blank" rel="noopener noreferrer">
+          <img
+            alt="3Box Logo"
+            src={themeType === "light" ? ThreeBoxDark : ThreeBoxLight}
+          />
+        </a>
       </div>
       <div className={classes.creditContainer}>
         <Typography className={classes.creditText}>

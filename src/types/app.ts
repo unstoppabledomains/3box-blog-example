@@ -53,7 +53,7 @@ export interface User {
   loggedIn: boolean;
   walletAddress?: string;
   profileImg?: string;
-  bookmarks?: string[];
+  bookmarksSpace?: any;
 }
 
 export interface BlogPost {

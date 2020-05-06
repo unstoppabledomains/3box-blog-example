@@ -1,6 +1,6 @@
 import React from "react";
-import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
 // TODO implement this with webpack
+import SvgIcon from "@material-ui/core/SvgIcon";
 // import Facebook from "images/facebook.svg";
 // import Instagram from "images/instagram.svg";
 // import LinkedIn from "images/linkedIn.svg";
@@ -38,13 +38,19 @@ interface Props {
     | "arrow-left"
     | "user"
     | "file-draft"
+    | "check-mark"
     | "logout-circle";
   color: string;
+  size?: number;
 }
 
-const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
+const CustomIcon: React.FunctionComponent<Props> = ({
+  type,
+  color,
+  size = 24,
+}) => {
   return (
-    <SvgIcon>
+    <SvgIcon style={{ fontSize: size }}>
       {type === "facebook" ? (
         <svg
           width="24px"
@@ -471,6 +477,30 @@ const CustomIcon: React.FunctionComponent<Props> = ({ type, color }) => {
               id="icon"
               fill={color}
               points="6.41421356 13 12.7071068 19.2928932 11.2928932 20.7071068 2.58578644 12 11.2928932 3.29289322 12.7071068 4.70710678 6.41421356 11 21 11 21 13"
+            ></polygon>
+          </g>
+        </svg>
+      ) : type === "check-mark" ? (
+        <svg
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>24 / basic / check-mark</title>
+          <g
+            id="24-/-basic-/-check-mark"
+            stroke="none"
+            strokeWidth="1"
+            fill="none"
+            fillRule="evenodd"
+          >
+            <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
+            <polygon
+              id="icon"
+              fill={color}
+              points="9.70710678 14.2928932 19 5 20.4142136 6.41421356 9.70710678 17.1213203 4 11.4142136 5.41421356 10"
             ></polygon>
           </g>
         </svg>

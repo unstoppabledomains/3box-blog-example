@@ -1,14 +1,15 @@
 import { LOG_IN, LOG_OUT } from "types/actions";
 import { initBox, getPosts } from "./blogActions";
-import { AppContext, User } from "types/app";
+import { AppContext, User, AppState } from "types/app";
 
 export const login = ({ state, dispatch }: AppContext) => async (
-  initialBox?: any
+  initialBox?: any,
+  initialState?: AppState
 ) => {
   try {
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
-    const { spaceName, threadAddress, adminWallet } = state;
+    const { spaceName, threadAddress, adminWallet } = initialState || state;
     let walletAddress = "";
     try {
       walletAddress = (await (window as any).ethereum.enable())[0];
@@ -18,31 +19,31 @@ export const login = ({ state, dispatch }: AppContext) => async (
       await logout({ state, dispatch })();
       return { loggedIn: false, walletAddress: "" };
     }
+    const isAdmin = walletAddress.toLowerCase() === adminWallet.toLowerCase();
 
     await box.auth([spaceName], { address: walletAddress });
     await box.syncDone;
     const profilePromise = box.public.all();
 
-    const space = await box.openSpace(spaceName);
-    await space.syncDone;
-    const bookmarkPromise = space.private.get("bookmarks");
+    const userSpace = await box.openSpace(spaceName);
+    await userSpace.syncDone;
     let thread;
-    if (walletAddress === adminWallet) {
-      thread = await space.joinThreadByAddress(threadAddress);
+    let space;
+    if (isAdmin) {
+      space = userSpace;
+      thread = await userSpace.joinThreadByAddress(threadAddress);
       thread.onUpdate(() => getPosts({ state, dispatch })());
     }
 
     // TODO promise.all
     const profile = await profilePromise;
     const profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image[0].contentUrl["/"]}`;
-    const bookmarkIds = await bookmarkPromise;
-    const bookmarks = bookmarkIds ? JSON.parse(bookmarkIds) : [];
 
     const user = {
       walletAddress,
       loggedIn: true,
       profileImg,
-      bookmarks,
+      bookmarksSpace: userSpace,
     };
 
     window.localStorage.setItem("isLoggedIn", "true");
@@ -70,10 +71,11 @@ export const logout = ({ state, dispatch }: AppContext) => async () => {
 
 // Bookmarks
 export const getBookmarks = ({ state, dispatch }: AppContext) => async () => {
-  const { space } = state;
-  const bookmarkIds: string[] = JSON.parse(
-    await space.private.get("bookmarks")
-  );
+  const {
+    user: { bookmarksSpace },
+  } = state;
+  const bookmarkIds: string[] =
+    JSON.parse(await bookmarksSpace.private.get("bookmarks")) || [];
   const posts =
     state.posts && state.posts.length > 0
       ? state.posts
@@ -88,35 +90,41 @@ export const checkBookmarked = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
   const {
-    user: { loggedIn },
-    space,
+    user: { loggedIn, bookmarksSpace },
   } = state;
-  if (!loggedIn || !space) {
+  if (!loggedIn || !bookmarksSpace) {
     return false;
   }
-  const bookmarkIds = await space.private.get("bookmarks");
+  const bookmarkIds = await bookmarksSpace.private.get("bookmarks");
   return bookmarkIds ? JSON.parse(bookmarkIds).includes(postId) : false;
 };
 
 export const addBookmark = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
-  const { space } = state;
-  const bookmarks: string[] = JSON.parse(
-    (await space.private.get("bookmarks")) || "[]"
-  );
+  const {
+    user: { bookmarksSpace },
+  } = state;
+  const bookmarksString = await bookmarksSpace.private.get("bookmarks");
+  const bookmarks = bookmarksString ? JSON.parse(bookmarksString) : [];
   bookmarks.push(postId);
-  return space.private.set("bookmarks", JSON.stringify(bookmarks));
+  return bookmarksSpace.private.set("bookmarks", JSON.stringify(bookmarks));
 };
 
 export const removeBookmark = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
-  const { space } = state;
-  const bookmarks = JSON.parse(await space.private.get("bookmarks"));
+  const {
+    user: { bookmarksSpace },
+  } = state;
+  const bookmarksString = await bookmarksSpace.private.get("bookmarks");
+  const bookmarks = bookmarksString ? JSON.parse(bookmarksString) : [];
   if (bookmarks) {
     const newBookmarks = bookmarks.filter((id: string) => id !== postId);
-    return space.private.set("bookmarks", JSON.stringify(newBookmarks));
+    return bookmarksSpace.private.set(
+      "bookmarks",
+      JSON.stringify(newBookmarks)
+    );
   }
-  return space.private.set("bookmarks", "[]");
+  return bookmarksSpace.private.set("bookmarks", "[]");
 };

@@ -12,9 +12,6 @@ import ShareIcon from "@material-ui/icons/ShareOutlined";
 import BookmarkAdd from "components/BookmarkAdd";
 import Bookmarked from "@material-ui/icons/Bookmark";
 import SharePopup from "./SharePopup";
-import Grow from "@material-ui/core/Grow";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface Props {
   postId: string;

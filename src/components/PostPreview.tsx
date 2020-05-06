@@ -13,13 +13,13 @@ import appContext from "services/appContext";
 interface Props {
   post: BlogPost;
   draft?: boolean;
-  handleRemoveDraft?: (draftId: string) => void;
+  handleRemove?: (draftId: string) => void;
 }
 
 const PostPreview: React.FunctionComponent<Props> = ({
   post,
   draft = false,
-  handleRemoveDraft,
+  handleRemove,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -40,8 +40,8 @@ const PostPreview: React.FunctionComponent<Props> = ({
   };
 
   const onRemoveDraft = () => {
-    if (handleRemoveDraft) {
-      handleRemoveDraft(post.threadData?.postId as string);
+    if (handleRemove) {
+      handleRemove(post.threadData?.postId as string);
     }
   };
   //   TODO author to human readable or wallet

@@ -7,17 +7,28 @@ import appContext from "services/appContext";
 import useStyles from "styles/pages/Drafts.styles";
 import useAsyncEffect from "use-async-effect";
 import Typography from "@material-ui/core/Typography";
+import { useHistory } from "react-router-dom";
 
 const Drafts: React.FunctionComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [drafts, setDrafts] = React.useState<BlogPost[]>([]);
   const { state, dispatch } = React.useContext(appContext);
+  const { loggedIn } = state.user;
+
+  React.useEffect(() => {
+    if (!loggedIn) {
+      history.push("/");
+    }
+  }, [loggedIn]);
 
   useAsyncEffect(async () => {
-    const newDrafts = await getDrafts({ state, dispatch })();
-    setDrafts(newDrafts);
-    setLoading(false);
+    if (loggedIn) {
+      const newDrafts = await getDrafts({ state, dispatch })();
+      setDrafts(newDrafts);
+      setLoading(false);
+    }
   }, []);
 
   const handleRemoveDraft = async (draftId: string) => {
@@ -39,7 +50,7 @@ const Drafts: React.FunctionComponent = () => {
             key={index}
             post={draft}
             draft={true}
-            handleRemoveDraft={handleRemoveDraft}
+            handleRemove={handleRemoveDraft}
           />
         ))
       )}

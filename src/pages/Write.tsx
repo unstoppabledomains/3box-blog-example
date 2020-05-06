@@ -2,7 +2,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { BlogPost, ThreadObject } from "types/app";
 import Editor from "components/Editor";
-import { addPost } from "services/blogActions";
+import {
+  addPost,
+  addDraft,
+  getDrafts,
+  removeDraft,
+} from "services/blogActions";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
@@ -12,28 +17,39 @@ import { login } from "services/userActions";
 import useStyles from "styles/pages/Write.styles";
 import useAsyncEffect from "use-async-effect";
 import Paper from "@material-ui/core/Paper";
+import CustomIcon from "components/CustomIcon";
+import qs from "query-string";
 
 const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
   const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [draftId, setDraftId] = React.useState<number>(-1);
   const [post, setPost] = React.useState<BlogPost>({
     tags: [""],
   } as BlogPost);
+  const { secondary, error } = state.theme.palette;
 
   useAsyncEffect(async () => {
     //   TODO check for draftId query param
+    const query = qs.parse(window.location.search);
+    console.log(query);
+
     if (!state.user.loggedIn) {
       await handleLogin();
     } else if (
       state.user.walletAddress?.toLowerCase() !==
       state.adminWallet.toLowerCase()
     ) {
-      void history.push("/");
-    } else {
-      setLoading(false);
+      history.push("/");
+    } else if (query.draftId) {
+      const index = parseInt(query.draftId as string, 10);
+      const drafts = await getDrafts({ state, dispatch })();
+      setDraftId(index);
+      setPost(drafts[index]);
     }
+    setLoading(false);
   }, []);
 
   const handleLogin = async () => {
@@ -45,7 +61,6 @@ const WritePost: React.FunctionComponent = () => {
     ) {
       history.push("/");
     }
-    setLoading(false);
   };
 
   const handleBodyChange = (body: string) => setPost({ ...post, body });
@@ -55,7 +70,7 @@ const WritePost: React.FunctionComponent = () => {
     setPost({ ...post, [id]: value });
   };
 
-  const onSave = async () => {
+  const handlePublish = async () => {
     setLoading(true);
     try {
       const postId = await addPost({ state, dispatch })(post);
@@ -66,7 +81,26 @@ const WritePost: React.FunctionComponent = () => {
     }
   };
 
-  const onDestroy = () => {
+  const handleDraft = async () => {
+    setLoading(true);
+    try {
+      await addDraft({ state, dispatch })(post);
+      history.push(`/drafts`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onDestroy = async () => {
+    if (draftId > -1) {
+      setLoading(true);
+      try {
+        await removeDraft({ state, dispatch })(draftId.toString());
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    }
     setPost({} as BlogPost);
   };
 
@@ -104,33 +138,40 @@ const WritePost: React.FunctionComponent = () => {
           <div className={classes.buttonRow}>
             <div className={classes.draftPublishGroup}>
               <Button
-                className={classes.button}
+                className={classes.publishButton}
                 disabled={loading}
-                onClick={onSave}
+                onClick={handlePublish}
                 variant="contained"
                 color="secondary"
-                //   startIcon={}
+                startIcon={
+                  <CustomIcon
+                    type="check-mark"
+                    color={secondary.contrastText}
+                  />
+                }
               >
                 Publish
               </Button>
               <Button
-                className={classes.button}
+                className={classes.saveButton}
                 disabled={loading}
-                onClick={onSave}
+                onClick={handleDraft}
                 variant="outlined"
                 color="secondary"
                 style={{ marginLeft: 8 }}
-                //   startIcon={}
+                startIcon={
+                  <CustomIcon type="cloud-upload" color={secondary.main} />
+                }
               >
-                Save for Late
+                Save for Later
               </Button>
             </div>
             <Button
-              className={`${classes.button} ${classes.destroyBtn}`}
+              className={classes.destroyButton}
               disabled={loading}
               onClick={onDestroy}
               variant="text"
-              //   startIcon={}
+              startIcon={<CustomIcon type="trash-empty" color={error.main} />}
             >
               Destroy
             </Button>

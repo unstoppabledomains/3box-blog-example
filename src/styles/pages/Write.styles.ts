@@ -5,26 +5,25 @@ export default makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing(0, 4),
+      padding: theme.spacing(4),
       margin: theme.spacing(0, 2, 10),
     },
     title: {
-      fontFamily: "Merriweather",
       fontSize: 32,
       fontWeight: "bold",
-      margin: 0,
     },
     buttonRow: {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(4),
     },
     draftPublishGroup: {
       display: "flex",
       alignItems: "center",
     },
     label: {
+      fontFamily: "OpenSans",
       fontWeight: "bold",
       fontSize: 16,
       margin: theme.spacing(3, 0, 1),
@@ -33,18 +32,31 @@ export default makeStyles((theme: Theme) =>
       borderRadius: 0,
       width: "100%",
     },
-    button: {
+    publishButton: {
+      fontFamily: "OpenSans",
       height: 56,
       fontWeight: "bold",
       fontSize: 16,
       borderRadius: 28,
     },
-    destroyBtn: {
-      backgroundColor: "#d60000",
-      "&:hover": {
-        backgroundColor: "#9b0000",
-      },
-      marginRight: theme.spacing(8),
+    saveButton: {
+      fontFamily: "OpenSans",
+      fontWeight: 600,
+      height: 56,
+      fontSize: 16,
+      borderRadius: 28,
+    },
+    destroyButton: {
+      height: 56,
+      fontFamily: "OpenSans",
+      fontWeight: 600,
+      color: theme.palette.error.main,
+      paddingRight: theme.spacing(2),
+      paddingLeft: theme.spacing(2),
+      //   backgroundColor: "#d60000",
+      //   "&:hover": {
+      //     backgroundColor: "#9b0000",
+      //   },
     },
   })
 );
