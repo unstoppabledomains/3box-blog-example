@@ -3,7 +3,6 @@ import { createMuiTheme } from "@material-ui/core/styles";
 export const getThemeType = (color: string) =>
   parseInt(color.replace("#", ""), 16) > 0xffffff / 2 ? "light" : "dark";
 
-// A custom theme for this app
 const createTheme = (primary: string, secondary: string, background: string) =>
   createMuiTheme({
     typography: {
@@ -34,11 +33,6 @@ const createTheme = (primary: string, secondary: string, background: string) =>
           height: 40,
         },
       },
-      //   MuiSvgIcon: {
-      //     root: {
-      //       fontSize: "24px !important",
-      //     },
-      //   },
     },
   });
 

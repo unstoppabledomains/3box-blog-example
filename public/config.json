@@ -5,17 +5,22 @@
   "adminWallet": "0x47b0FdE4622577cb10ED2c79108D79CBb582eE5C",
   "spaceName": "draft-blog-reseller-test-don0#crypto",
   "theme": {
-    "primary": "#556cd6",
-    "secondary": "#ffeb3b",
-    "background": "#000"
+    "primary": "#022120",
+    "secondary": "#107F62",
+    "background": "#FBF7ED"
   },
   "socials": {
+    "hasFacebook": true,
+    "hasInstagram": true,
+    "hasLinkedIn": true,
+    "hasMedium": true,
+    "hasTelegram": true,
+    "hasTwitter": true,
     "facebook": "facebook.com",
     "instagram": "instagram.com",
     "linkedIn": "linkedIn.com",
     "medium": "medium.com",
     "telegram": "telegram.com",
-    "twitter": "twitter.com",
-    "iconColor": "#000"
+    "twitter": "twitter.com"
   }
 }

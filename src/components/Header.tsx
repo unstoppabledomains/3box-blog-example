@@ -13,7 +13,6 @@ import Divider from "@material-ui/core/Divider";
 import CreateIcon from "@material-ui/icons/Create";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
-import { Socials } from "types/app";
 import CustomIcon from "components/CustomIcon";
 
 const Header: React.FunctionComponent = () => {
@@ -45,7 +44,7 @@ const Header: React.FunctionComponent = () => {
 
   const handleSocials = ({ target }: any) => {
     const key = target.id;
-    const url = socials[key as Socials];
+    const url = socials[key];
     console.log(url);
     window.open(url, "_blank");
   };
@@ -103,20 +102,77 @@ const Header: React.FunctionComponent = () => {
           </div>
           <div className={classes.rightContainer}>
             <div className={classes.socialRow}>
-              {Object.keys(state.socials).map((key: string) =>
-                key !== "iconColor" ? (
-                  <IconButton
-                    key={key}
-                    id={key}
-                    onClick={handleSocials}
-                    className={classes.socialIcon}
-                  >
-                    <CustomIcon
-                      type={key as Socials}
-                      color={palette.primary.contrastText}
-                    />
-                  </IconButton>
-                ) : null
+              {socials.hasFacebook && (
+                <IconButton
+                  id="facebook"
+                  className={classes.socialIcon}
+                  onClick={handleSocials}
+                >
+                  <CustomIcon
+                    type="facebook"
+                    color={palette.primary.contrastText}
+                  />
+                </IconButton>
+              )}
+              {socials.hasInstagram && (
+                <IconButton
+                  id="instagram"
+                  className={classes.socialIcon}
+                  onClick={handleSocials}
+                >
+                  <CustomIcon
+                    type="instagram"
+                    color={palette.primary.contrastText}
+                  />
+                </IconButton>
+              )}
+              {socials.hasTwitter && (
+                <IconButton
+                  id="twitter"
+                  className={classes.socialIcon}
+                  onClick={handleSocials}
+                >
+                  <CustomIcon
+                    type="twitter"
+                    color={palette.primary.contrastText}
+                  />
+                </IconButton>
+              )}
+              {socials.hasTelegram && (
+                <IconButton
+                  id="telegram"
+                  className={classes.socialIcon}
+                  onClick={handleSocials}
+                >
+                  <CustomIcon
+                    type="telegram"
+                    color={palette.primary.contrastText}
+                  />
+                </IconButton>
+              )}
+              {socials.hasLinkedIn && (
+                <IconButton
+                  id="linkedIn"
+                  className={classes.socialIcon}
+                  onClick={handleSocials}
+                >
+                  <CustomIcon
+                    type="linkedIn"
+                    color={palette.primary.contrastText}
+                  />
+                </IconButton>
+              )}
+              {socials.hasMedium && (
+                <IconButton
+                  id="medium"
+                  className={classes.socialIcon}
+                  onClick={handleSocials}
+                >
+                  <CustomIcon
+                    type="medium"
+                    color={palette.primary.contrastText}
+                  />
+                </IconButton>
               )}
             </div>
             {isAdmin && (

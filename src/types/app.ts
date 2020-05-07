@@ -15,7 +15,7 @@ export interface ConfigFile {
   threadAddress: string;
   adminWallet: string;
   spaceName: string;
-  socials: SocialMedia;
+  socials: TemplateSocials;
 }
 
 export interface AppContext {
@@ -34,20 +34,26 @@ export interface AppState {
   threadAddress: string;
   adminWallet: string;
   spaceName: string;
-  socials: SocialMedia;
+  socials: TemplateSocials;
 }
 
-export interface SocialMedia extends Partial<{ [S in Socials]: string }> {
+export interface TemplateSocials {
+  hasFacebook: boolean;
+  hasInstagram: boolean;
+  hasLinkedIn: boolean;
+  hasMedium: boolean;
+  hasTelegram: boolean;
+  hasTwitter: boolean;
+  hasYouTube: boolean;
+  facebook: string;
+  instagram: string;
+  linkedIn: string;
+  medium: string;
+  telegram: string;
+  twitter: string;
+  youTube: string;
   iconColor: string;
 }
-
-export type Socials =
-  | "facebook"
-  | "instagram"
-  | "linkedIn"
-  | "medium"
-  | "telegram"
-  | "twitter";
 
 export interface User {
   loggedIn: boolean;
