@@ -44,14 +44,12 @@ export interface TemplateSocials {
   hasMedium: boolean;
   hasTelegram: boolean;
   hasTwitter: boolean;
-  hasYouTube: boolean;
   facebook: string;
   instagram: string;
   linkedIn: string;
   medium: string;
   telegram: string;
   twitter: string;
-  youTube: string;
   iconColor: string;
 }
 
@@ -83,7 +81,7 @@ export interface ThreadObject {
 }
 
 // default values
-export const initialState = {
+export const initialState: AppState = {
   box: null,
   space: null,
   thread: null,
@@ -98,7 +96,19 @@ export const initialState = {
   adminWallet: "",
   spaceName: "",
   socials: {
-    iconColor: "#fff",
+    hasFacebook: false,
+    hasInstagram: false,
+    hasLinkedIn: false,
+    hasMedium: false,
+    hasTelegram: false,
+    hasTwitter: false,
+    facebook: "",
+    instagram: "",
+    linkedIn: "",
+    medium: "",
+    telegram: "",
+    twitter: "",
+    iconColor: "#FFFFFF",
   },
 };
 

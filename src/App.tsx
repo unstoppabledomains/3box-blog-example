@@ -3,11 +3,12 @@ import Context from "services/appContext";
 import appReducer from "services/appReducer";
 import { initApp } from "services/blogActions";
 import { initialState } from "types/app";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Switch from "react-router-dom/Switch";
+import Route from "react-router-dom/Route";
+import Router from "ipfs-react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useStyles from "styles/App.styles";
-import { ThemeProvider, Theme } from "@material-ui/core/styles";
-import { defaultTheme } from "utils/createTheme";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import useAsyncEffect from "use-async-effect";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Header from "components/Header";
@@ -17,6 +18,8 @@ import Write from "pages/Write";
 import Read from "pages/Read";
 import Bookmarks from "pages/Bookmarks";
 import Drafts from "pages/Drafts";
+import { Theme } from "@material-ui/core/styles/createMuiTheme";
+import { defaultTheme } from "utils/createTheme";
 
 const App: React.FunctionComponent = () => {
   const classes = useStyles();

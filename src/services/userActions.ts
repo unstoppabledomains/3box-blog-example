@@ -45,8 +45,13 @@ export const login = ({ state, dispatch }: AppContext) => async (
       profileImg,
       bookmarksSpace: userSpace,
     };
+    try {
+      window.localStorage.setItem("isLoggedIn", "true");
+    } catch (error) {
+      // TODO better way to handle storage not allowed?
+      console.error(error);
+    }
 
-    window.localStorage.setItem("isLoggedIn", "true");
     dispatch({
       type: LOG_IN,
       value: {

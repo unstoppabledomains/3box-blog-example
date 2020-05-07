@@ -33,9 +33,13 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
     value: newState,
   });
   const box = await initBox({ state, dispatch })();
-  const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-  if (isLoggedIn === "true") {
-    await login({ state, dispatch })(box, newState);
+  try {
+    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      await login({ state, dispatch })(box, newState);
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 

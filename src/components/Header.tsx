@@ -44,7 +44,7 @@ const Header: React.FunctionComponent = () => {
 
   const handleSocials = ({ target }: any) => {
     const key = target.id;
-    const url = socials[key];
+    const url = (socials as any)[key];
     console.log(url);
     window.open(url, "_blank");
   };
