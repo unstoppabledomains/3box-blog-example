@@ -54,7 +54,7 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
   console.log("initBox");
 
-  if (!state.box && window.navigator.cookieEnabled) {
+  if (!state.box && window.navigator.cookieEnabled && localStorageTest()) {
     try {
       const provider = await Box.get3idConnectProvider();
       console.log("provider", provider);

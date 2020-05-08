@@ -8,6 +8,10 @@ export const login = ({ state, dispatch }: AppContext) => async (
   initialState?: AppState
 ) => {
   try {
+    if (!localStorageTest()) {
+      window.alert("Local storage must be enabled");
+      throw new Error("Local storage not enabled to use 3Box profiles");
+    }
     console.log("start log in");
 
     const box =
@@ -43,7 +47,10 @@ export const login = ({ state, dispatch }: AppContext) => async (
 
     // TODO promise.all
     const profile = await profilePromise;
-    const profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image[0].contentUrl["/"]}`;
+    let profileImg = "";
+    if (typeof profile.image !== "undefined") {
+      profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image[0].contentUrl["/"]}`;
+    }
 
     const user = {
       walletAddress,
@@ -51,9 +58,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
       profileImg,
       bookmarksSpace: userSpace,
     };
-    if (localStorageTest()) {
-      localStorage.setItem("isLoggedIn", "true");
-    }
+    localStorage.setItem("isLoggedIn", "true");
 
     dispatch({
       type: LOG_IN,
