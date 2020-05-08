@@ -1,12 +1,15 @@
 import { LOG_IN, LOG_OUT } from "types/actions";
 import { initBox, getPosts } from "./blogActions";
 import { AppContext, User, AppState } from "types/app";
+import localStorageTest from "utils/localStorageTest";
 
 export const login = ({ state, dispatch }: AppContext) => async (
   initialBox?: any,
   initialState?: AppState
 ) => {
   try {
+    console.log("start log in");
+
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
     const { spaceName, threadAddress, adminWallet } = initialState || state;
@@ -20,9 +23,11 @@ export const login = ({ state, dispatch }: AppContext) => async (
       return { loggedIn: false, walletAddress: "" };
     }
     const isAdmin = walletAddress.toLowerCase() === adminWallet.toLowerCase();
-
+    console.log("start box auth");
     await box.auth([spaceName], { address: walletAddress });
+    console.log("fin box auth");
     await box.syncDone;
+    console.log("fin box sync");
     const profilePromise = box.public.all();
 
     const userSpace = await box.openSpace(spaceName);
@@ -45,11 +50,8 @@ export const login = ({ state, dispatch }: AppContext) => async (
       profileImg,
       bookmarksSpace: userSpace,
     };
-    try {
-      window.localStorage.setItem("isLoggedIn", "true");
-    } catch (error) {
-      // TODO better way to handle storage not allowed?
-      console.error(error);
+    if (localStorageTest()) {
+      localStorage.setItem("isLoggedIn", "true");
     }
 
     dispatch({
@@ -63,6 +65,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
     });
     return user as User;
   } catch (error) {
+    console.timeStamp("log in error");
     console.error(error);
   }
 };

@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import appContext from "services/appContext";
 import { login, logout } from "services/userActions";
 import AppBar from "@material-ui/core/AppBar";
@@ -14,10 +13,10 @@ import CreateIcon from "@material-ui/icons/Create";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 import CustomIcon from "components/CustomIcon";
+import { RoutingProps } from "types/app";
 
-const Header: React.FunctionComponent = () => {
+const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   const classes = useStyles();
-  const history = useHistory();
   const { state, dispatch } = React.useContext(appContext);
   const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
   const { title } = state;
@@ -39,18 +38,17 @@ const Header: React.FunctionComponent = () => {
   }, [walletAddress, adminWallet]);
 
   const toHome = () => {
-    history.push("/");
+    handleRoute("");
   };
 
   const handleSocials = ({ target }: any) => {
     const key = target.id;
     const url = (socials as any)[key];
-    console.log(url);
     window.open(url, "_blank");
   };
 
   const handleBookmarks = () => {
-    history.push("/bookmarks");
+    handleRoute("bookmarks");
   };
 
   const handleLogin = async () => {
@@ -66,7 +64,7 @@ const Header: React.FunctionComponent = () => {
   };
 
   const handleAddPost = () => {
-    history.push("/new");
+    handleRoute("write");
   };
 
   return (
@@ -193,6 +191,7 @@ const Header: React.FunctionComponent = () => {
                 onLogout={handleLogout}
                 profileImg={profileImg as string}
                 isAdmin={isAdmin}
+                handleRoute={handleRoute}
               />
             ) : (
               <Button

@@ -1,17 +1,15 @@
 import React from "react";
 import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { BlogPost } from "types/app";
+import { BlogPost, RoutingProps } from "types/app";
 import { getDrafts, removeDraft } from "services/blogActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Drafts.styles";
 import useAsyncEffect from "use-async-effect";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
 
-const Drafts: React.FunctionComponent = () => {
+const Drafts: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [drafts, setDrafts] = React.useState<BlogPost[]>([]);
   const { state, dispatch } = React.useContext(appContext);
@@ -19,9 +17,9 @@ const Drafts: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     if (!loggedIn) {
-      history.push("/");
+      handleRoute("");
     }
-  }, [loggedIn]);
+  }, [loggedIn, handleRoute]);
 
   useAsyncEffect(async () => {
     if (loggedIn) {
@@ -51,6 +49,7 @@ const Drafts: React.FunctionComponent = () => {
             post={draft}
             draft={true}
             handleRemove={handleRemoveDraft}
+            handleRoute={handleRoute}
           />
         ))
       )}

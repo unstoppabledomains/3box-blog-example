@@ -1,6 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { BlogPost, ThreadObject } from "types/app";
+import { BlogPost, ThreadObject, RoutingProps } from "types/app";
 import Editor from "components/Editor";
 import {
   addPost,
@@ -18,12 +17,17 @@ import useStyles from "styles/pages/Write.styles";
 import useAsyncEffect from "use-async-effect";
 import Paper from "@material-ui/core/Paper";
 import CustomIcon from "components/CustomIcon";
-import qs from "query-string";
 
-const WritePost: React.FunctionComponent = () => {
+interface Props {
+  id: string;
+}
+
+const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
+  id,
+  handleRoute,
+}) => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
-  const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [draftId, setDraftId] = React.useState<number>(-1);
   const [post, setPost] = React.useState<BlogPost>({
@@ -32,25 +36,21 @@ const WritePost: React.FunctionComponent = () => {
   const { secondary, error } = state.theme.palette;
 
   useAsyncEffect(async () => {
-    //   TODO check for draftId query param
-    const query = qs.parse(window.location.search);
-    console.log(query);
-
     if (!state.user.loggedIn) {
       await handleLogin();
     } else if (
       state.user.walletAddress?.toLowerCase() !==
       state.adminWallet.toLowerCase()
     ) {
-      history.push("/");
-    } else if (query.draftId) {
-      const index = parseInt(query.draftId as string, 10);
+      handleRoute("");
+    } else if (id) {
+      const index = parseInt(id, 10);
       const drafts = await getDrafts({ state, dispatch })();
       setDraftId(index);
       setPost(drafts[index]);
     }
     setLoading(false);
-  }, []);
+  }, [id]);
 
   const handleLogin = async () => {
     const user = await login({ state, dispatch })();
@@ -59,7 +59,7 @@ const WritePost: React.FunctionComponent = () => {
       !user.loggedIn ||
       user.walletAddress?.toLowerCase() !== state.adminWallet.toLowerCase()
     ) {
-      history.push("/");
+      handleRoute("");
     }
   };
 
@@ -75,7 +75,7 @@ const WritePost: React.FunctionComponent = () => {
     try {
       const postId = await addPost({ state, dispatch })(post);
       setPost({ ...post, threadData: { postId } as ThreadObject });
-      history.push(`/posts/${postId}`);
+      handleRoute("read", postId);
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +85,7 @@ const WritePost: React.FunctionComponent = () => {
     setLoading(true);
     try {
       await addDraft({ state, dispatch })(post);
-      history.push(`/drafts`);
+      handleRoute("drafts");
     } catch (error) {
       console.error(error);
     }

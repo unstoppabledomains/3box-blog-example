@@ -12,7 +12,7 @@ import MenuList from "@material-ui/core/MenuList";
 import CustomIcon from "./CustomIcon";
 import appContext from "services/appContext";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
+import { RoutingProps } from "types/app";
 
 interface Props {
   onLogout: () => void;
@@ -20,13 +20,13 @@ interface Props {
   isAdmin: boolean;
 }
 
-const AvatarMenu: React.FunctionComponent<Props> = ({
+const AvatarMenu: React.FunctionComponent<Props & RoutingProps> = ({
   onLogout,
   profileImg,
   isAdmin,
+  handleRoute,
 }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const { state } = React.useContext(appContext);
@@ -59,10 +59,10 @@ const AvatarMenu: React.FunctionComponent<Props> = ({
     }
   };
   const handleAddPosts = () => {
-    history.push("/new");
+    handleRoute("write");
   };
   const handleDrafts = () => {
-    history.push("/drafts");
+    handleRoute("drafts");
   };
 
   return (

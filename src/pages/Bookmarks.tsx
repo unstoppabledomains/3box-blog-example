@@ -1,17 +1,15 @@
 import React from "react";
 import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { BlogPost } from "types/app";
+import { BlogPost, RoutingProps } from "types/app";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Drafts.styles";
 import useAsyncEffect from "use-async-effect";
 import Typography from "@material-ui/core/Typography";
 import { getBookmarks } from "services/userActions";
-import { useHistory } from "react-router-dom";
 
-const Bookmarks: React.FunctionComponent = () => {
+const Bookmarks: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [bookmarks, setBookmarks] = React.useState<BlogPost[]>([]);
   const { state, dispatch } = React.useContext(appContext);
@@ -19,9 +17,10 @@ const Bookmarks: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     if (!loggedIn) {
-      history.push("/");
+      handleRoute("");
     }
-  }, [loggedIn]);
+  }, [loggedIn, handleRoute]);
+
   useAsyncEffect(async () => {
     if (loggedIn) {
       const initialBookmarks = await getBookmarks({ state, dispatch })();
@@ -29,6 +28,7 @@ const Bookmarks: React.FunctionComponent = () => {
       setLoading(false);
     }
   }, []);
+
   const handleRemove = (postId: string) => {
     const newBookmarks = bookmarks.filter(
       (bookmark) => bookmark.threadData?.postId !== postId
@@ -52,6 +52,7 @@ const Bookmarks: React.FunctionComponent = () => {
             key={index}
             post={bookmark}
             handleRemove={handleRemove}
+            handleRoute={handleRoute}
           />
         ))}
     </div>

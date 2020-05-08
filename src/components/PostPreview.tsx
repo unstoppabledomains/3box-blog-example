@@ -1,7 +1,6 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
-import { BlogPost, ThreadObject } from "types/app";
+import { BlogPost, ThreadObject, RoutingProps } from "types/app";
 import Button from "@material-ui/core/Button";
 import timeConverter from "utils/timeConverter";
 import useStyles from "styles/components/PostPreview.styles";
@@ -10,7 +9,7 @@ import BookmarkShare from "components/BookmarkShare";
 import CustomIcon from "components/CustomIcon";
 import appContext from "services/appContext";
 
-interface Props {
+interface Props extends RoutingProps {
   post: BlogPost;
   draft?: boolean;
   handleRemove?: (draftId: string) => void;
@@ -20,9 +19,9 @@ const PostPreview: React.FunctionComponent<Props> = ({
   post,
   draft = false,
   handleRemove,
+  handleRoute,
 }) => {
   const classes = useStyles();
-  const history = useHistory();
   const { title, description, threadData } = post;
   const { timestamp, postId } = threadData as ThreadObject;
   const date = timeConverter(timestamp);
@@ -32,11 +31,11 @@ const PostPreview: React.FunctionComponent<Props> = ({
   } = state;
 
   const handleRead = () => {
-    history.push(`/posts/${postId}`);
+    handleRoute("read", postId);
   };
 
   const handleEdit = () => {
-    history.push(`/new?draftId=${postId}`);
+    handleRoute("write", postId);
   };
 
   const onRemoveDraft = () => {

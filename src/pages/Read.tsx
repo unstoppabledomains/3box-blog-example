@@ -1,8 +1,7 @@
 import React from "react";
-import { BlogPost } from "types/app";
+import { BlogPost, RoutingProps } from "types/app";
 import Markdown from "react-showdown";
 import { showdownOptions } from "config/showdown";
-import { useParams } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPost } from "services/blogActions";
@@ -18,12 +17,21 @@ import Divider from "@material-ui/core/Divider";
 import LikeShare from "components/LikeShare";
 import PostPagination from "components/PostPagination";
 
-const ReadPost: React.FunctionComponent = () => {
+interface Props {
+  id: string;
+}
+
+const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
+  id,
+  handleRoute,
+}) => {
   const classes = useStyles();
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { postId } = useParams();
   const [post, setPost] = React.useState<BlogPost>({} as BlogPost);
+  const [postId, setPostId] = React.useState<string>("");
+  const [commentsThread, setCommentsThread] = React.useState<string>();
   const { state, dispatch } = React.useContext(appContext);
+
   const {
     box,
     user: { walletAddress },
@@ -32,11 +40,19 @@ const ReadPost: React.FunctionComponent = () => {
   } = state;
 
   useAsyncEffect(async () => {
-    window.scroll({ top: 0, behavior: "smooth" });
-    const _post = await getPost({ state, dispatch })(postId as string);
-    setPost(_post);
-    setLoading(false);
-  }, [postId]);
+    if (id && id !== postId) {
+      setCommentsThread(`comments-${id}`);
+      setPostId(id);
+      window.scroll({ top: 0, behavior: "smooth" });
+      const newPost = await getPost({ state, dispatch })(id as string);
+      setPost(newPost);
+      setLoading(false);
+    }
+  }, [id]);
+
+  React.useEffect(() => {
+    console.log("commentsThread", commentsThread);
+  }, [commentsThread]);
 
   const handleLogin = async () => {
     await login({ state, dispatch })();
@@ -55,7 +71,7 @@ const ReadPost: React.FunctionComponent = () => {
               <Typography className={classes.title} variant="h2" gutterBottom>
                 {post.title}
               </Typography>
-              <BookmarkShare postId={postId as string} />
+              <BookmarkShare postId={postId} />
             </div>
             <div className={classes.dateAuthorRow}>
               <Typography className={classes.caption} variant="caption">
@@ -74,23 +90,29 @@ const ReadPost: React.FunctionComponent = () => {
               />
             </div>
             <Divider className={classes.divider} />
-            <LikeShare postId={postId as string} />
+            <LikeShare postId={postId} />
             <div className={classes.commentContainer}>
               <div className={classes.comments}>
-                <Comments
-                  spaceName={spaceName}
-                  threadName={`comments-${postId}`}
-                  adminEthAddr={adminWallet}
-                  box={walletAddress ? box : null}
-                  currentUserAddr={walletAddress}
-                  loginFunction={handleLogin}
-                />
+                {commentsThread && box && (
+                  <Comments
+                    spaceName={spaceName}
+                    threadName={commentsThread}
+                    adminEthAddr={adminWallet}
+                    box={box}
+                    currentUserAddr={walletAddress}
+                    loginFunction={handleLogin}
+                  />
+                )}
               </div>
             </div>
           </>
         )}
       </Paper>
-      <PostPagination postId={postId as string} />
+      <PostPagination
+        postId={postId}
+        handleRoute={handleRoute}
+        setLoading={setLoading}
+      />
     </>
   );
 };

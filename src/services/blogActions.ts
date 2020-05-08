@@ -16,8 +16,11 @@ import {
 import parseMessage from "utils/parseMessage";
 import { login } from "./userActions";
 import createTheme from "utils/createTheme";
+import localStorageTest from "utils/localStorageTest";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
+  console.log("initApp");
+
   const config: ConfigFile = await fetch(
     `${process.env.PUBLIC_URL}/config.json`
   ).then((res) => res.json());
@@ -32,23 +35,37 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
     type: SET_CONFIG,
     value: newState,
   });
-  const box = await initBox({ state, dispatch })();
   try {
-    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      await login({ state, dispatch })(box, newState);
+    const box = await initBox({ state, dispatch })();
+    console.log("box post init", box);
+    if (localStorageTest()) {
+      const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+      console.log("isLoggedIn", isLoggedIn);
+      if (isLoggedIn === "true") {
+        await login({ state, dispatch })(box, newState);
+      }
     }
   } catch (error) {
     console.error(error);
+    return;
   }
 };
 
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
+  console.log("initBox");
+
   if (!state.box) {
-    const provider = await Box.get3idConnectProvider();
-    const box = await Box.create(provider);
-    dispatch({ type: ADD_BOX, value: { box } });
-    return box;
+    try {
+      const provider = await Box.get3idConnectProvider();
+      console.log("provider", provider);
+      const box = await Box.create(provider);
+      console.log("box", box);
+      dispatch({ type: ADD_BOX, value: { box } });
+      return box;
+    } catch (error) {
+      console.error("box error:", error);
+      return null;
+    }
   }
   return state.box;
 };
@@ -56,6 +73,10 @@ export const initBox = ({ state, dispatch }: AppContext) => async () => {
 // Posts
 export const getPosts = ({ state, dispatch }: AppContext) => async () => {
   const { thread, threadAddress } = state;
+  if (state.posts && state.posts.length > 0) {
+    // TODO compare timestamp of latest post to check refresh
+    return state.posts;
+  }
 
   const postThreads: ThreadObject[] = thread
     ? await thread.getPosts()

@@ -2,10 +2,7 @@ import React, { useEffect } from "react";
 import Context from "services/appContext";
 import appReducer from "services/appReducer";
 import { initApp } from "services/blogActions";
-import { initialState } from "types/app";
-import Switch from "react-router-dom/Switch";
-import Route from "react-router-dom/Route";
-import Router from "ipfs-react-router";
+import { initialState, AppPages } from "types/app";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useStyles from "styles/App.styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
@@ -20,6 +17,7 @@ import Bookmarks from "pages/Bookmarks";
 import Drafts from "pages/Drafts";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { defaultTheme } from "utils/createTheme";
+import useQueryString from "utils/useQueryStringParams";
 
 const App: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -27,10 +25,20 @@ const App: React.FunctionComponent = () => {
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
   const [loading, setLoading] = React.useState<boolean>(true);
 
+  const { value: route, onSetValue: setRoute } = useQueryString("page", "");
+  const { value: docId, onSetValue: setDocId } = useQueryString("id", "");
+
   useAsyncEffect(async () => {
     await initApp({ state, dispatch })();
     setLoading(false);
   }, []);
+
+  const handleRoute = (page: AppPages, docId?: string) => {
+    console.log("page", page);
+    console.log("docId", docId);
+    setRoute(page);
+    setDocId(docId || "");
+  };
 
   useEffect(() => {
     setTheme(state.theme);
@@ -45,29 +53,23 @@ const App: React.FunctionComponent = () => {
             <CircularProgress />
           </div>
         ) : (
-          <Router>
-            <Header />
+          <>
+            <Header handleRoute={handleRoute} />
             <div className={classes.root}>
-              <Switch>
-                <Route path="/new">
-                  <Write />
-                </Route>
-                <Route path="/drafts">
-                  <Drafts />
-                </Route>
-                <Route path="/bookmarks">
-                  <Bookmarks />
-                </Route>
-                <Route path="/posts/:postId">
-                  <Read />
-                </Route>
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
+              {route === "read" ? (
+                <Read id={docId as string} handleRoute={handleRoute} />
+              ) : route === "write" ? (
+                <Write id={docId as string} handleRoute={handleRoute} />
+              ) : route === "bookmarks" ? (
+                <Bookmarks handleRoute={handleRoute} />
+              ) : route === "drafts" ? (
+                <Drafts handleRoute={handleRoute} />
+              ) : (
+                <Home handleRoute={handleRoute} />
+              )}
             </div>
             <Footer />
-          </Router>
+          </>
         )}
       </ThemeProvider>
     </Context.Provider>

@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import appContext from "services/appContext";
 import useStyles from "styles/components/PostPagination.styles";
 import CustomIcon from "./CustomIcon";
@@ -7,14 +6,19 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import useAsyncEffect from "use-async-effect";
 import { getPosts } from "services/blogActions";
+import { RoutingProps } from "types/app";
 
 interface Props {
   postId: string;
+  setLoading: (loading: boolean) => void;
 }
 
-const PostPagination: React.FunctionComponent<Props> = ({ postId }) => {
+const PostPagination: React.FunctionComponent<Props & RoutingProps> = ({
+  postId,
+  handleRoute,
+  setLoading,
+}) => {
   const classes = useStyles();
-  const history = useHistory();
   const [neighborPosts, setNeighborPosts] = React.useState<{
     next: string;
     previous: string;
@@ -41,10 +45,12 @@ const PostPagination: React.FunctionComponent<Props> = ({ postId }) => {
   }, [postId]);
 
   const handlePrevious = () => {
-    history.push(`/posts/${neighborPosts.previous}`);
+    setLoading(true);
+    handleRoute("read", neighborPosts.previous);
   };
   const handleNext = () => {
-    history.push(`/posts/${neighborPosts.next}`);
+    setLoading(true);
+    handleRoute("read", neighborPosts.next);
   };
 
   return (

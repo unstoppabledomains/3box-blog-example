@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "3box": "^1.18.0",
-    "3box-comments-react": "^2.0.3",
+    "3box": "^1.18.1",
+    "3box-comments-react": "^3.0.1",
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "@types/react": "latest",
