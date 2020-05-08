@@ -54,10 +54,11 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
   console.log("initBox");
 
-  if (!state.box) {
+  if (!state.box && window.navigator.cookieEnabled) {
     try {
       const provider = await Box.get3idConnectProvider();
       console.log("provider", provider);
+
       const box = await Box.create(provider);
       console.log("box", box);
       dispatch({ type: ADD_BOX, value: { box } });

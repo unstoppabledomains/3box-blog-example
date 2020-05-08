@@ -38,6 +38,7 @@ const App: React.FunctionComponent = () => {
     console.log("docId", docId);
     setRoute(page);
     setDocId(docId || "");
+    window.scroll({ top: 0 });
   };
 
   useEffect(() => {

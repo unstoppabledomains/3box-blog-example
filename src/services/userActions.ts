@@ -12,6 +12,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
 
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
+    console.log("box", box);
     const { spaceName, threadAddress, adminWallet } = initialState || state;
     let walletAddress = "";
     try {

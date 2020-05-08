@@ -43,16 +43,11 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
     if (id && id !== postId) {
       setCommentsThread(`comments-${id}`);
       setPostId(id);
-      window.scroll({ top: 0, behavior: "smooth" });
       const newPost = await getPost({ state, dispatch })(id as string);
       setPost(newPost);
       setLoading(false);
     }
   }, [id]);
-
-  React.useEffect(() => {
-    console.log("commentsThread", commentsThread);
-  }, [commentsThread]);
 
   const handleLogin = async () => {
     await login({ state, dispatch })();

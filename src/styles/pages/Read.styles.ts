@@ -39,7 +39,7 @@ export default makeStyles((theme: Theme) =>
       marginRight: "auto",
       marginLeft: "auto",
       maxWidth: 616,
-      overflowX: "hidden",
+      //   overflowX: "hidden",
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
