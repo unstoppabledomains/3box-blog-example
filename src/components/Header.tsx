@@ -13,10 +13,11 @@ import CreateIcon from "@material-ui/icons/Create";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 import CustomIcon from "components/CustomIcon";
-import { RoutingProps } from "types/app";
+import { useHistory } from "react-router-dom";
 
-const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
+const Header: React.FunctionComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
   const { state, dispatch } = React.useContext(appContext);
   const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
   const { title } = state;
@@ -38,7 +39,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   }, [walletAddress, adminWallet]);
 
   const toHome = () => {
-    handleRoute("");
+    history.push("/");
   };
 
   const handleSocials = ({ target }: any) => {
@@ -48,7 +49,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   };
 
   const handleBookmarks = () => {
-    handleRoute("bookmarks");
+    history.push("/bookmarks");
   };
 
   const handleLogin = async () => {
@@ -64,7 +65,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   };
 
   const handleAddPost = () => {
-    handleRoute("write");
+    history.push("/write");
   };
 
   return (
@@ -191,7 +192,6 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
                 onLogout={handleLogout}
                 profileImg={profileImg as string}
                 isAdmin={isAdmin}
-                handleRoute={handleRoute}
               />
             ) : (
               <Button

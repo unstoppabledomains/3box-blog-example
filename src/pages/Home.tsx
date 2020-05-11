@@ -1,13 +1,13 @@
 import React from "react";
 import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { BlogPost, RoutingProps } from "types/app";
+import { BlogPost } from "types/app";
 import { getPosts } from "services/blogActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Home.styles";
 import useAsyncEffect from "use-async-effect";
 
-const Home: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
+const Home: React.FunctionComponent = () => {
   const classes = useStyles();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [posts, setPosts] = React.useState<BlogPost[]>([]);
@@ -33,7 +33,7 @@ const Home: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
         </div>
       ) : (
         posts.map((post: BlogPost, index: number) => (
-          <PostPreview handleRoute={handleRoute} key={index} post={post} />
+          <PostPreview key={index} post={post} />
         ))
       )}
     </div>

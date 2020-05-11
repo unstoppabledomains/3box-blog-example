@@ -6,19 +6,19 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import useAsyncEffect from "use-async-effect";
 import { getPosts } from "services/blogActions";
-import { RoutingProps } from "types/app";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   postId: string;
   setLoading: (loading: boolean) => void;
 }
 
-const PostPagination: React.FunctionComponent<Props & RoutingProps> = ({
+const PostPagination: React.FunctionComponent<Props> = ({
   postId,
-  handleRoute,
   setLoading,
 }) => {
   const classes = useStyles();
+  const history = useHistory();
   const [neighborPosts, setNeighborPosts] = React.useState<{
     next: string;
     previous: string;
@@ -46,11 +46,11 @@ const PostPagination: React.FunctionComponent<Props & RoutingProps> = ({
 
   const handlePrevious = () => {
     setLoading(true);
-    handleRoute("read", neighborPosts.previous);
+    history.push(`read/${neighborPosts.previous}`);
   };
   const handleNext = () => {
     setLoading(true);
-    handleRoute("read", neighborPosts.next);
+    history.push(`read/${neighborPosts.next}`);
   };
 
   return (

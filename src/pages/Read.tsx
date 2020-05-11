@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogPost, RoutingProps } from "types/app";
+import { BlogPost } from "types/app";
 import Markdown from "react-showdown";
 import { showdownOptions } from "config/showdown";
 import Typography from "@material-ui/core/Typography";
@@ -16,16 +16,11 @@ import timeConverter from "utils/timeConverter";
 import Divider from "@material-ui/core/Divider";
 import LikeShare from "components/LikeShare";
 import PostPagination from "components/PostPagination";
+import { useParams } from "react-router-dom";
 
-interface Props {
-  id: string;
-}
-
-const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
-  id,
-  handleRoute,
-}) => {
+const ReadPost: React.FunctionComponent = () => {
   const classes = useStyles();
+  const { id } = useParams();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [post, setPost] = React.useState<BlogPost>({} as BlogPost);
   const [postId, setPostId] = React.useState<string>("");
@@ -43,6 +38,8 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
     if (id && id !== postId) {
       setCommentsThread(`comments-${id}`);
       setPostId(id);
+      console.log(id);
+
       const newPost = await getPost({ state, dispatch })(id as string);
       setPost(newPost);
       setLoading(false);
@@ -103,11 +100,7 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
           </>
         )}
       </Paper>
-      <PostPagination
-        postId={postId}
-        handleRoute={handleRoute}
-        setLoading={setLoading}
-      />
+      <PostPagination postId={postId} setLoading={setLoading} />
     </>
   );
 };

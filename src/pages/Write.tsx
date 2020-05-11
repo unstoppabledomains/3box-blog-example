@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogPost, ThreadObject, RoutingProps } from "types/app";
+import { BlogPost, ThreadObject } from "types/app";
 import Editor from "components/Editor";
 import {
   addPost,
@@ -17,16 +17,12 @@ import useStyles from "styles/pages/Write.styles";
 import useAsyncEffect from "use-async-effect";
 import Paper from "@material-ui/core/Paper";
 import CustomIcon from "components/CustomIcon";
+import { useHistory, useParams } from "react-router-dom";
 
-interface Props {
-  id: string;
-}
-
-const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
-  id,
-  handleRoute,
-}) => {
+const WritePost: React.FunctionComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const { id } = useParams();
   const { state, dispatch } = React.useContext(appContext);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [draftId, setDraftId] = React.useState<number>(-1);
@@ -42,7 +38,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
       state.user.walletAddress?.toLowerCase() !==
       state.adminWallet.toLowerCase()
     ) {
-      handleRoute("");
+      history.push("/");
     } else if (id) {
       const index = parseInt(id, 10);
       const drafts = await getDrafts({ state, dispatch })();
@@ -59,7 +55,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
       !user.loggedIn ||
       user.walletAddress?.toLowerCase() !== state.adminWallet.toLowerCase()
     ) {
-      handleRoute("");
+      history.push("/");
     }
   };
 
@@ -75,7 +71,9 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
     try {
       const postId = await addPost({ state, dispatch })(post);
       setPost({ ...post, threadData: { postId } as ThreadObject });
-      handleRoute("read", postId);
+      history.push("/read", {
+        search: postId,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +83,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
     setLoading(true);
     try {
       await addDraft({ state, dispatch })(post);
-      handleRoute("drafts");
+      history.push("/drafts");
     } catch (error) {
       console.error(error);
     }

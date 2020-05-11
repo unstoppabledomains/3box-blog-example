@@ -4,9 +4,6 @@ import { Dispatch } from "react";
 import { AppAction } from "./actions";
 
 export type AppPages = "read" | "write" | "drafts" | "bookmarks" | "";
-export interface RoutingProps {
-  handleRoute: (page: any, docId?: string) => void;
-}
 // Interfaces
 export interface ConfigFile {
   theme: {

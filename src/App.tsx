@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import Context from "services/appContext";
 import appReducer from "services/appReducer";
 import { initApp } from "services/blogActions";
-import { initialState, AppPages } from "types/app";
+import { initialState } from "types/app";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useStyles from "styles/App.styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
@@ -17,7 +18,6 @@ import Bookmarks from "pages/Bookmarks";
 import Drafts from "pages/Drafts";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { defaultTheme } from "utils/createTheme";
-import useQueryString from "utils/useQueryStringParams";
 
 const App: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -25,24 +25,10 @@ const App: React.FunctionComponent = () => {
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
   const [loading, setLoading] = React.useState<boolean>(true);
 
-  const { value: route, onSetValue: setRoute } = useQueryString("page", "");
-  const { value: docId, onSetValue: setDocId } = useQueryString("id", "");
-
   useAsyncEffect(async () => {
     await initApp({ state, dispatch })();
-    console.log("fin initApp()");
-
     setLoading(false);
   }, []);
-
-  const handleRoute = (page: AppPages, docId?: string) => {
-    console.log(document.URL);
-    console.log(document);
-
-    setRoute(page);
-    setDocId(docId || "");
-    window.scroll({ top: 0 });
-  };
 
   useEffect(() => {
     setTheme(state.theme);
@@ -57,23 +43,29 @@ const App: React.FunctionComponent = () => {
             <CircularProgress />
           </div>
         ) : (
-          <>
-            <Header handleRoute={handleRoute} />
+          <Router>
+            <Header />
             <div className={classes.root}>
-              {route === "read" ? (
-                <Read id={docId as string} handleRoute={handleRoute} />
-              ) : route === "write" ? (
-                <Write id={docId as string} handleRoute={handleRoute} />
-              ) : route === "bookmarks" ? (
-                <Bookmarks handleRoute={handleRoute} />
-              ) : route === "drafts" ? (
-                <Drafts handleRoute={handleRoute} />
-              ) : (
-                <Home handleRoute={handleRoute} />
-              )}
+              <Switch>
+                <Route path="/write">
+                  <Write />
+                </Route>
+                <Route path="/drafts/:id">
+                  <Drafts />
+                </Route>
+                <Route path="/bookmarks">
+                  <Bookmarks />
+                </Route>
+                <Route path="/read/:id">
+                  <Read />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
             </div>
             <Footer />
-          </>
+          </Router>
         )}
       </ThemeProvider>
     </Context.Provider>

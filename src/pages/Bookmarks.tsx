@@ -1,15 +1,17 @@
 import React from "react";
 import PostPreview from "components/PostPreview";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { BlogPost, RoutingProps } from "types/app";
+import { BlogPost } from "types/app";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Drafts.styles";
 import useAsyncEffect from "use-async-effect";
 import Typography from "@material-ui/core/Typography";
 import { getBookmarks } from "services/userActions";
+import { useHistory } from "react-router-dom";
 
-const Bookmarks: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
+const Bookmarks: React.FunctionComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [bookmarks, setBookmarks] = React.useState<BlogPost[]>([]);
   const { state, dispatch } = React.useContext(appContext);
@@ -17,9 +19,9 @@ const Bookmarks: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
 
   React.useEffect(() => {
     if (!loggedIn) {
-      handleRoute("");
+      history.push("/");
     }
-  }, [loggedIn, handleRoute]);
+  }, [loggedIn, history]);
 
   useAsyncEffect(async () => {
     if (loggedIn) {
@@ -52,7 +54,6 @@ const Bookmarks: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
             key={index}
             post={bookmark}
             handleRemove={handleRemove}
-            handleRoute={handleRoute}
           />
         ))}
     </div>
