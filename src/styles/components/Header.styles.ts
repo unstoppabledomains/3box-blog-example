@@ -28,13 +28,11 @@ export default makeStyles((theme: Theme) =>
     },
     leftContainer: {
       display: "flex",
-      flex: 1,
       flexGrow: 1,
       alignItems: "center",
     },
     rightContainer: {
       display: "flex",
-      flex: 1,
       alignItems: "center",
       justifyContent: "flex-end",
     },
@@ -67,7 +65,7 @@ export default makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
     },
     menuDivider: {
-      margin: `${theme.spacing(0, 1)} !important`,
+      margin: `0px ${theme.spacing(1)}px !important`,
     },
   })
 );

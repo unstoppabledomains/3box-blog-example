@@ -36,7 +36,11 @@ export const login = ({ state, dispatch }: AppContext) => async (
     const profilePromise = box.public.all();
 
     const userSpace = await box.openSpace(spaceName);
+    console.log("userSpace", userSpace);
+
     await userSpace.syncDone;
+    console.log("fin userSpace sync");
+
     let thread;
     let space;
     if (isAdmin) {
@@ -45,7 +49,6 @@ export const login = ({ state, dispatch }: AppContext) => async (
       thread.onUpdate(() => getPosts({ state, dispatch })());
     }
 
-    // TODO promise.all
     const profile = await profilePromise;
     let profileImg = "";
     if (typeof profile.image !== "undefined") {

@@ -33,6 +33,11 @@ const createTheme = (primary: string, secondary: string, background: string) =>
           height: 40,
         },
       },
+      MuiOutlinedInput: {
+        root: {
+          borderRadius: 0,
+        },
+      },
     },
   });
 

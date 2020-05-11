@@ -43,6 +43,7 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
       console.log("isLoggedIn", isLoggedIn);
       if (isLoggedIn === "true") {
         await login({ state, dispatch })(box, newState);
+        console.log("Finished login()");
       }
     }
   } catch (error) {

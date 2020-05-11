@@ -30,12 +30,15 @@ const App: React.FunctionComponent = () => {
 
   useAsyncEffect(async () => {
     await initApp({ state, dispatch })();
+    console.log("fin initApp()");
+
     setLoading(false);
   }, []);
 
   const handleRoute = (page: AppPages, docId?: string) => {
-    console.log("page", page);
-    console.log("docId", docId);
+    console.log(document.URL);
+    console.log(document);
+
     setRoute(page);
     setDocId(docId || "");
     window.scroll({ top: 0 });

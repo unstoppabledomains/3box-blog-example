@@ -18,14 +18,23 @@ export default makeStyles((theme: Theme) =>
     facebook: {
       backgroundColor: "#4469b0",
       marginLeft: theme.spacing(2),
+      "&:hover": {
+        backgroundColor: "#4469b080 !important",
+      },
     },
     twitter: {
       backgroundColor: "#2aa3ef",
       marginLeft: theme.spacing(2),
+      "&:hover": {
+        backgroundColor: "#2aa3ef80 !important",
+      },
     },
     linkedIn: {
       backgroundColor: "#1178b3",
       marginLeft: theme.spacing(2),
+      "&:hover": {
+        backgroundColor: "#1178b380 !important",
+      },
     },
   })
 );
