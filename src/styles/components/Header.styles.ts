@@ -10,14 +10,18 @@ export default makeStyles((theme: Theme) =>
       width: "100%",
       marginLeft: "auto",
       marginRight: "auto",
+      minHeight: "72px !important",
     },
+    // Standard Header
     title: {
-      fontFamily: "Merriweather",
-      fontSize: 36,
-      fontWeight: 900,
-      marginRight: theme.spacing(2),
+      fontFamily: "Merriweather !important",
+      fontSize: "36px !important",
+      fontWeight: "900 !important" as any,
+      lineHeight: "1.2 !important",
+      paddingBottom: 2,
+      marginRight: `${theme.spacing(2)}px !important`,
       "&:hover": {
-        cursor: "pointer",
+        cursor: "pointer !important",
       },
     },
     avatarButton: {
@@ -66,6 +70,20 @@ export default makeStyles((theme: Theme) =>
     },
     menuDivider: {
       margin: `0px ${theme.spacing(1)}px !important`,
+    },
+    // MobileHeader
+    mobileRow: {
+      display: "flex",
+      alignItems: "center",
+    },
+    menuButton: {},
+    drawer: {},
+    mobileButton: {},
+    socialHeader: {
+      ...theme.typography.body1,
+      fontWeight: "bold",
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(-1),
     },
   })
 );

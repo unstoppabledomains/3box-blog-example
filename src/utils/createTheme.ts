@@ -38,6 +38,11 @@ const createTheme = (primary: string, secondary: string, background: string) =>
           borderRadius: 0,
         },
       },
+      MuiListItemIcon: {
+        root: {
+          minWidth: 40,
+        },
+      },
     },
   });
 
