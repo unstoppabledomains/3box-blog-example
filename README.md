@@ -9,13 +9,13 @@ yarn
 yarn start
 ```
 
-This will run the website with whatever blog is specified in `src/config/blogConfig.json`.
+This will run the website with whatever blog is specified in `public/config.json`.
 
-To create a new blog you will have run `src/utils/createThread.ts` and then update `src/config/blogConfig.json` with the new _domain, threadAddress, spaceName, & adminWallet_.
+To create a new blog you will have run `src/utils/createThread.ts` and then update `public/config.json` with the new _domain, threadAddress, spaceName, & adminWallet_.
 
 ## How It Works
 
-**Make sure the [`blogConfig.json`](src/config/blogConfig.json) is set up properly**
+**Make sure the [`blogConfig.json`](public/config.json) is set up properly**
 
 The app use's React [`useContext`](src/services/appContext.ts) & [`useReducer`](src/services/appReducer.ts) function to maintain a global app state.
 

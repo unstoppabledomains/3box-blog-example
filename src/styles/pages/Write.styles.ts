@@ -7,6 +7,10 @@ export default makeStyles((theme: Theme) =>
       flexDirection: "column",
       padding: theme.spacing(4),
       margin: theme.spacing(0, 2, 10),
+      [theme.breakpoints.down("xs")]: {
+        margin: theme.spacing(0, 0, 8),
+        padding: theme.spacing(2),
+      },
     },
     title: {
       fontSize: 32,
@@ -17,10 +21,20 @@ export default makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "space-between",
       marginTop: theme.spacing(4),
+      [theme.breakpoints.down("xs")]: {
+        alignItems: "flex-start",
+        flexDirection: "column",
+        width: "100%",
+      },
     },
     draftPublishGroup: {
       display: "flex",
       alignItems: "center",
+      [theme.breakpoints.down("xs")]: {
+        alignItems: "flex-start",
+        flexDirection: "column",
+        width: "100%",
+      },
     },
     label: {
       fontFamily: "OpenSans",
@@ -38,6 +52,9 @@ export default makeStyles((theme: Theme) =>
       fontWeight: "bold",
       fontSize: 16,
       borderRadius: 28,
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
     saveButton: {
       fontFamily: "OpenSans",
@@ -45,6 +62,11 @@ export default makeStyles((theme: Theme) =>
       height: 56,
       fontSize: 16,
       borderRadius: 28,
+      marginLeft: "8px !important",
+      [theme.breakpoints.down("xs")]: {
+        margin: `${theme.spacing(2, 0)} !important`,
+        width: "100%",
+      },
     },
     destroyButton: {
       height: 56,
@@ -53,10 +75,9 @@ export default makeStyles((theme: Theme) =>
       color: theme.palette.error.main,
       paddingRight: theme.spacing(2),
       paddingLeft: theme.spacing(2),
-      //   backgroundColor: "#d60000",
-      //   "&:hover": {
-      //     backgroundColor: "#9b0000",
-      //   },
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
   })
 );

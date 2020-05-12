@@ -229,15 +229,18 @@ export const getLikes = ({ state, dispatch }: AppContext) => async (
   postId: string
 ) => {
   const { box, spaceName, adminWallet } = state;
-  const likesThread = await box.openThread(
-    spaceName,
-    `${spaceName}-${postId}-likes`,
-    {
-      firstModerator: adminWallet,
-      members: false,
-    }
-  );
-  return (await likesThread.getPosts()).length;
+  if (box) {
+    const likesThread = await box.openThread(
+      spaceName,
+      `${spaceName}-${postId}-likes`,
+      {
+        firstModerator: adminWallet,
+        members: false,
+      }
+    );
+    return (await likesThread.getPosts()).length;
+  }
+  return -1;
 };
 
 export const checkLiked = ({ state, dispatch }: AppContext) => async (

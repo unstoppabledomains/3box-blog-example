@@ -8,6 +8,9 @@ export default makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "space-between",
       marginBottom: theme.spacing(3),
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+      },
     },
     leftButtons: {},
     likeButton: {
@@ -15,18 +18,28 @@ export default makeStyles((theme: Theme) =>
       fontFamily: "OpenSans",
       fontSize: 16,
       height: 40,
+      [theme.breakpoints.down("xs")]: {
+        marginBottom: theme.spacing(2),
+      },
     },
     shareRow: {
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
+      [theme.breakpoints.down("xs")]: {
+        alignItems: "flex-start",
+        flexDirection: "column",
+      },
     },
     shareText: {
       fontFamily: "OpenSans",
       fontSize: 16,
       fontWeight: "bold",
       marginRight: theme.spacing(1),
+      [theme.breakpoints.down("xs")]: {
+        marginTop: theme.spacing(2),
+      },
     },
     icon: {},
     iconText: {

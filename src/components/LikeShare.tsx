@@ -56,21 +56,23 @@ const LikeShare: React.FunctionComponent<Props> = ({ postId }) => {
     <div className={classes.container}>
       <div className={classes.leftButtons}>
         {/* TIP Button -> Separate component */}
-        <Button
-          startIcon={
-            <CustomIcon
-              type="thumbs-up"
-              color={isLiked ? contrastText : secondaryColor}
-            />
-          }
-          disabled={!loggedIn}
-          onClick={handleLike}
-          variant={isLiked ? "contained" : "outlined"}
-          color="secondary"
-          className={classes.likeButton}
-        >
-          {likes}
-        </Button>
+        {likes > -1 && (
+          <Button
+            startIcon={
+              <CustomIcon
+                type="thumbs-up"
+                color={isLiked ? contrastText : secondaryColor}
+              />
+            }
+            disabled={!loggedIn}
+            onClick={handleLike}
+            variant={isLiked ? "contained" : "outlined"}
+            color="secondary"
+            className={classes.likeButton}
+          >
+            {likes}
+          </Button>
+        )}
       </div>
       <div className={classes.shareRow}>
         <Typography className={classes.shareText}>

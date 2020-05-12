@@ -11,6 +11,9 @@ export default makeStyles((theme: Theme) =>
       justifyContent: "space-between",
       borderRadius: 36,
       height: 72,
+      [theme.breakpoints.down("xs")]: {
+        padding: theme.spacing(0, 1),
+      },
     },
     arrowButton: {
       borderRadius: 36,

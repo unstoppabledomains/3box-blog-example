@@ -120,7 +120,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
             value={post.title}
             onChange={handleChange}
             className={classes.textField}
-            // TODO: Max length
+            inputProps={{ maxLength: 120 }}
           />
           <Typography className={classes.label}>Description</Typography>
           <TextField
@@ -131,7 +131,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
             multiline
             rows={4}
             className={classes.textField}
-            // TODO: Max length
+            inputProps={{ maxLength: 240 }}
           />
           <Typography className={classes.label}>Post</Typography>
           <Editor value={post.body} onChange={handleBodyChange} />
@@ -158,7 +158,6 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
                 onClick={handleDraft}
                 variant="outlined"
                 color="secondary"
-                style={{ marginLeft: 8 }}
                 startIcon={
                   <CustomIcon type="cloud-upload" color={secondary.main} />
                 }

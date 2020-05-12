@@ -7,6 +7,9 @@ export default makeStyles((theme: Theme) =>
       flexDirection: "row",
       alignItems: "center",
       marginRight: theme.spacing(-1),
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+      },
     },
     icon: {
       padding: `${theme.spacing(1)}px !important`,

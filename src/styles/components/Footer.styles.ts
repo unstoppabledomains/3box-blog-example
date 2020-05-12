@@ -19,6 +19,7 @@ export default makeStyles((theme: Theme) =>
     logosContainer: {
       display: "flex",
       alignItems: "center",
+      marginBottom: theme.spacing(2),
     },
     unstoppableLogo: {
       marginRight: theme.spacing(7),

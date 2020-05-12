@@ -9,6 +9,9 @@ export default makeStyles((theme: Theme) =>
       marginLeft: "auto",
       marginRight: "auto",
       flexDirection: "column",
+      [theme.breakpoints.down("xs")]: {
+        padding: 0,
+      },
     },
     center: {
       height: "50vh",

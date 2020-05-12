@@ -7,15 +7,27 @@ export default makeStyles((theme: Theme) =>
       flexDirection: "column",
       padding: theme.spacing(4),
       margin: theme.spacing(0, 2, 10),
+      [theme.breakpoints.down("xs")]: {
+        margin: theme.spacing(0, 0, 10),
+      },
     },
     headerRow: {
       display: "flex",
       justifyContent: "space-between",
       marginBottom: theme.spacing(2),
     },
-    title: {},
+    title: {
+      wordBreak: "break-word",
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "3rem",
+      },
+    },
     dateAuthorRow: {},
-    caption: {},
+    caption: {
+      fontFamily: "OpenSans",
+      fontSize: 14,
+      wordBreak: "break-word",
+    },
     description: {
       marginBottom: theme.spacing(4),
     },

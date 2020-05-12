@@ -28,6 +28,7 @@ export default makeStyles((theme: Theme) =>
     caption: {
       fontFamily: "OpenSans",
       fontSize: 14,
+      wordBreak: "break-word",
     },
     description: {},
     buttonRow: {
@@ -36,6 +37,10 @@ export default makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "space-between",
       marginTop: theme.spacing(4),
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+        width: "100%",
+      },
     },
     containedButton: {
       display: "flex",
@@ -43,6 +48,9 @@ export default makeStyles((theme: Theme) =>
       width: 158,
       borderRadius: 25,
       fontSize: 16,
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
     destroyButton: {
       fontFamily: "OpenSans",
@@ -52,6 +60,10 @@ export default makeStyles((theme: Theme) =>
       fontSize: 16,
       paddingRight: theme.spacing(1),
       paddingLeft: theme.spacing(1),
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+        marginTop: theme.spacing(2),
+      },
     },
   })
 );

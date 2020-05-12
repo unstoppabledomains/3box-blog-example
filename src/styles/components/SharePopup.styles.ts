@@ -8,6 +8,10 @@ export default makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "space-around",
       padding: theme.spacing(4),
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+        padding: theme.spacing(2),
+      },
     },
     shareText: {
       fontFamily: "OpenSans",
@@ -21,6 +25,10 @@ export default makeStyles((theme: Theme) =>
       "&:hover": {
         backgroundColor: "#4469b080 !important",
       },
+      [theme.breakpoints.down("xs")]: {
+        marginLeft: 0,
+        marginBottom: theme.spacing(1.5),
+      },
     },
     twitter: {
       backgroundColor: "#2aa3ef",
@@ -28,12 +36,20 @@ export default makeStyles((theme: Theme) =>
       "&:hover": {
         backgroundColor: "#2aa3ef80 !important",
       },
+      [theme.breakpoints.down("xs")]: {
+        marginLeft: 0,
+        marginBottom: theme.spacing(1.5),
+      },
     },
     linkedIn: {
       backgroundColor: "#1178b3",
       marginLeft: theme.spacing(2),
       "&:hover": {
         backgroundColor: "#1178b380 !important",
+      },
+      [theme.breakpoints.down("xs")]: {
+        marginLeft: 0,
+        marginBottom: theme.spacing(1.5),
       },
     },
   })
