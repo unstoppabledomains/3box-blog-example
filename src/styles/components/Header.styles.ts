@@ -12,7 +12,6 @@ export default makeStyles((theme: Theme) =>
       marginRight: "auto",
       minHeight: "72px !important",
     },
-    // Standard Header
     title: {
       fontFamily: "Merriweather !important",
       fontSize: "36px !important",
@@ -24,6 +23,16 @@ export default makeStyles((theme: Theme) =>
         cursor: "pointer !important",
       },
     },
+    logo: {
+      maxHeight: 68,
+      height: 68,
+      width: "auto",
+      marginRight: theme.spacing(2),
+      "&:hover": {
+        cursor: "pointer !important",
+      },
+    },
+    // Standard Header
     avatarButton: {
       borderRadius: "100%",
       padding: theme.spacing(0.25),
@@ -75,6 +84,8 @@ export default makeStyles((theme: Theme) =>
     mobileRow: {
       display: "flex",
       alignItems: "center",
+      justifyContent: "space-between",
+      width: "100%",
     },
     menuButton: {},
     drawer: {},

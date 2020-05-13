@@ -14,6 +14,7 @@ import Drawer from "@material-ui/core/Drawer";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface Props extends RoutingProps {
   title: string;
@@ -29,6 +30,7 @@ interface Props extends RoutingProps {
   handleBookmarks: () => void;
   handleSocials: (e: any) => void;
   toHome: () => void;
+  logo?: string;
 }
 
 const MobileHeader: React.FunctionComponent<Props> = ({
@@ -46,6 +48,7 @@ const MobileHeader: React.FunctionComponent<Props> = ({
   handleSocials,
   toHome,
   handleRoute,
+  logo,
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
@@ -69,27 +72,41 @@ const MobileHeader: React.FunctionComponent<Props> = ({
   return (
     <>
       <div className={classes.mobileRow}>
-        <IconButton
-          className={classes.menuButton}
-          onClick={toggleOpen}
-          edge="start"
-          color="inherit"
-        >
-          <MenuIcon color="inherit" />
-        </IconButton>
-        <Typography onClick={toHome} className={classes.title}>
-          {title}
-        </Typography>
-        {!loggedIn && (
-          <Button
-            variant="contained"
-            className={classes.mobileButton}
-            onClick={handleLogin}
-            color="secondary"
+        <div className={classes.leftContainer}>
+          <IconButton
+            className={classes.menuButton}
+            onClick={toggleOpen}
+            edge="start"
+            color="inherit"
           >
-            <LockIcon />
-          </Button>
-        )}
+            <MenuIcon color="inherit" />
+          </IconButton>
+          {logo ? (
+            <img
+              src={`${process.env.PUBLIC_URL}/${logo}`}
+              alt={title}
+              className={classes.logo}
+              onClick={toHome}
+            />
+          ) : (
+            <Typography onClick={toHome} className={classes.title}>
+              {title}
+            </Typography>
+          )}
+        </div>
+        {!loggedIn &&
+          (loading ? (
+            <CircularProgress color="secondary" />
+          ) : (
+            <Button
+              variant="contained"
+              className={classes.mobileButton}
+              onClick={handleLogin}
+              color="secondary"
+            >
+              <LockIcon />
+            </Button>
+          ))}
       </div>
       <Drawer className={classes.drawer} open={open} onClose={toggleOpen}>
         <List>

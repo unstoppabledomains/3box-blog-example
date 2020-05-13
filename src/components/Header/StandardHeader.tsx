@@ -26,6 +26,7 @@ interface Props extends RoutingProps {
   handleBookmarks: () => void;
   handleSocials: (id: string) => void;
   toHome: () => void;
+  logo?: string;
 }
 
 const StandardHeader: React.FunctionComponent<Props> = ({
@@ -43,6 +44,7 @@ const StandardHeader: React.FunctionComponent<Props> = ({
   handleSocials,
   toHome,
   handleRoute,
+  logo,
 }) => {
   const classes = useStyles();
   const handleFacebook = () => handleSocials("facebook");
@@ -55,9 +57,18 @@ const StandardHeader: React.FunctionComponent<Props> = ({
   return (
     <>
       <div className={classes.leftContainer}>
-        <Typography onClick={toHome} className={classes.title}>
-          {title}
-        </Typography>
+        {logo ? (
+          <img
+            src={`${process.env.PUBLIC_URL}/${logo}`}
+            alt={title}
+            className={classes.logo}
+            onClick={toHome}
+          />
+        ) : (
+          <Typography onClick={toHome} className={classes.title}>
+            {title}
+          </Typography>
+        )}
         {loggedIn && (
           <>
             <Divider

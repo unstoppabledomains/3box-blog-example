@@ -13,7 +13,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
   const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
-  const { title } = state;
+  const { title, logo } = state;
   const {
     user: { loggedIn, walletAddress, profileImg },
     theme: { palette },
@@ -69,6 +69,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
           <Hidden smUp>
             <MobileHeader
               title={title}
+              logo={logo}
               loggedIn={loggedIn}
               isAdmin={isAdmin}
               socials={socials}
@@ -87,6 +88,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
           <Hidden xsDown>
             <StandardHeader
               title={title}
+              logo={logo}
               loggedIn={loggedIn}
               isAdmin={isAdmin}
               socials={socials}

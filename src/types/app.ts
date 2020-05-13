@@ -9,13 +9,14 @@ export interface RoutingProps {
 }
 // Interfaces
 export interface ConfigFile {
+  title: string;
+  logo?: string;
   theme: {
     primary: string;
     secondary: string;
     background: string;
   };
   domain: string;
-  title: string;
   threadAddress: string;
   adminWallet: string;
   spaceName: string;
@@ -35,6 +36,7 @@ export interface AppState {
   theme: Theme;
   domain: string;
   title: string;
+  logo?: string;
   threadAddress: string;
   adminWallet: string;
   spaceName: string;

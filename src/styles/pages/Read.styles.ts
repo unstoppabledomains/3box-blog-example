@@ -51,9 +51,9 @@ export default makeStyles((theme: Theme) =>
       marginRight: "auto",
       marginLeft: "auto",
       maxWidth: 616,
-      //   overflowX: "hidden",
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
+      width: "100%",
+      overflowX: "hidden",
+      padding: theme.spacing(0, 1.5),
     },
     loadingContainer: {
       display: "flex",
