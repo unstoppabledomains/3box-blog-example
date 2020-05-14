@@ -33,6 +33,7 @@ export default makeStyles((theme: Theme) =>
     hover: {
       "&:hover": {
         cursor: "pointer !important",
+        textDecoration: "underline",
       },
     },
   })
