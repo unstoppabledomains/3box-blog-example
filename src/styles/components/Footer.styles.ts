@@ -30,5 +30,10 @@ export default makeStyles((theme: Theme) =>
       fontFamily: "OpenSans",
       fontSize: 14,
     },
+    hover: {
+      "&:hover": {
+        cursor: "pointer !important",
+      },
+    },
   })
 );

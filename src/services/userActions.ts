@@ -2,6 +2,7 @@ import { LOG_IN, LOG_OUT } from "types/actions";
 import { initBox, getPosts } from "./blogActions";
 import { AppContext, User, AppState } from "types/app";
 import localStorageTest from "utils/localStorageTest";
+import Box from "3box";
 
 export const login = ({ state, dispatch }: AppContext) => async (
   initialBox?: any,
@@ -12,11 +13,9 @@ export const login = ({ state, dispatch }: AppContext) => async (
       window.alert("Local storage must be enabled");
       throw new Error("Local storage not enabled to use 3Box profiles");
     }
-    console.log("start log in");
 
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
-    console.log("box", box);
     const { spaceName, threadAddress, adminWallet } = initialState || state;
     let walletAddress = "";
     try {
@@ -28,18 +27,11 @@ export const login = ({ state, dispatch }: AppContext) => async (
       return { loggedIn: false, walletAddress: "" };
     }
     const isAdmin = walletAddress.toLowerCase() === adminWallet.toLowerCase();
-    console.log("start box auth");
     await box.auth([spaceName], { address: walletAddress });
-    console.log("fin box auth");
     await box.syncDone;
-    console.log("fin box sync");
-    const profilePromise = box.public.all();
 
     const userSpace = await box.openSpace(spaceName);
-    console.log("userSpace", userSpace);
-
     await userSpace.syncDone;
-    console.log("fin userSpace sync");
 
     let thread;
     let space;
@@ -48,8 +40,11 @@ export const login = ({ state, dispatch }: AppContext) => async (
       thread = await userSpace.joinThreadByAddress(threadAddress);
       thread.onUpdate(() => getPosts({ state, dispatch })());
     }
-
-    const profile = await profilePromise;
+    const { profile } = await Box.profileGraphQL(`{
+      profile(id: "${walletAddress}") {
+        image
+      }
+    }`);
     let profileImg = "";
     if (typeof profile.image !== "undefined") {
       profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image[0].contentUrl["/"]}`;
@@ -74,7 +69,6 @@ export const login = ({ state, dispatch }: AppContext) => async (
     });
     return user as User;
   } catch (error) {
-    console.timeStamp("log in error");
     console.error(error);
   }
 };

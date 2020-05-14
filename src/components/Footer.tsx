@@ -11,14 +11,18 @@ import { getThemeType } from "utils/createTheme";
 const Footer: React.FunctionComponent = () => {
   const classes = useStyles();
   const { state } = React.useContext(appContext);
+  const domainTag = state.domain.replace(".", "#");
   const { main } = state.theme.palette.primary;
   const themeType = getThemeType(main);
+  const handleClick = () => {
+    window.open("https://github.com/donald-stolz", "_blank");
+  };
 
   return (
     <div className={classes.footer}>
       <div className={classes.logosContainer}>
         <a
-          href="https://unstoppabledomains.com/"
+          href={`https://unstoppabledomains.com/?ref=website_builder&utm_source=template&utm_medium=${domainTag}&utm_campaign=basic_blog`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -36,7 +40,10 @@ const Footer: React.FunctionComponent = () => {
         </a>
       </div>
       <div className={classes.creditContainer}>
-        <Typography className={classes.creditText}>
+        <Typography
+          onClick={handleClick}
+          className={`${classes.creditText} ${classes.hover}`}
+        >
           3Box Blog by Don Stolz
         </Typography>
         <Typography className={classes.creditText}>

@@ -36,7 +36,6 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   };
 
   const handleSocials = (id: string) => {
-    console.log("id", id);
     const social = (socials as any)[id];
     const url = /^(http|https|ftp):/.test(social) ? social : `//${social}`;
     window.open(url, "_blank");

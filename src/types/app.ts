@@ -39,6 +39,7 @@ export interface AppState {
   logo?: string;
   threadAddress: string;
   adminWallet: string;
+  adminName?: string;
   spaceName: string;
   socials: TemplateSocials;
 }

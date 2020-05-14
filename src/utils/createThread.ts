@@ -2,8 +2,6 @@ import Box from "3box";
 import getSpaceName from "utils/getSpaceName";
 
 export default async (domain: string, address?: string) => {
-  console.log("create space");
-
   const spaceName = getSpaceName(domain);
   if (!address) {
     address = (await (window as any).ethereum.enable())[0];

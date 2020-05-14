@@ -5,6 +5,7 @@ import {
   AppContext,
   ConfigFile,
   DraftPost,
+  AppState,
 } from "types/app";
 import {
   SET_POSTS,
@@ -19,17 +20,22 @@ import createTheme from "utils/createTheme";
 import localStorageTest from "utils/localStorageTest";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
-  console.log("initApp");
-
   const config: ConfigFile = await fetch(
     `${process.env.PUBLIC_URL}/config.json`
   ).then((res) => res.json());
   const { primary, secondary, background } = config.theme;
   const theme = createTheme(primary, secondary, background);
-  const newState = {
+  const { profile } = await Box.profileGraphQL(`{
+      profile(id: "${config.adminWallet}") {
+        name
+      }
+	}`);
+
+  const newState: AppState = {
     ...state,
     ...config,
     theme,
+    adminName: profile.name,
   };
   dispatch({
     type: SET_CONFIG,
@@ -37,13 +43,10 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
   });
   try {
     const box = await initBox({ state, dispatch })();
-    console.log("box post init", box);
     if (localStorageTest()) {
       const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-      console.log("isLoggedIn", isLoggedIn);
       if (isLoggedIn === "true") {
         await login({ state, dispatch })(box, newState);
-        console.log("Finished login()");
       }
     }
   } catch (error) {
@@ -53,15 +56,10 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
 };
 
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
-  console.log("initBox");
-
   if (!state.box && window.navigator.cookieEnabled && localStorageTest()) {
     try {
       const provider = await Box.get3idConnectProvider();
-      console.log("provider", provider);
-
       const box = await Box.create(provider);
-      console.log("box", box);
       dispatch({ type: ADD_BOX, value: { box } });
       return box;
     } catch (error) {
@@ -84,7 +82,7 @@ export const getPosts = ({ state, dispatch }: AppContext) => async () => {
     ? await thread.getPosts()
     : await Box.getThreadByAddress(threadAddress);
   const posts = postThreads
-    .map((post) => parseMessage(post))
+    .map((post) => parseMessage(post, state))
     .sort((a: any, b: any) =>
       a.threadData.timestamp < b.threadData.timestamp ? 1 : -1
     );
@@ -201,7 +199,7 @@ export const removeDraft = ({ state, dispatch }: AppContext) => async (
 };
 
 export const getDrafts = ({ state, dispatch }: AppContext) => async () => {
-  const { space, adminWallet, user } = state;
+  const { space, adminWallet, adminName, user } = state;
   if (!space) {
     throw new Error("No space found. Must authenticate");
   }
@@ -214,12 +212,15 @@ export const getDrafts = ({ state, dispatch }: AppContext) => async () => {
 
   return drafts.length > 0
     ? drafts.map((draft) =>
-        parseMessage({
-          author: adminWallet,
-          message: draft.post,
-          postId: draft.id,
-          timestamp: new Date().getTime(),
-        })
+        parseMessage(
+          {
+            author: adminName || adminWallet,
+            message: draft.post,
+            postId: draft.id,
+            timestamp: new Date().getTime(),
+          },
+          state
+        )
       )
     : [];
 };
