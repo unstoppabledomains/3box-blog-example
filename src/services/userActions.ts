@@ -47,7 +47,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
     }`);
     let profileImg = "";
     if (typeof profile.image !== "undefined") {
-      profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image[0].contentUrl["/"]}`;
+      profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image}`;
     }
 
     const user = {
