@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPost } from "services/blogActions";
 import Comments from "3box-comments-react";
-import { login } from "services/userActions";
+import { loginTimeout } from "services/userActions";
+// import { login } from "services/userActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Read.styles";
 import useAsyncEffect from "use-async-effect";
@@ -50,7 +51,7 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
   }, [id]);
 
   const handleLogin = async () => {
-    await login({ state, dispatch })();
+    await loginTimeout({ state, dispatch })();
   };
 
   return (

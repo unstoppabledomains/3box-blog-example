@@ -29,7 +29,10 @@ const App: React.FunctionComponent = () => {
   const { value: docId, onSetValue: setDocId } = useQueryString("id", "");
 
   useAsyncEffect(async () => {
+    console.log("start initApp()");
+
     await initApp({ state, dispatch })();
+    console.log("finish initApp()");
     setLoading(false);
   }, []);
 

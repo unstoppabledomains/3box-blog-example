@@ -1,6 +1,7 @@
 import React from "react";
 import appContext from "services/appContext";
-import { login, logout } from "services/userActions";
+import { logout, loginTimeout } from "services/userActions";
+// import { login, logout } from "services/userActions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import useStyles from "styles/components/Header.styles";
@@ -47,7 +48,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
 
   const handleLogin = async () => {
     setLoading(true);
-    await login({ state, dispatch })();
+    await loginTimeout({ state, dispatch })();
     setLoading(false);
   };
 

@@ -15,7 +15,8 @@ import {
   SET_CONFIG,
 } from "types/actions";
 import parseMessage from "utils/parseMessage";
-import { login } from "./userActions";
+import { loginTimeout } from "./userActions";
+// import { login } from "./userActions";
 import createTheme from "utils/createTheme";
 import localStorageTest from "utils/localStorageTest";
 
@@ -46,7 +47,7 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
     if (localStorageTest()) {
       const isLoggedIn = window.localStorage.getItem("isLoggedIn");
       if (isLoggedIn === "true") {
-        await login({ state, dispatch })(box, newState);
+        await loginTimeout({ state, dispatch })(box, newState);
       }
     }
   } catch (error) {

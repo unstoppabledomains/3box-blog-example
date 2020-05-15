@@ -60,14 +60,14 @@ export default makeStyles((theme: Theme) =>
     },
     bookmarksDivider: {
       backgroundColor: `${theme.palette.primary.contrastText} !important`,
-      margin: `${theme.spacing(1)} !important`,
+      margin: `${theme.spacing(1)}px !important`,
     },
     bookmarksButton: {
-      color: theme.palette.primary.contrastText,
-      fontFamily: "OpenSans",
-      fontWeight: "bold",
-      fontSize: 16,
-      marginLeft: theme.spacing(1),
+      color: `${theme.palette.primary.contrastText} !important`,
+      fontFamily: "OpenSans !important",
+      fontWeight: "bold !important" as any,
+      fontSize: "16px !important",
+      marginLeft: "8px !important",
     },
     menuItem: {
       fontWeight: 600,
