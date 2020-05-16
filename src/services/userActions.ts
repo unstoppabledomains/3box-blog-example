@@ -4,20 +4,23 @@ import { AppContext, User, AppState } from "types/app";
 import localStorageTest from "utils/localStorageTest";
 import Box from "3box";
 
+const web3Alert = `This website utilizes Web3 technology to manage authentication and decentralized storage. To enable these features please enable cookies for this website in your browser settings.
+
+You will still be able to read articles, however other features will not be available.`;
+
 export const loginTimeout = ({ state, dispatch }: AppContext) => async (
   initialBox?: any,
   initialState?: AppState
 ) =>
   new Promise<User | undefined>((resolve, reject) => {
     console.log("start loginTimeout");
-
     login({ state, dispatch })(initialBox, initialState)
       .then((res) => resolve(res))
       .catch((res) => reject(res));
     setTimeout(() => {
-      console.log("In loginTimeout");
-
       reject("Timed out");
+      window.alert(web3Alert);
+      return;
     }, 15000);
   });
 
@@ -29,8 +32,8 @@ export const login = ({ state, dispatch }: AppContext) => async (
   console.time("finish login");
   try {
     if (!localStorageTest()) {
-      window.alert("Local storage must be enabled");
-      throw new Error("Local storage not enabled to use 3Box profiles");
+      window.alert(web3Alert);
+      throw new Error("Local storage is not enabled to use 3Box profiles");
     }
 
     const box =

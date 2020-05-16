@@ -48,13 +48,21 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
 
   const handleLogin = async () => {
     setLoading(true);
-    await loginTimeout({ state, dispatch })();
+    try {
+      await loginTimeout({ state, dispatch })();
+    } catch (error) {
+      console.error(error);
+    }
     setLoading(false);
   };
 
   const handleLogout = async () => {
     setLoading(true);
-    await logout({ state, dispatch })();
+    try {
+      await logout({ state, dispatch })();
+    } catch (error) {
+      console.error(error);
+    }
     setLoading(false);
   };
 
