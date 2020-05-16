@@ -1,1 +1,1 @@
-export default (domain: string) => `draft-blog-${domain.replace(".", "#")}`;
+export default (domain: string) => `basic-blog-${domain.replace(".", "#")}`;
