@@ -47,6 +47,8 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
       const newPost = await getPost({ state, dispatch })(id as string);
       setPost(newPost);
       setLoading(false);
+    } else if (!id) {
+      handleRoute("");
     }
   }, [id]);
 

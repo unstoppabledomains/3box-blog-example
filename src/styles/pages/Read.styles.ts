@@ -34,6 +34,7 @@ export default makeStyles((theme: Theme) =>
     bodyContainer: {
       display: "flex",
       marginBottom: theme.spacing(4),
+      maxWidth: "100%",
     },
     divider: {
       margin: theme.spacing(3, 0),
@@ -52,7 +53,6 @@ export default makeStyles((theme: Theme) =>
       marginLeft: "auto",
       maxWidth: 616,
       width: "100%",
-      overflowX: "hidden",
       padding: theme.spacing(0, 1.5),
     },
     loadingContainer: {

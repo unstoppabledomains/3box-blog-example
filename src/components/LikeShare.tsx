@@ -43,11 +43,11 @@ const LikeShare: React.FunctionComponent<Props> = ({ postId }) => {
   const handleLike = async () => {
     if (isLiked) {
       await removeLike({ state, dispatch })(postId);
-      setLikes((l) => l + 1);
+      setLikes((l) => l - 1);
       setIsLiked(false);
     } else {
       await addLike({ state, dispatch })(postId);
-      setLikes((l) => l - 1);
+      setLikes((l) => l + 1);
       setIsLiked(true);
     }
   };

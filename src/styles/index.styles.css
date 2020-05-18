@@ -42,3 +42,7 @@
   font-weight: semi-bold;
   font-style: normal;
 }
+
+.comments_footer {
+  overflow-x: hidden !important;
+}
