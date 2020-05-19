@@ -5,8 +5,8 @@ import { showdownOptions } from "config/showdown";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPost } from "services/blogActions";
-import Comments from "3box-comments-react";
-import { loginTimeout } from "services/userActions";
+// import Comments from "3box-comments-react";
+// import { loginTimeout } from "services/userActions";
 // import { login } from "services/userActions";
 import appContext from "services/appContext";
 import useStyles from "styles/pages/Read.styles";
@@ -30,19 +30,19 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
   const [loading, setLoading] = React.useState<boolean>(true);
   const [post, setPost] = React.useState<BlogPost>({} as BlogPost);
   const [postId, setPostId] = React.useState<string>("");
-  const [commentsThread, setCommentsThread] = React.useState<string>();
+  //   const [commentsThread, setCommentsThread] = React.useState<string>();
   const { state, dispatch } = React.useContext(appContext);
 
-  const {
-    box,
-    user: { walletAddress },
-    spaceName,
-    adminWallet,
-  } = state;
+  //   const {
+  //     box,
+  //     user: { walletAddress },
+  //     spaceName,
+  //     adminWallet,
+  //   } = state;
 
   useAsyncEffect(async () => {
     if (id && id !== postId) {
-      setCommentsThread(`comments-${id}`);
+      //   setCommentsThread(`comments-${id}`);
       setPostId(id);
       const newPost = await getPost({ state, dispatch })(id as string);
       setPost(newPost);
@@ -52,9 +52,9 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
     }
   }, [id]);
 
-  const handleLogin = async () => {
-    await loginTimeout({ state, dispatch })();
-  };
+  //   const handleLogin = async () => {
+  //     await loginTimeout({ state, dispatch })();
+  //   };
 
   return (
     <>
@@ -89,7 +89,7 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
             </div>
             <Divider className={classes.divider} />
             <LikeShare postId={postId} />
-            <div className={classes.commentContainer}>
+            {/* <div className={classes.commentContainer}>
               <div className={classes.comments}>
                 {commentsThread && box && (
                   <Comments
@@ -102,7 +102,7 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
                   />
                 )}
               </div>
-            </div>
+            </div> */}
           </>
         )}
       </Paper>

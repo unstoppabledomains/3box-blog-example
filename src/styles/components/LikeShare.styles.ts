@@ -7,7 +7,8 @@ export default makeStyles((theme: Theme) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginBottom: theme.spacing(3),
+      // TODO: Put back when adding comments component
+      //   marginBottom: theme.spacing(3),
       [theme.breakpoints.down("xs")]: {
         flexDirection: "column",
       },
