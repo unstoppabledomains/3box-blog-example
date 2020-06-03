@@ -7,6 +7,7 @@ export const LOG_OUT = "LOG_OUT";
 export const ADD_POST = "ADD_POST";
 export const SET_POSTS = "SET_POSTS";
 export const DELETE_POST = "DELETE_POST";
+export const SET_MODERATORS = "SET_MODERATORS";
 
 export type ActionTypes =
   | typeof SET_CONFIG
@@ -15,7 +16,8 @@ export type ActionTypes =
   | typeof LOG_OUT
   | typeof ADD_POST
   | typeof SET_POSTS
-  | typeof DELETE_POST;
+  | typeof DELETE_POST
+  | typeof SET_MODERATORS;
 
 export interface AppAction {
   type: ActionTypes;

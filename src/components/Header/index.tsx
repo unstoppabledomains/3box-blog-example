@@ -13,24 +13,13 @@ import MobileHeader from "./MobileHeader";
 const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
-  const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
   const { title, logo } = state;
   const {
-    user: { loggedIn, walletAddress, profileImg },
+    user: { loggedIn, walletAddress, profileImg, isAdmin },
     theme: { palette },
-    adminWallet,
     socials,
   } = state;
   const [loading, setLoading] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    setIsAdmin(
-      Boolean(
-        walletAddress &&
-          walletAddress.toLowerCase() === adminWallet.toLowerCase()
-      )
-    );
-  }, [walletAddress, adminWallet]);
 
   const toHome = () => {
     handleRoute("");
@@ -79,7 +68,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
               title={title}
               logo={logo}
               loggedIn={loggedIn}
-              isAdmin={isAdmin}
+              isAdmin={isAdmin || false}
               socials={socials}
               palette={palette}
               loading={loading}
@@ -98,7 +87,7 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
               title={title}
               logo={logo}
               loggedIn={loggedIn}
-              isAdmin={isAdmin}
+              isAdmin={isAdmin || false}
               socials={socials}
               palette={palette}
               loading={loading}

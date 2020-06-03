@@ -3,7 +3,9 @@ import fm from "front-matter";
 
 export default (postThread: ThreadObject, state: AppState): BlogPost => {
   const parsedMessage: any = fm(postThread.message);
-  const author = state.adminName || state.adminWallet;
+  const author = state.moderatorNames
+    ? state.moderatorNames[postThread.author]
+    : postThread.author;
   const tags = parsedMessage.attributes.tags
     ? parsedMessage.attributes.tags.split(",")
     : [];

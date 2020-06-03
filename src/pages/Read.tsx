@@ -34,10 +34,9 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
   const { state, dispatch } = React.useContext(appContext);
 
   const {
-    box,
-    user: { walletAddress },
-    spaceName,
-    adminWallet,
+    // box,
+    user: { walletAddress, isAdmin },
+    // spaceName,
   } = state;
 
   useAsyncEffect(async () => {
@@ -49,14 +48,10 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
         setPost(newPost);
         setLoading(false);
       } catch (error) {
-        console.log("getPost error");
-        console.error(error);
-        // handleRoute("");
+        handleRoute("");
       }
     } else if (!id) {
-      console.log("no id");
-
-      //   handleRoute("");
+      handleRoute("");
     }
   }, [id]);
 
@@ -93,11 +88,7 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
               </Typography>
               <BookmarkShare
                 postId={postId}
-                handleDelete={
-                  walletAddress?.toLowerCase() === adminWallet.toLowerCase()
-                    ? handleDelete
-                    : undefined
-                }
+                handleDelete={isAdmin ? handleDelete : undefined}
               />
             </div>
             <div className={classes.dateAuthorRow}>
@@ -124,7 +115,7 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
                   <Comments
                     spaceName={spaceName}
                     threadName={commentsThread}
-                    adminEthAddr={adminWallet}
+                    adminEthAddr={adminWallet} // moderators[0]
                     box={box}
                     currentUserAddr={walletAddress}
                     loginFunction={handleLogin}

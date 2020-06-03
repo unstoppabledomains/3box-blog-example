@@ -39,7 +39,8 @@ export interface AppState {
   logo?: string;
   threadAddress: string;
   adminWallet: string;
-  adminName?: string;
+  moderators: string[]; // did3:...
+  moderatorNames?: { [key: string]: string }; // {"did3:...": "User Name"}
   spaceName: string;
   socials: TemplateSocials;
 }
@@ -65,6 +66,8 @@ export interface User {
   walletAddress?: string;
   profileImg?: string;
   bookmarksSpace?: any;
+  isAdmin?: boolean;
+  did3?: string;
 }
 
 export interface BlogPost {
@@ -101,6 +104,7 @@ export const initialState: AppState = {
   title: "",
   threadAddress: "",
   adminWallet: "",
+  moderators: [""],
   spaceName: "",
   socials: {
     hasFacebook: false,

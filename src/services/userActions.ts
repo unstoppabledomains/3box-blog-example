@@ -8,6 +8,17 @@ const web3Alert = `This website utilizes Web3 technology to manage authenticatio
 
 You will still be able to read articles, however other features will not be available.`;
 
+const getModeratorNames = async (
+  moderators: string[],
+  { state, dispatch }: AppContext
+) => {
+  console.log("start get profiles");
+  console.log(moderators);
+  const profiles = await Box.getProfiles(moderators);
+  console.log("profiles");
+  console.log(profiles);
+};
+
 export const loginTimeout = ({ state, dispatch }: AppContext) => async (
   initialBox?: any,
   initialState?: AppState
@@ -41,46 +52,38 @@ export const login = ({ state, dispatch }: AppContext) => async (
 
     const box =
       initialBox || state.box || (await initBox({ state, dispatch })());
-    // console.log("box", box);
-    const { spaceName, threadAddress, adminWallet } = initialState || state;
+    const { spaceName, threadAddress } = initialState || state;
     let walletAddress = "";
     try {
-      walletAddress = (await (window as any).ethereum.enable())[0];
+      walletAddress = ((await (window as any).ethereum.enable()) as string)[0].toLowerCase();
     } catch (e) {
       console.error(e);
       window.localStorage.setItem("isLoggedIn", "false");
       await logout({ state, dispatch })();
       return { loggedIn: false, walletAddress: "" };
     }
-
+    const promiseSyncs = [];
     console.time("finish space auth");
-    const isAdmin = walletAddress.toLowerCase() === adminWallet.toLowerCase();
-    console.log("start auth", isAdmin);
+    console.log("start auth");
     await box.auth([spaceName], { address: walletAddress });
     console.timeLog("finish space auth");
-    console.time("finish space sync");
-    await box.syncDone;
-    console.timeLog("finish space sync");
+    promiseSyncs.push(box.syncDone);
 
     console.log("open space", spaceName);
     console.time("finish open space");
-    const userSpace = await box.openSpace(spaceName);
+    const space = await box.openSpace(spaceName);
     console.timeLog("finish open space");
-    console.log("start space sync");
-    console.time("finish space sync");
-    await userSpace.syncDone;
-    console.timeLog("finish space sync");
+    promiseSyncs.push(space.syncDone);
 
-    let thread;
-    let space;
-    if (isAdmin) {
-      space = userSpace;
-      console.time("finish join thread");
-      console.log("address:", threadAddress);
-      thread = await userSpace.joinThreadByAddress(threadAddress);
-      thread.onUpdate(() => getPosts({ state, dispatch })());
-      console.timeLog("finish join thread");
-    }
+    console.time("finish open thread");
+    const thread = await space.joinThreadByAddress(threadAddress);
+    console.timeLog("finish open thread");
+    const userDid3 = thread._user.DID;
+
+    const moderators: string[] = (
+      await thread.listModerators()
+    ).map((m: string) => m.toLowerCase());
+
     const { profile } = await Box.profileGraphQL(`{
       profile(id: "${walletAddress}") {
         image
@@ -88,18 +91,23 @@ export const login = ({ state, dispatch }: AppContext) => async (
 	}`);
 
     let profileImg = "";
-    if (typeof profile.image !== "undefined") {
+    if (profile && profile.image) {
       profileImg = `${process.env.REACT_APP_IPFS_URL}/${profile.image}`;
     }
 
-    const user = {
+    const user: User = {
       walletAddress,
       loggedIn: true,
       profileImg,
-      bookmarksSpace: userSpace,
+      bookmarksSpace: space,
+      isAdmin: moderators.includes(userDid3),
+      did3: userDid3,
     };
     localStorage.setItem("isLoggedIn", "true");
-
+    console.time("finish syncs");
+    await Promise.all(promiseSyncs);
+    console.timeLog("finish syncs");
+    getModeratorNames(moderators, { state, dispatch });
     dispatch({
       type: LOG_IN,
       value: {
@@ -107,6 +115,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
         space,
         thread,
         user,
+        moderators,
       },
     });
     console.timeLog("finish login");

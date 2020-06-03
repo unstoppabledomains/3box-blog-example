@@ -43,10 +43,11 @@
   font-style: normal;
 }
 
-.comments_footer {
-  overflow-x: hidden !important;
-}
-
 img {
   max-width: 100%;
+}
+
+/* 3Box Comments */
+.comments_footer {
+  overflow-x: hidden !important;
 }

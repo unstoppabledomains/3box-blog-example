@@ -13,6 +13,7 @@ import {
   ADD_POST,
   ADD_BOX,
   SET_CONFIG,
+  SET_MODERATORS,
 } from "types/actions";
 import parseMessage from "utils/parseMessage";
 import { loginTimeout } from "./userActions";
@@ -26,17 +27,11 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
   ).then((res) => res.json());
   const { primary, secondary, background } = config.theme;
   const theme = createTheme(primary, secondary, background);
-  const { profile } = await Box.profileGraphQL(`{
-      profile(id: "${config.adminWallet}") {
-        name
-      }
-	}`);
 
   const newState: AppState = {
     ...state,
     ...config,
     theme,
-    adminName: profile.name,
   };
   dispatch({
     type: SET_CONFIG,
@@ -113,7 +108,11 @@ export const getPost = ({ state, dispatch }: AppContext) => async (
 export const addPost = ({ state, dispatch }: AppContext) => async (
   post: BlogPost
 ) => {
-  const { thread, adminWallet, adminName } = state;
+  const {
+    thread,
+    moderatorNames,
+    user: { did3 },
+  } = state;
   const timestamp = new Date().getTime();
   if (!thread) {
     throw new Error("No thread found. Must authenticate");
@@ -128,6 +127,10 @@ tags: ${post.tags.join(",")}
 ${post.body}`;
 
   const postId: string = await thread.post(newPost);
+  const author =
+    moderatorNames && did3 && moderatorNames[did3]
+      ? moderatorNames[did3]
+      : did3;
 
   dispatch({
     type: ADD_POST,
@@ -137,8 +140,8 @@ ${post.body}`;
         threadData: {
           postId,
           timestamp,
+          author: author || "",
           message: newPost,
-          author: adminName || adminWallet,
         },
       },
     },
@@ -161,12 +164,15 @@ export const deletePost = ({ state, dispatch }: AppContext) => async (
 export const addDraft = ({ state, dispatch }: AppContext) => async (
   post: BlogPost
 ) => {
-  const { space, adminWallet, user } = state;
+  const {
+    space,
+    user: { isAdmin },
+  } = state;
   const timestamp = new Date().getTime();
   if (!space) {
     throw new Error("No space found. Must authenticate");
   }
-  if (user.walletAddress?.toLowerCase() !== adminWallet.toLowerCase()) {
+  if (!isAdmin) {
     throw new Error("Not admin user");
   }
   const newPost = `---
@@ -187,11 +193,14 @@ ${post.body}`;
 export const removeDraft = ({ state, dispatch }: AppContext) => async (
   draftId: string
 ) => {
-  const { space, adminWallet, user } = state;
+  const {
+    space,
+    user: { isAdmin },
+  } = state;
   if (!space) {
     throw new Error("No space found. Must authenticate");
   }
-  if (user.walletAddress?.toLowerCase() !== adminWallet.toLowerCase()) {
+  if (!isAdmin) {
     throw new Error("Not admin user");
   }
   const draftsString = await space.private.get("drafts");
@@ -201,22 +210,29 @@ export const removeDraft = ({ state, dispatch }: AppContext) => async (
 };
 
 export const getDrafts = ({ state, dispatch }: AppContext) => async () => {
-  const { space, adminWallet, adminName, user } = state;
+  const {
+    space,
+    moderatorNames,
+    user: { isAdmin, did3 },
+  } = state;
   if (!space) {
     throw new Error("No space found. Must authenticate");
   }
 
-  if (user.walletAddress?.toLowerCase() !== adminWallet.toLowerCase()) {
+  if (!isAdmin) {
     throw new Error("Not admin user");
   }
   const draftsString = await space.private.get("drafts");
   const drafts: DraftPost[] = draftsString ? JSON.parse(draftsString) : [];
-
+  const author =
+    moderatorNames && did3 && moderatorNames[did3]
+      ? moderatorNames[did3]
+      : did3;
   return drafts.length > 0
     ? drafts.map((draft) =>
         parseMessage(
           {
-            author: adminName || adminWallet,
+            author: author || "",
             message: draft.post,
             postId: draft.id,
             timestamp: new Date().getTime(),
@@ -313,4 +329,18 @@ export const removeLike = ({ state, dispatch }: AppContext) => async (
       like.message.toLowerCase() === user.walletAddress?.toLowerCase()
   );
   await likesThread.deletePost(post[0].postId);
+};
+
+export const addModerator = ({ state, dispatch }: AppContext) => async (
+  newModeratorAddress: string
+) => {
+  const { user, thread } = state;
+  if (!user.isAdmin) {
+    throw new Error("User must be admin to add a moderator");
+  } else if (!thread) {
+    throw new Error("Thread does not exist");
+  }
+  await thread.addModerator(newModeratorAddress);
+  const moderators = await thread.listModerators();
+  dispatch({ type: SET_MODERATORS, value: { moderators } });
 };

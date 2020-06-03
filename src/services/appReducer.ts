@@ -8,6 +8,7 @@ import {
   SET_POSTS,
   DELETE_POST,
   SET_CONFIG,
+  SET_MODERATORS,
 } from "types/actions";
 
 const appReducer = (state: AppState, action: AppAction) => {
@@ -19,8 +20,8 @@ const appReducer = (state: AppState, action: AppAction) => {
       return { ...state, box: action.value.box } as AppState;
     }
     case LOG_IN: {
-      const { user, thread, space, box } = action.value;
-      return { ...state, user, thread, space, box } as AppState;
+      const { user, thread, space, box, moderators } = action.value;
+      return { ...state, user, thread, space, box, moderators } as AppState;
     }
     case LOG_OUT: {
       return {
@@ -52,6 +53,10 @@ const appReducer = (state: AppState, action: AppAction) => {
       }
 
       return { ...state, posts } as AppState;
+    }
+    case SET_MODERATORS: {
+      const { moderators } = action.value;
+      return { ...state, moderators } as AppState;
     }
     default:
       throw new Error();

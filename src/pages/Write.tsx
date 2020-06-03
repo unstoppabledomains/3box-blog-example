@@ -39,10 +39,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
   useAsyncEffect(async () => {
     if (!state.user.loggedIn) {
       await handleLogin();
-    } else if (
-      state.user.walletAddress?.toLowerCase() !==
-      state.adminWallet.toLowerCase()
-    ) {
+    } else if (!state.user.isAdmin) {
       handleRoute("");
     } else if (id) {
       const index = parseInt(id, 10);
@@ -55,11 +52,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
 
   const handleLogin = async () => {
     const user = await loginTimeout({ state, dispatch })();
-    if (
-      !user ||
-      !user.loggedIn ||
-      user.walletAddress?.toLowerCase() !== state.adminWallet.toLowerCase()
-    ) {
+    if (!user || !user.loggedIn || !user.isAdmin) {
       handleRoute("");
     }
   };
