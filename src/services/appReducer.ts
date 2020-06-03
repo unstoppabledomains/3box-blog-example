@@ -34,17 +34,23 @@ const appReducer = (state: AppState, action: AppAction) => {
       } as AppState;
     }
     case ADD_POST: {
-      const posts = state.posts?.unshift(action.value.post);
+      const posts = state.posts || [];
+      posts.unshift(action.value.post);
       return { ...state, posts } as AppState;
     }
     case SET_POSTS: {
       return { ...state, posts: action.value.posts } as AppState;
     }
     case DELETE_POST: {
+      const { postId } = action.value;
       const index = state.posts?.findIndex(
-        (post) => post.threadData?.postId === action.value
+        (post) => post.threadData?.postId === postId
       );
-      const posts = index ? state.posts?.splice(index, 1) : state.posts;
+      let posts = state.posts ? [...state.posts] : [];
+      if (typeof index !== "undefined" && index > -1) {
+        posts.splice(index, 1);
+      }
+
       return { ...state, posts } as AppState;
     }
     default:

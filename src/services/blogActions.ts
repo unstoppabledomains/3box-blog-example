@@ -60,6 +60,7 @@ export const initBox = ({ state, dispatch }: AppContext) => async () => {
   if (!state.box && window.navigator.cookieEnabled && localStorageTest()) {
     try {
       const provider = await Box.get3idConnectProvider();
+      // Pass eth provider instead
       const box = await Box.create(provider);
       dispatch({ type: ADD_BOX, value: { box } });
       return box;
@@ -72,9 +73,11 @@ export const initBox = ({ state, dispatch }: AppContext) => async () => {
 };
 
 // Posts
-export const getPosts = ({ state, dispatch }: AppContext) => async () => {
+export const getPosts = ({ state, dispatch }: AppContext) => async (
+  forceUpdate = false
+) => {
   const { thread, threadAddress } = state;
-  if (state.posts && state.posts.length > 0) {
+  if (!forceUpdate && state.posts && state.posts.length > 0) {
     // TODO compare timestamp of latest post to check refresh
     return state.posts;
   }
@@ -110,7 +113,7 @@ export const getPost = ({ state, dispatch }: AppContext) => async (
 export const addPost = ({ state, dispatch }: AppContext) => async (
   post: BlogPost
 ) => {
-  const { thread, adminWallet } = state;
+  const { thread, adminWallet, adminName } = state;
   const timestamp = new Date().getTime();
   if (!thread) {
     throw new Error("No thread found. Must authenticate");
@@ -125,8 +128,6 @@ tags: ${post.tags.join(",")}
 ${post.body}`;
 
   const postId: string = await thread.post(newPost);
-  // TODO covert adminWallet to user name
-  // TODO covert adminWallet/3ID to user name in Read
 
   dispatch({
     type: ADD_POST,
@@ -137,7 +138,7 @@ ${post.body}`;
           postId,
           timestamp,
           message: newPost,
-          author: adminWallet,
+          author: adminName || adminWallet,
         },
       },
     },

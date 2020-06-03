@@ -76,6 +76,8 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
     try {
       const postId = await addPost({ state, dispatch })(post);
       setPost({ ...post, threadData: { postId } as ThreadObject });
+      console.log("postId", postId);
+
       handleRoute("read", postId);
     } catch (error) {
       console.error(error);

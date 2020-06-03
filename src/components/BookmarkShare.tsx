@@ -9,15 +9,20 @@ import appContext from "services/appContext";
 import useAsyncEffect from "use-async-effect";
 import IconButton from "@material-ui/core/IconButton";
 import ShareIcon from "@material-ui/icons/ShareOutlined";
+import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import BookmarkAdd from "components/BookmarkAdd";
 import Bookmarked from "@material-ui/icons/Bookmark";
 import SharePopup from "./SharePopup";
 
 interface Props {
   postId: string;
+  handleDelete?: () => void;
 }
 
-const BookmarkShare: React.FunctionComponent<Props> = ({ postId }) => {
+const BookmarkShare: React.FunctionComponent<Props> = ({
+  postId,
+  handleDelete,
+}) => {
   const classes = useStyles();
   const [isBookmarked, setIsBookmarked] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState(false);
@@ -70,6 +75,17 @@ const BookmarkShare: React.FunctionComponent<Props> = ({ postId }) => {
         <ShareIcon color="secondary" />
       </IconButton>
       <SharePopup handleClose={handleClose} anchorRef={anchorRef} open={open} />
+      {typeof handleDelete !== "undefined" && (
+        <IconButton
+          className={classes.icon}
+          ref={anchorRef}
+          onClick={handleDelete}
+          aria-controls="social-popup"
+          aria-haspopup="true"
+        >
+          <DeleteIcon color="error" />
+        </IconButton>
+      )}
     </div>
   );
 };

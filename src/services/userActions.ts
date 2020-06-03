@@ -52,28 +52,34 @@ export const login = ({ state, dispatch }: AppContext) => async (
       await logout({ state, dispatch })();
       return { loggedIn: false, walletAddress: "" };
     }
-    // console.log("start auth for", walletAddress);
+
     console.time("finish space auth");
     const isAdmin = walletAddress.toLowerCase() === adminWallet.toLowerCase();
+    console.log("start auth", isAdmin);
     await box.auth([spaceName], { address: walletAddress });
-    await box.syncDone;
     console.timeLog("finish space auth");
+    console.time("finish space sync");
+    await box.syncDone;
+    console.timeLog("finish space sync");
 
-    // console.log("open space", spaceName);
-    // console.time("finish open space");
+    console.log("open space", spaceName);
+    console.time("finish open space");
     const userSpace = await box.openSpace(spaceName);
-    // console.timeLog("finish open space");
-    // console.log("start space sync");
-    // console.time("finish space sync");
+    console.timeLog("finish open space");
+    console.log("start space sync");
+    console.time("finish space sync");
     await userSpace.syncDone;
-    // console.timeLog("finish space sync");
+    console.timeLog("finish space sync");
 
     let thread;
     let space;
     if (isAdmin) {
       space = userSpace;
+      console.time("finish join thread");
+      console.log("address:", threadAddress);
       thread = await userSpace.joinThreadByAddress(threadAddress);
       thread.onUpdate(() => getPosts({ state, dispatch })());
+      console.timeLog("finish join thread");
     }
     const { profile } = await Box.profileGraphQL(`{
       profile(id: "${walletAddress}") {
