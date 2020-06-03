@@ -12,7 +12,9 @@ import MenuList from "@material-ui/core/MenuList";
 import CustomIcon from "./CustomIcon";
 import appContext from "services/appContext";
 import Typography from "@material-ui/core/Typography";
+import PersonAdd from "@material-ui/icons/PersonAddOutlined";
 import { RoutingProps } from "types/app";
+import { addModerator } from "services/blogActions";
 
 interface Props {
   onLogout: () => void;
@@ -29,7 +31,7 @@ const AvatarMenu: React.FunctionComponent<Props & RoutingProps> = ({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
-  const { state } = React.useContext(appContext);
+  const { state, dispatch } = React.useContext(appContext);
   const {
     theme: { palette },
     user: { walletAddress },
@@ -63,6 +65,25 @@ const AvatarMenu: React.FunctionComponent<Props & RoutingProps> = ({
   };
   const handleDrafts = () => {
     handleRoute("drafts");
+  };
+  const handleAddAuthor = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to add an author? This action is currently irreversible"
+      )
+    ) {
+      const newModerator = window.prompt(
+        "Please enter author's wallet address"
+      );
+      if (newModerator) {
+        try {
+          await addModerator({ state, dispatch })(newModerator);
+          window.alert(`Add new author: ${newModerator}`);
+        } catch (error) {
+          window.alert(error);
+        }
+      }
+    }
   };
 
   return (
@@ -128,6 +149,14 @@ const AvatarMenu: React.FunctionComponent<Props & RoutingProps> = ({
                         </div>
                         <Typography className={classes.menuItem}>
                           Drafts
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem onClick={handleAddAuthor}>
+                        <div className={classes.menuIcon}>
+                          <PersonAdd color="primary" />
+                        </div>
+                        <Typography className={classes.menuItem}>
+                          Add Author
                         </Typography>
                       </MenuItem>
                     </>

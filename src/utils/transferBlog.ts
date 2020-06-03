@@ -18,7 +18,7 @@ export const joinSpace = async (
   await space.joinThreadByAddress(threadAddress);
 };
 
-export const addModerator = async (
+export const addBlogModerator = async (
   threadAddress: string,
   spaceName: string,
   newModeratorAddress: string
