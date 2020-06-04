@@ -9,6 +9,7 @@ import {
   DELETE_POST,
   SET_CONFIG,
   SET_MODERATORS,
+  SET_MODERATOR_NAMES,
 } from "types/actions";
 
 const appReducer = (state: AppState, action: AppAction) => {
@@ -57,6 +58,10 @@ const appReducer = (state: AppState, action: AppAction) => {
     case SET_MODERATORS: {
       const { moderators } = action.value;
       return { ...state, moderators } as AppState;
+    }
+    case SET_MODERATOR_NAMES: {
+      const { moderatorNames } = action.value;
+      return { ...state, moderatorNames } as AppState;
     }
     default:
       throw new Error();

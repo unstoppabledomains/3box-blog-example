@@ -8,17 +8,6 @@ const web3Alert = `This website utilizes Web3 technology to manage authenticatio
 
 You will still be able to read articles, however other features will not be available.`;
 
-const getModeratorNames = async (
-  moderators: string[],
-  { state, dispatch }: AppContext
-) => {
-  console.log("start get profiles");
-  console.log(moderators);
-  const profiles = await Box.getProfiles(moderators);
-  console.log("profiles");
-  console.log(profiles);
-};
-
 export const loginTimeout = ({ state, dispatch }: AppContext) => async (
   initialBox?: any,
   initialState?: AppState
@@ -107,7 +96,6 @@ export const login = ({ state, dispatch }: AppContext) => async (
     console.time("finish syncs");
     await Promise.all(promiseSyncs);
     console.timeLog("finish syncs");
-    getModeratorNames(moderators, { state, dispatch });
     dispatch({
       type: LOG_IN,
       value: {

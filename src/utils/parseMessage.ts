@@ -1,11 +1,15 @@
-import { ThreadObject, BlogPost, AppState } from "types/app";
+import { ThreadObject, BlogPost } from "types/app";
 import fm from "front-matter";
 
-export default (postThread: ThreadObject, state: AppState): BlogPost => {
+export default (
+  postThread: ThreadObject,
+  moderatorNames?: { [key: string]: string }
+): BlogPost => {
   const parsedMessage: any = fm(postThread.message);
-  const author = state.moderatorNames
-    ? state.moderatorNames[postThread.author]
+  const author = moderatorNames
+    ? moderatorNames[postThread.author]
     : postThread.author;
+
   const tags = parsedMessage.attributes.tags
     ? parsedMessage.attributes.tags.split(",")
     : [];

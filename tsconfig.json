@@ -14,7 +14,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "downlevelIteration": true
   },
   "include": ["**/*.d.ts", "src/types/*.d.ts", "**/*.ts", "**/*.tsx"]
 }

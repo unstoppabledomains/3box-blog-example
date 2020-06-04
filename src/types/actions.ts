@@ -8,6 +8,7 @@ export const ADD_POST = "ADD_POST";
 export const SET_POSTS = "SET_POSTS";
 export const DELETE_POST = "DELETE_POST";
 export const SET_MODERATORS = "SET_MODERATORS";
+export const SET_MODERATOR_NAMES = "SET_MODERATOR_NAMES";
 
 export type ActionTypes =
   | typeof SET_CONFIG
@@ -17,7 +18,8 @@ export type ActionTypes =
   | typeof ADD_POST
   | typeof SET_POSTS
   | typeof DELETE_POST
-  | typeof SET_MODERATORS;
+  | typeof SET_MODERATORS
+  | typeof SET_MODERATOR_NAMES;
 
 export interface AppAction {
   type: ActionTypes;

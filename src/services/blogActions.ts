@@ -14,6 +14,7 @@ import {
   ADD_BOX,
   SET_CONFIG,
   SET_MODERATORS,
+  SET_MODERATOR_NAMES,
 } from "types/actions";
 import parseMessage from "utils/parseMessage";
 import { loginTimeout } from "./userActions";
@@ -80,13 +81,27 @@ export const getPosts = ({ state, dispatch }: AppContext) => async (
   const postThreads: ThreadObject[] = thread
     ? await thread.getPosts()
     : await Box.getThreadByAddress(threadAddress);
+
+  const threadAuthors = postThreads.map((thread) => thread.author);
+  const authors = [...new Set(threadAuthors)];
+  const names = await Promise.all(
+    authors.map(async (a) => ({
+      [a]: (await Box.getProfile(a)).name || a,
+    }))
+  );
+  let moderatorNames = {};
+  names.forEach((obj) => {
+    moderatorNames = { ...moderatorNames, ...obj };
+  });
+
   const posts = postThreads
-    .map((post) => parseMessage(post, state))
+    .map((post) => parseMessage(post, moderatorNames))
     .sort((a: any, b: any) =>
       a.threadData.timestamp < b.threadData.timestamp ? 1 : -1
     );
 
   dispatch({ type: SET_POSTS, value: { posts } });
+  dispatch({ type: SET_MODERATOR_NAMES, value: { moderatorNames } });
   return posts;
 };
 
@@ -230,15 +245,12 @@ export const getDrafts = ({ state, dispatch }: AppContext) => async () => {
       : did3;
   return drafts.length > 0
     ? drafts.map((draft) =>
-        parseMessage(
-          {
-            author: author || "",
-            message: draft.post,
-            postId: draft.id,
-            timestamp: new Date().getTime(),
-          },
-          state
-        )
+        parseMessage({
+          author: author || "",
+          message: draft.post,
+          postId: draft.id,
+          timestamp: new Date().getTime(),
+        })
       )
     : [];
 };
