@@ -5,6 +5,8 @@ export default (
   postThread: ThreadObject,
   moderatorNames?: { [key: string]: string }
 ): BlogPost => {
+  console.log(postThread.postId);
+
   const parsedMessage: any = fm(postThread.message);
   const author = moderatorNames
     ? moderatorNames[postThread.author]
@@ -13,6 +15,8 @@ export default (
   const tags = parsedMessage.attributes.tags
     ? parsedMessage.attributes.tags.split(",")
     : [];
+  console.log(parsedMessage.attributes.title);
+  console.log(postThread.timestamp);
   return {
     title: parsedMessage.attributes.title,
     description: parsedMessage.attributes.description,

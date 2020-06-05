@@ -35,7 +35,10 @@ const ReadPost: React.FunctionComponent<Props & RoutingProps> = ({
 
   const {
     // box,
-    user: { walletAddress, isAdmin },
+    user: {
+      // walletAddress,
+      isAdmin,
+    },
     // spaceName,
   } = state;
 

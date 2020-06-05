@@ -93,7 +93,6 @@ export const getPosts = ({ state, dispatch }: AppContext) => async (
   names.forEach((obj) => {
     moderatorNames = { ...moderatorNames, ...obj };
   });
-
   const posts = postThreads
     .map((post) => parseMessage(post, moderatorNames))
     .sort((a: any, b: any) =>
@@ -120,46 +119,44 @@ export const getPost = ({ state, dispatch }: AppContext) => async (
   }
 };
 
+const msToSec = (a: number) => (a - (a % 1000)) / 1000;
+
 export const addPost = ({ state, dispatch }: AppContext) => async (
-  post: BlogPost
+  newPost: BlogPost
 ) => {
   const {
     thread,
     moderatorNames,
     user: { did3 },
   } = state;
-  const timestamp = new Date().getTime();
+  const timestamp = msToSec(new Date().getTime());
+  console.log(timestamp);
+
   if (!thread) {
     throw new Error("No thread found. Must authenticate");
   }
-  const newPost = `---
+  const message = `---
 createdAt: ${timestamp}
 updatedAt: ${timestamp}
-title: ${post.title}
-description: ${post.description}
-tags: ${post.tags.join(",")}
+title: ${newPost.title}
+description: ${newPost.description}
+tags: ${newPost.tags.join(",")}
 ---
-${post.body}`;
+${newPost.body}`;
 
-  const postId: string = await thread.post(newPost);
-  const author =
-    moderatorNames && did3 && moderatorNames[did3]
-      ? moderatorNames[did3]
-      : did3;
-
+  const postId: string = await thread.post(message);
+  const post = parseMessage(
+    {
+      postId,
+      timestamp,
+      message,
+      author: did3 || "",
+    },
+    moderatorNames
+  );
   dispatch({
     type: ADD_POST,
-    value: {
-      post: {
-        ...post,
-        threadData: {
-          postId,
-          timestamp,
-          author: author || "",
-          message: newPost,
-        },
-      },
-    },
+    value: { post },
   });
   return postId;
 };
@@ -183,7 +180,8 @@ export const addDraft = ({ state, dispatch }: AppContext) => async (
     space,
     user: { isAdmin },
   } = state;
-  const timestamp = new Date().getTime();
+  const timestamp = msToSec(new Date().getTime());
+
   if (!space) {
     throw new Error("No space found. Must authenticate");
   }
