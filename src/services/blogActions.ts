@@ -21,6 +21,7 @@ import { loginTimeout } from "./userActions";
 // import { login } from "./userActions";
 import createTheme from "utils/createTheme";
 import localStorageTest from "utils/localStorageTest";
+import fm from "front-matter";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
   const config: ConfigFile = await fetch(
@@ -143,6 +144,7 @@ description: ${newPost.description}
 tags: ${newPost.tags.join(",")}
 ---
 ${newPost.body}`;
+  fm.test(message);
 
   const postId: string = await thread.post(message);
   const post = parseMessage(
