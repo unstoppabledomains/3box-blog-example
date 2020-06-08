@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT } from "types/actions";
+import { LOG_IN, LOG_OUT, UPDATE_AUTH } from "types/actions";
 import { initBox, getPosts } from "./blogActions";
 import { AppContext, User, AppState } from "types/app";
 import localStorageTest from "utils/localStorageTest";
@@ -31,7 +31,8 @@ export const login = ({ state, dispatch }: AppContext) => async (
   initialBox?: any,
   initialState?: AppState
 ) => {
-  //   console.log("start login()");
+  dispatch({ type: UPDATE_AUTH });
+  console.log("start auth");
   console.time("finish login");
   try {
     if (!localStorageTest()) {
@@ -49,11 +50,10 @@ export const login = ({ state, dispatch }: AppContext) => async (
       console.error(e);
       window.localStorage.setItem("isLoggedIn", "false");
       await logout({ state, dispatch })();
-      return { loggedIn: false, walletAddress: "" };
+      return { loggedIn: false, loading: false, walletAddress: "" };
     }
     const promiseSyncs = [];
     console.time("finish space auth");
-    console.log("start auth");
     await box.auth([spaceName], { address: walletAddress });
     console.timeLog("finish space auth");
     promiseSyncs.push(box.syncDone);
@@ -87,6 +87,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
     const user: User = {
       walletAddress,
       loggedIn: true,
+      loading: false,
       profileImg,
       bookmarksSpace: space,
       isAdmin: moderators.includes(userDid3),
@@ -115,6 +116,7 @@ export const login = ({ state, dispatch }: AppContext) => async (
 };
 
 export const logout = ({ state, dispatch }: AppContext) => async () => {
+  dispatch({ type: UPDATE_AUTH });
   const { box } = state;
   await box.logout();
   window.localStorage.setItem("isLoggedIn", "false");

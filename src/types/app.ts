@@ -63,6 +63,7 @@ export interface TemplateSocials {
 
 export interface User {
   loggedIn: boolean;
+  loading: boolean;
   walletAddress?: string;
   profileImg?: string;
   bookmarksSpace?: any;
@@ -97,6 +98,7 @@ export const initialState: AppState = {
   thread: null,
   user: {
     loggedIn: false,
+    loading: false,
   },
   posts: undefined,
   theme: defaultTheme,

@@ -12,7 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import appContext from "services/appContext";
-import { loginTimeout } from "services/userActions";
+import { loginTimeout as login } from "services/userActions";
 // import { login } from "services/userActions";
 import useStyles from "styles/pages/Write.styles";
 import useAsyncEffect from "use-async-effect";
@@ -51,7 +51,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
   }, [id]);
 
   const handleLogin = async () => {
-    const user = await loginTimeout({ state, dispatch })();
+    const user = await login({ state, dispatch })();
     if (!user || !user.loggedIn || !user.isAdmin) {
       handleRoute("");
     }

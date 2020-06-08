@@ -1,6 +1,6 @@
 import React from "react";
 import appContext from "services/appContext";
-import { logout, loginTimeout } from "services/userActions";
+import { logout, loginTimeout as login } from "services/userActions";
 // import { login, logout } from "services/userActions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,11 +15,10 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   const { state, dispatch } = React.useContext(appContext);
   const { title, logo } = state;
   const {
-    user: { loggedIn, walletAddress, profileImg, isAdmin },
+    user: { loggedIn, walletAddress, profileImg, isAdmin, loading },
     theme: { palette },
     socials,
   } = state;
-  const [loading, setLoading] = React.useState<boolean>(false);
 
   const toHome = () => {
     handleRoute("");
@@ -36,23 +35,19 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
   };
 
   const handleLogin = async () => {
-    setLoading(true);
     try {
-      await loginTimeout({ state, dispatch })();
+      await login({ state, dispatch })();
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
   };
 
   const handleLogout = async () => {
-    setLoading(true);
     try {
       await logout({ state, dispatch })();
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
   };
 
   const handleAddPost = () => {

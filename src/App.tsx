@@ -30,8 +30,9 @@ const App: React.FunctionComponent = () => {
 
   useAsyncEffect(async () => {
     console.log("start initApp()");
+    console.time("finish initApp()");
     await initApp({ state, dispatch })();
-    console.log("finish initApp()");
+    console.timeLog("finish initApp()");
     setLoading(false);
   }, []);
 

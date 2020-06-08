@@ -10,6 +10,7 @@ import {
   SET_CONFIG,
   SET_MODERATORS,
   SET_MODERATOR_NAMES,
+  UPDATE_AUTH,
 } from "types/actions";
 
 const appReducer = (state: AppState, action: AppAction) => {
@@ -20,6 +21,9 @@ const appReducer = (state: AppState, action: AppAction) => {
     case ADD_BOX: {
       return { ...state, box: action.value.box } as AppState;
     }
+    case UPDATE_AUTH: {
+      return { ...state, user: { ...state.user, loading: true } } as AppState;
+    }
     case LOG_IN: {
       const { user, thread, space, box, moderators } = action.value;
       return { ...state, user, thread, space, box, moderators } as AppState;
@@ -29,6 +33,7 @@ const appReducer = (state: AppState, action: AppAction) => {
         ...state,
         user: {
           loggedIn: false,
+          loading: false,
         },
         thread: null,
         space: null,
