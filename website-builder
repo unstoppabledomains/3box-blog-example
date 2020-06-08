@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+function error() {
+    echo "Error: $1"
+    exit 2
+}
+
+commit_hash=$(git log -n1 --format=format:"%H")
+production=0
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+    -p | --production)
+        production=1
+        ;;
+	-d | --dirty)
+        dirty=1
+        ;;
+    *)
+        error "unknown option '$key'"
+        ;;
+    esac
+    shift
+done
+
+git remote update >/dev/null 2>&1
+diff=`git diff HEAD`
+if [[ -z $dirty && $production -eq 1 && ( -n $diff || $commit_hash != $(git rev-parse @{u}))]]; then
+    error 'push all code before deploy'
+fi
+
+yarn build
+echo $commit_hash > build/build_id
+
+if [[ $production -eq 1 ]]; then
+	rm build/config.json build/logo.png manifest.json
+fi
