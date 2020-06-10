@@ -17,8 +17,8 @@ import {
   SET_MODERATOR_NAMES,
 } from "types/actions";
 import parseMessage from "utils/parseMessage";
-import { loginTimeout as login } from "./userActions";
-// import { login } from "./userActions";
+// import { loginTimeout as login } from "./userActions";
+import { login } from "./userActions";
 import createTheme from "utils/createTheme";
 import localStorageTest from "utils/localStorageTest";
 import fm from "front-matter";
@@ -55,8 +55,11 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
 export const initBox = ({ state, dispatch }: AppContext) => async () => {
   if (!state.box && window.navigator.cookieEnabled && localStorageTest()) {
     try {
-      const provider = await Box.get3idConnectProvider();
-      // Pass eth provider instead
+      const provider = (window as any).ethereum
+        ? (window as any).ethereum
+        : await Box.get3idConnectProvider();
+      console.log(provider);
+
       const box = await Box.create(provider);
       dispatch({ type: ADD_BOX, value: { box } });
       return box;

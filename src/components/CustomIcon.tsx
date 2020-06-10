@@ -493,9 +493,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({
           <g
             id="24-/-basic-/-globe"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
@@ -516,9 +516,9 @@ const CustomIcon: React.FunctionComponent<Props> = ({
           <g
             id="24-/-logos-/-youtube"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <rect id="evericons.com" x="0" y="0" width="24" height="24"></rect>
             <path
