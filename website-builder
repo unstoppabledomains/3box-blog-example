@@ -30,8 +30,8 @@ if [[ -z $dirty && $production -eq 1 && ( -n $diff || $commit_hash != $(git rev-
 fi
 
 yarn build
-echo $commit_hash > build/build_id
+echo {\"build\" : \"$commit_hash\"} > build/version.json
 
 if [[ $production -eq 1 ]]; then
-	rm build/config.json build/logo.png manifest.json
+	rm build/config.json build/logo.png build/manifest.json
 fi

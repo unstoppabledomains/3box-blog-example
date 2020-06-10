@@ -2,6 +2,7 @@
   "name": "3box-blog",
   "version": "4.0.0",
   "homepage": "./",
+  "license": "MIT",
   "dependencies": {
     "3box": "^1.19.0",
     "3box-comments-react": "^3.0.1",
