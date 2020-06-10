@@ -11,17 +11,21 @@
     "background": "#FBF7ED"
   },
   "socials": {
+    "hasWebsite": true,
     "hasFacebook": true,
     "hasInstagram": true,
     "hasLinkedIn": true,
     "hasMedium": true,
     "hasTelegram": true,
     "hasTwitter": true,
+    "hasYouTube": true,
+    "website": "donstolz.tech",
     "facebook": "facebook.com",
     "instagram": "instagram.com",
     "linkedIn": "linkedIn.com",
     "medium": "medium.com",
     "telegram": "telegram.com",
-    "twitter": "twitter.com"
+    "twitter": "twitter.com",
+    "youTube": "youtube.com"
   }
 }

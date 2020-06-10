@@ -47,12 +47,14 @@ const StandardHeader: React.FunctionComponent<Props> = ({
   logo,
 }) => {
   const classes = useStyles();
+  const handleWebsite = () => handleSocials("website");
   const handleFacebook = () => handleSocials("facebook");
   const handleInstagram = () => handleSocials("instagram");
   const handleTwitter = () => handleSocials("twitter");
   const handleTelegram = () => handleSocials("telegram");
   const handleLinkedIn = () => handleSocials("linkedIn");
   const handleMedium = () => handleSocials("medium");
+  const handleYouTube = () => handleSocials("youTube");
 
   return (
     <>
@@ -94,6 +96,15 @@ const StandardHeader: React.FunctionComponent<Props> = ({
       </div>
       <div className={classes.rightContainer}>
         <div className={classes.socialRow}>
+          {socials.hasWebsite && (
+            <IconButton
+              id="website"
+              className={classes.socialIcon}
+              onClick={handleWebsite}
+            >
+              <CustomIcon type="website" color={palette.primary.contrastText} />
+            </IconButton>
+          )}
           {socials.hasFacebook && (
             <IconButton
               id="facebook"
@@ -158,6 +169,15 @@ const StandardHeader: React.FunctionComponent<Props> = ({
               onClick={handleMedium}
             >
               <CustomIcon type="medium" color={palette.primary.contrastText} />
+            </IconButton>
+          )}
+          {socials.hasYouTube && (
+            <IconButton
+              id="youTube"
+              className={classes.socialIcon}
+              onClick={handleYouTube}
+            >
+              <CustomIcon type="youTube" color={palette.primary.contrastText} />
             </IconButton>
           )}
         </div>

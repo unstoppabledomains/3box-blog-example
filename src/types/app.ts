@@ -52,12 +52,16 @@ export interface TemplateSocials {
   hasMedium: boolean;
   hasTelegram: boolean;
   hasTwitter: boolean;
+  hasYouTube: boolean;
+  hasWebsite: boolean;
   facebook: string;
   instagram: string;
   linkedIn: string;
   medium: string;
   telegram: string;
   twitter: string;
+  youTube: string;
+  website: string;
   iconColor: string;
 }
 
@@ -109,18 +113,22 @@ export const initialState: AppState = {
   moderators: [""],
   spaceName: "",
   socials: {
+    hasWebsite: false,
     hasFacebook: false,
     hasInstagram: false,
     hasLinkedIn: false,
     hasMedium: false,
     hasTelegram: false,
     hasTwitter: false,
+    hasYouTube: false,
+    website: "",
     facebook: "",
     instagram: "",
     linkedIn: "",
     medium: "",
     telegram: "",
     twitter: "",
+    youTube: "",
     iconColor: "#FFFFFF",
   },
 };

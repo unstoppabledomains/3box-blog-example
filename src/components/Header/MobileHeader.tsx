@@ -53,12 +53,14 @@ const MobileHeader: React.FunctionComponent<Props> = ({
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
 
+  const handleWebsite = () => handleSocials("website");
   const handleFacebook = () => handleSocials("facebook");
   const handleInstagram = () => handleSocials("instagram");
   const handleTwitter = () => handleSocials("twitter");
   const handleTelegram = () => handleSocials("telegram");
   const handleLinkedIn = () => handleSocials("linkedIn");
   const handleMedium = () => handleSocials("medium");
+  const handleYouTube = () => handleSocials("youTube");
 
   const toggleOpen = () => setOpen((o) => !o);
 
@@ -162,6 +164,14 @@ const MobileHeader: React.FunctionComponent<Props> = ({
           <ListItem>
             <span className={classes.socialHeader}>Social Media</span>{" "}
           </ListItem>
+          {socials.hasWebsite && (
+            <ListItem id="website" onClick={handleWebsite}>
+              <ListItemIcon>
+                <CustomIcon type="website" color={palette.text.primary} />
+              </ListItemIcon>
+              <ListItemText primary="Website" />
+            </ListItem>
+          )}
           {socials.hasFacebook && (
             <ListItem id="facebook" onClick={handleFacebook}>
               <ListItemIcon>
@@ -208,6 +218,14 @@ const MobileHeader: React.FunctionComponent<Props> = ({
                 <CustomIcon type="medium" color={palette.text.primary} />
               </ListItemIcon>
               <ListItemText primary="Medium" />
+            </ListItem>
+          )}
+          {socials.hasYouTube && (
+            <ListItem id="youTube" onClick={handleYouTube}>
+              <ListItemIcon>
+                <CustomIcon type="youTube" color={palette.text.primary} />
+              </ListItemIcon>
+              <ListItemText primary="YouTube" />
             </ListItem>
           )}
         </List>
