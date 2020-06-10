@@ -130,7 +130,6 @@ export const addPost = ({ state, dispatch }: AppContext) => async (
     user: { did3 },
   } = state;
   const timestamp = msToSec(new Date().getTime());
-  console.log(timestamp);
 
   if (!thread) {
     throw new Error("No thread found. Must authenticate");
