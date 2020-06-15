@@ -11,16 +11,13 @@ import {
   SET_POSTS,
   DELETE_POST,
   ADD_POST,
-  ADD_BOX,
   SET_CONFIG,
   SET_MODERATORS,
   SET_MODERATOR_NAMES,
 } from "types/actions";
 import parseMessage from "utils/parseMessage";
-// import { loginTimeout as login } from "./userActions";
 import { login } from "./userActions";
 import createTheme from "utils/createTheme";
-import localStorageTest from "utils/localStorageTest";
 import fm from "front-matter";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
@@ -40,35 +37,15 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
     value: newState,
   });
   try {
-    const box = await initBox({ state, dispatch })();
-    if (localStorageTest()) {
+    if (Box.isLoggedIn) {
       const isLoggedIn = window.localStorage.getItem("isLoggedIn");
       if (isLoggedIn === "true") {
-        login({ state, dispatch })(box, newState);
+        login({ state: newState, dispatch })();
       }
     }
   } catch (error) {
     console.error(error);
   }
-};
-
-export const initBox = ({ state, dispatch }: AppContext) => async () => {
-  if (!state.box && window.navigator.cookieEnabled && localStorageTest()) {
-    try {
-      const provider = (window as any).ethereum
-        ? (window as any).ethereum
-        : await Box.get3idConnectProvider();
-      console.log(provider);
-
-      const box = await Box.create(provider);
-      dispatch({ type: ADD_BOX, value: { box } });
-      return box;
-    } catch (error) {
-      console.error("box error:", error);
-      return null;
-    }
-  }
-  return state.box;
 };
 
 // Posts

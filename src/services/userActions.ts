@@ -1,5 +1,5 @@
 import { LOG_IN, LOG_OUT, UPDATE_AUTH } from "types/actions";
-import { initBox, getPosts } from "./blogActions";
+import { getPosts } from "./blogActions";
 import { AppContext, User, AppState } from "types/app";
 import localStorageTest from "utils/localStorageTest";
 import Box from "3box";
@@ -8,10 +8,7 @@ const web3Alert = `This website utilizes Web3 technology to manage authenticatio
 
 You will still be able to read articles, however other features will not be available.`;
 
-export const loginTimeout = ({ state, dispatch }: AppContext) => async (
-  initialBox?: any,
-  initialState?: AppState
-) =>
+export const loginTimeout = ({ state, dispatch }: AppContext) => async () =>
   new Promise<User | undefined>((resolve, reject) => {
     console.log("start loginTimeout");
     const loginTimer = setTimeout(() => {
@@ -19,7 +16,7 @@ export const loginTimeout = ({ state, dispatch }: AppContext) => async (
       window.alert(web3Alert);
       return;
     }, 180000);
-    login({ state, dispatch })(initialBox, initialState)
+    login({ state, dispatch })()
       .then((res) => {
         resolve(res);
         clearTimeout(loginTimer);
@@ -27,10 +24,7 @@ export const loginTimeout = ({ state, dispatch }: AppContext) => async (
       .catch((res) => reject(res));
   });
 
-export const login = ({ state, dispatch }: AppContext) => async (
-  initialBox?: any,
-  initialState?: AppState
-) => {
+export const login = ({ state, dispatch }: AppContext) => async () => {
   dispatch({ type: UPDATE_AUTH });
   console.log("start auth");
   console.time("finish login");
@@ -39,19 +33,20 @@ export const login = ({ state, dispatch }: AppContext) => async (
       window.alert(web3Alert);
       throw new Error("Local storage is not enabled to use 3Box profiles");
     }
-
-    const box =
-      initialBox || state.box || (await initBox({ state, dispatch })());
-    const { spaceName, threadAddress } = initialState || state;
+    const { spaceName, threadAddress } = state;
     let walletAddress = "";
     try {
-      walletAddress = ((await (window as any).ethereum.enable()) as string)[0].toLowerCase();
+      walletAddress = (await window.ethereum.enable())[0].toLowerCase();
     } catch (e) {
       console.error(e);
       window.localStorage.setItem("isLoggedIn", "false");
       await logout({ state, dispatch })();
       return { loggedIn: false, loading: false, walletAddress: "" };
     }
+
+    console.time("finish box");
+    const box = Box.openBox(walletAddress, window.ethereum);
+    console.timeLog("finish box");
     const promiseSyncs = [];
     console.time("finish space auth");
     await box.auth([spaceName], { address: walletAddress });

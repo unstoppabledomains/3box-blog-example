@@ -3,6 +3,12 @@ import { defaultTheme } from "utils/createTheme";
 import { Dispatch } from "react";
 import { AppAction } from "./actions";
 
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
+
 export type AppPages = "read" | "write" | "drafts" | "bookmarks" | "";
 export interface RoutingProps {
   handleRoute: (page: any, docId?: string) => void;

@@ -1,7 +1,6 @@
 import { AppState } from "types/app";
 import {
   AppAction,
-  ADD_BOX,
   LOG_IN,
   LOG_OUT,
   ADD_POST,
@@ -17,9 +16,6 @@ const appReducer = (state: AppState, action: AppAction) => {
   switch (action.type) {
     case SET_CONFIG: {
       return { ...state, ...action.value } as AppState;
-    }
-    case ADD_BOX: {
-      return { ...state, box: action.value.box } as AppState;
     }
     case UPDATE_AUTH: {
       return { ...state, user: { ...state.user, loading: true } } as AppState;
