@@ -21,10 +21,10 @@ import createTheme from "utils/createTheme";
 import fm from "front-matter";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
+  const boxPromise = Box.create();
   const configPromise: Promise<ConfigFile> = fetch(
     `${process.env.PUBLIC_URL}/config.json`
   ).then((res) => res.json());
-  const boxPromise = Box.create();
   const [config, box] = await Promise.all([configPromise, boxPromise]);
 
   const { primary, secondary, background } = config.theme;
@@ -40,11 +40,9 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
     value: newState,
   });
   try {
-    if (Box.isLoggedIn) {
-      const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-      if (isLoggedIn === "true") {
-        login({ state: newState, dispatch })();
-      }
+    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      login({ state: newState, dispatch })();
     }
   } catch (error) {
     console.error(error);

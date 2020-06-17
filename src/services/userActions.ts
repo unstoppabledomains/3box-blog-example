@@ -42,27 +42,29 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       throw new Error("No web3 provider");
     }
     const provider =
-      (walletConnect && windowObj.walletConnect) ||
-      windowObj.ethereum ||
-      windowObj.web3.currentProvider;
+      //   (walletConnect && windowObj.walletConnect) ||
+      windowObj.ethereum || windowObj.web3.currentProvider;
     const walletAddress = (await provider.enable())[0];
     if (!walletAddress) {
       throw new Error("No wallet address found");
     }
     const { spaceName, threadAddress } = state;
-
-    console.time("finish box");
     const box = state.box || (await Box.create());
-    console.timeLog("finish box");
+    await box.syncDone;
 
     console.log("open space", spaceName);
     console.time("finish open space");
-    const space = await box.auth([spaceName], {
+    await box.auth([spaceName], {
       address: walletAddress,
       provider,
     });
+    const space = await box.openSpace(spaceName);
+    console.time("finish space sync");
+    await space.syncDone;
+    console.timeLog("finish space sync");
     console.timeLog("finish open space");
 
+    console.log("join thread", threadAddress);
     console.time("finish open thread");
     const thread = await space.joinThreadByAddress(threadAddress);
     console.timeLog("finish open thread");
@@ -93,9 +95,6 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       did3: userDid3,
     };
     localStorage.setItem("isLoggedIn", "true");
-    console.time("finish syncs");
-    await Promise.all([box.syncDone, space.syncDone]);
-    console.timeLog("finish syncs");
     dispatch({
       type: LOG_IN,
       value: {

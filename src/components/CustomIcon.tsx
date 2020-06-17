@@ -553,7 +553,6 @@ const CustomIcon: React.FunctionComponent<Props> = ({
           </g>
         </svg>
       ) : null}
-      }
     </SvgIcon>
   );
 };
