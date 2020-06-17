@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BlogPost, ThreadObject, RoutingProps } from "types/app";
 import Editor from "components/Editor";
 import {

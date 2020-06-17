@@ -51,7 +51,6 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
     const { spaceName, threadAddress } = state;
     const box = state.box || (await Box.create());
     await box.syncDone;
-
     console.log("open space", spaceName);
     console.time("finish open space");
     await box.auth([spaceName], {
@@ -59,10 +58,10 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       provider,
     });
     const space = await box.openSpace(spaceName);
+    console.timeLog("finish open space");
     console.time("finish space sync");
     await space.syncDone;
     console.timeLog("finish space sync");
-    console.timeLog("finish open space");
 
     console.log("join thread", threadAddress);
     console.time("finish open thread");

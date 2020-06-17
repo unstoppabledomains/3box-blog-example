@@ -25,6 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:template": "./website-builder -p",
+    "build:serve": "yarn build && yarn serve",
+    "serve": "serve -s build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -42,6 +44,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",
-    "@types/showdown": "^1.9.3"
+    "@types/showdown": "^1.9.3",
+    "serve": "^11.3.2"
   }
 }
