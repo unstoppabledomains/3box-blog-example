@@ -22,10 +22,11 @@ export default (
       tags,
     };
   } catch (error) {
+    console.error(error);
     return {
       title: "Error Parsing message",
       description: "",
-      body: "",
+      body: postThread.message,
       threadData: { ...postThread, author: "author" },
       tags: [],
     };

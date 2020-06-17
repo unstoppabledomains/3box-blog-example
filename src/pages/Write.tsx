@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BlogPost, ThreadObject, RoutingProps } from "types/app";
 import Editor from "components/Editor";
 import {
@@ -35,9 +35,8 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
     tags: [""],
   } as BlogPost);
   const { secondary, error } = state.theme.palette;
-
   useAsyncEffect(async () => {
-    if (!state.user.loggedIn) {
+    if (!state.user.loggedIn && !state.user.loading) {
       await handleLogin();
     } else if (!state.user.isAdmin) {
       handleRoute("");
@@ -47,8 +46,18 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
       setDraftId(index);
       setPost(drafts[index]);
     }
-    setLoading(false);
+    setLoading(state.user.loading);
   }, [id]);
+
+  useEffect(() => {
+    if (!state.user.loggedIn && !state.user.loading) {
+      handleLogin();
+    } else if (!state.user.isAdmin) {
+      handleRoute("");
+    } else {
+      setLoading(state.user.loading);
+    }
+  }, [state.user.loading]);
 
   const handleLogin = async () => {
     const user = await login({ state, dispatch })();
@@ -122,7 +131,6 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
             id="description"
             value={post.description}
             onChange={handleChange}
-            multiline
             rows={4}
             className={classes.textField}
             inputProps={{ maxLength: 240 }}

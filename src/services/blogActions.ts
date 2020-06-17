@@ -18,7 +18,6 @@ import {
 import parseMessage from "utils/parseMessage";
 import { login } from "./userActions";
 import createTheme from "utils/createTheme";
-import fm from "front-matter";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
   const boxPromise = Box.create();
@@ -58,7 +57,6 @@ export const getPosts = ({ state, dispatch }: AppContext) => async (
     // TODO compare timestamp of latest post to check refresh
     return state.posts;
   }
-
   const postThreads: ThreadObject[] = thread
     ? await thread.getPosts()
     : await Box.getThreadByAddress(threadAddress);
@@ -79,7 +77,6 @@ export const getPosts = ({ state, dispatch }: AppContext) => async (
     .sort((a: any, b: any) =>
       a.threadData.timestamp < b.threadData.timestamp ? 1 : -1
     );
-
   dispatch({ type: SET_POSTS, value: { posts } });
   dispatch({ type: SET_MODERATOR_NAMES, value: { moderatorNames } });
   return posts;
@@ -119,11 +116,10 @@ export const addPost = ({ state, dispatch }: AppContext) => async (
 createdAt: ${timestamp}
 updatedAt: ${timestamp}
 title: ${newPost.title}
-description: ${newPost.description}
+description: ${newPost.description.replace(/[\r\n]+/gm, "")}
 tags: ${newPost.tags.join(",")}
 ---
 ${newPost.body}`;
-  fm.test(message);
 
   const postId: string = await thread.post(message);
   const post = parseMessage(
@@ -172,9 +168,8 @@ export const addDraft = ({ state, dispatch }: AppContext) => async (
   const newPost = `---
 createdAt: ${timestamp}
 updatedAt: ${timestamp}
-title: ${post.title}
-description: ${post.description}
-tags: ${post.tags.join(",")}
+title: ${post.title.replace(/[\r\n]+/gm, `\n`)}
+description: ${post.description.replace(/[\r\n]+/gm, `\n`)}
 ---
 ${post.body}`;
   const draftsString = await space.private.get("drafts");
