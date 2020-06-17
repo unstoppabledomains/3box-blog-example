@@ -47,17 +47,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
       setPost(drafts[index]);
     }
     setLoading(state.user.loading);
-  }, [id]);
-
-  useEffect(() => {
-    if (!state.user.loggedIn && !state.user.loading) {
-      handleLogin();
-    } else if (!state.user.isAdmin) {
-      handleRoute("");
-    } else {
-      setLoading(state.user.loading);
-    }
-  }, [state.user.loading]);
+  }, [id, state.user.loading]);
 
   const handleLogin = async () => {
     const user = await login({ state, dispatch })();
@@ -131,7 +121,6 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
             id="description"
             value={post.description}
             onChange={handleChange}
-            rows={4}
             className={classes.textField}
             inputProps={{ maxLength: 240 }}
           />
