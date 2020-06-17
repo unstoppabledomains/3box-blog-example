@@ -4,8 +4,10 @@ import { Dispatch } from "react";
 import { AppAction } from "./actions";
 
 declare global {
-  interface Window {
-    ethereum: any;
+  interface Window extends Window, globalThis {
+    ethereum?: any;
+    walletConnect?: any;
+    web3?: any;
   }
 }
 

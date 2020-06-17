@@ -1,6 +1,6 @@
 import { LOG_IN, LOG_OUT, UPDATE_AUTH } from "types/actions";
 import { getPosts } from "./blogActions";
-import { AppContext, User, AppState } from "types/app";
+import { AppContext, User } from "types/app";
 import localStorageTest from "utils/localStorageTest";
 import Box from "3box";
 
@@ -26,38 +26,42 @@ export const loginTimeout = ({ state, dispatch }: AppContext) => async () =>
 
 export const login = ({ state, dispatch }: AppContext) => async () => {
   dispatch({ type: UPDATE_AUTH });
+  const windowObj = window as any;
   console.log("start auth");
   console.time("finish login");
   try {
     if (!localStorageTest()) {
       window.alert(web3Alert);
       throw new Error("Local storage is not enabled to use 3Box profiles");
+    } else if (
+      typeof window.ethereum === "undefined" &&
+      (typeof window.web3 === "undefined" ||
+        typeof window.web3.currentProvider === "undefined")
+    ) {
+      // TODO Window alert
+      throw new Error("No web3 provider");
+    }
+    const provider =
+      (walletConnect && windowObj.walletConnect) ||
+      windowObj.ethereum ||
+      windowObj.web3.currentProvider;
+    const walletAddress = (await provider.enable())[0];
+    if (!walletAddress) {
+      throw new Error("No wallet address found");
     }
     const { spaceName, threadAddress } = state;
-    let walletAddress = "";
-    try {
-      walletAddress = (await window.ethereum.enable())[0].toLowerCase();
-    } catch (e) {
-      console.error(e);
-      window.localStorage.setItem("isLoggedIn", "false");
-      await logout({ state, dispatch })();
-      return { loggedIn: false, loading: false, walletAddress: "" };
-    }
 
     console.time("finish box");
-    const box = Box.openBox(walletAddress, window.ethereum);
+    const box = state.box || (await Box.create());
     console.timeLog("finish box");
-    const promiseSyncs = [];
-    console.time("finish space auth");
-    await box.auth([spaceName], { address: walletAddress });
-    console.timeLog("finish space auth");
-    promiseSyncs.push(box.syncDone);
 
     console.log("open space", spaceName);
     console.time("finish open space");
-    const space = await box.openSpace(spaceName);
+    const space = await box.auth([spaceName], {
+      address: walletAddress,
+      provider,
+    });
     console.timeLog("finish open space");
-    promiseSyncs.push(space.syncDone);
 
     console.time("finish open thread");
     const thread = await space.joinThreadByAddress(threadAddress);
@@ -90,7 +94,7 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
     };
     localStorage.setItem("isLoggedIn", "true");
     console.time("finish syncs");
-    await Promise.all(promiseSyncs);
+    await Promise.all([box.syncDone, space.syncDone]);
     console.timeLog("finish syncs");
     dispatch({
       type: LOG_IN,
@@ -105,8 +109,9 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
     console.timeLog("finish login");
     return user as User;
   } catch (error) {
-    console.log("error login()");
     console.error(error);
+    await logout({ state, dispatch })();
+    return { loggedIn: false, loading: false, walletAddress: "" };
   }
 };
 

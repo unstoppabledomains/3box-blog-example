@@ -187,7 +187,6 @@ const StandardHeader: React.FunctionComponent<Props> = ({
             className={classes.headerButton}
             onClick={handleAddPost}
             startIcon={<CreateIcon />}
-            color="secondary"
           >
             Add Post
           </Button>

@@ -21,16 +21,19 @@ import createTheme from "utils/createTheme";
 import fm from "front-matter";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
-  const config: ConfigFile = await fetch(
+  const configPromise: Promise<ConfigFile> = fetch(
     `${process.env.PUBLIC_URL}/config.json`
   ).then((res) => res.json());
+  const boxPromise = Box.create();
+  const [config, box] = await Promise.all([configPromise, boxPromise]);
+
   const { primary, secondary, background } = config.theme;
   const theme = createTheme(primary, secondary, background);
-
   const newState: AppState = {
     ...state,
     ...config,
     theme,
+    box,
   };
   dispatch({
     type: SET_CONFIG,
