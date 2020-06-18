@@ -93,7 +93,7 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       isAdmin: moderators.includes(userDid3),
       did3: userDid3,
     };
-    localStorage.setItem("isLoggedIn", "true");
+    // localStorage.setItem("isLoggedIn", "true");
     dispatch({
       type: LOG_IN,
       value: {
@@ -117,7 +117,7 @@ export const logout = ({ state, dispatch }: AppContext) => async () => {
   dispatch({ type: UPDATE_AUTH });
   const { box } = state;
   await box.logout();
-  window.localStorage.setItem("isLoggedIn", "false");
+  //   window.localStorage.setItem("isLoggedIn", "false");
   dispatch({ type: LOG_OUT });
 };
 

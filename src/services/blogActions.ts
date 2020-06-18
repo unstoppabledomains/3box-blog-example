@@ -16,8 +16,8 @@ import {
   SET_MODERATOR_NAMES,
 } from "types/actions";
 import parseMessage from "utils/parseMessage";
-import { login } from "./userActions";
 import createTheme from "utils/createTheme";
+// import { login } from "./userActions";
 
 export const initApp = ({ state, dispatch }: AppContext) => async () => {
   const boxPromise = Box.create();
@@ -38,14 +38,6 @@ export const initApp = ({ state, dispatch }: AppContext) => async () => {
     type: SET_CONFIG,
     value: newState,
   });
-  try {
-    const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      login({ state: newState, dispatch })();
-    }
-  } catch (error) {
-    console.error(error);
-  }
 };
 
 // Posts
