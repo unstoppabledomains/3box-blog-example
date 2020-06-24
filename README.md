@@ -1,6 +1,6 @@
 # 3Box React Blog
 
-A React & Typescript blog that uses decentralized storage and 3Box profiles.
+A React & Typescript blog that uses 3Box decentralized storage and authentication
 
 ## How to use
 
