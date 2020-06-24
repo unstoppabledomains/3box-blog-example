@@ -35,7 +35,7 @@
     orbit-db-io "^0.2.0"
     safe-buffer "^5.1.2"
 
-"3box@^1.17.1", "3box@^1.19.0", "3box@^1.20.0":
+"3box@^1.17.1", "3box@^1.19.0":
   version "1.20.0"
   resolved "https://registry.yarnpkg.com/3box/-/3box-1.20.0.tgz#b39052e347065512e987b38fa2276653a56f6742"
   integrity sha512-P2YN7y+rZXXXGw4VKZW9Y5YiPs7vRD4uYyd1tDyE6zFnY1oPWcZEx0A4tYJA2+qpywHstTVBFuNQcfg4HvH+sg==
@@ -70,6 +70,41 @@
     tweetnacl "^1.0.1"
     tweetnacl-util "^0.15.0"
     webrtcsupport "^2.2.0"
+
+"3box@^1.20.1":
+  version "1.20.1"
+  resolved "https://registry.yarnpkg.com/3box/-/3box-1.20.1.tgz#6bad15fdba67cf24ee4bb33cdac410432f4e0bad"
+  integrity sha512-bV6w2iMBNC90fopu2kmdXb2fX/as50sFaLHH7LsXPVVxTl0fQiLayIAejFfXWvOk2bKlwVa0KfVISFGdCczRYg==
+  dependencies:
+    "3box-orbitdb-plugins" "^2.1.0"
+    "3id-blockchain-utils" "^0.4.0"
+    "3id-connect" "0.1.0"
+    "3id-resolver" "^1.0.0"
+    "@babel/runtime" "^7.4.5"
+    "@ethersproject/hdnode" "5.0.0-beta.137"
+    "@ethersproject/wallet" "5.0.0-beta.136"
+    did-jwt "^4.2.0"
+    did-resolver "^1.1.0"
+    events "^3.0.0"
+    graphql-request "^1.8.2"
+    https-did-resolver "^1.0.0"
+    ipfs "0.44.0"
+    ipfs-did-document "^1.2.3"
+    ipfs-log "^4.6.1"
+    ipfs-pubsub-room "^2.0.1"
+    ipfs-repo "^2.0.1"
+    is-ipfs "^1.0.3"
+    js-sha256 "^0.9.0"
+    lodash.merge "^4.6.2"
+    muport-did-resolver "^1.0.2"
+    node-fetch "^2.6.0"
+    orbit-db "^0.24.1"
+    orbit-db-cache "^0.3.0"
+    orbit-db-identity-provider "^0.3.0"
+    orbit-db-storage-adapter "^0.5.3"
+    store "^2.0.12"
+    tweetnacl "^1.0.1"
+    tweetnacl-util "^0.15.0"
 
 "3id-blockchain-utils@^0.3.3":
   version "0.3.4"
