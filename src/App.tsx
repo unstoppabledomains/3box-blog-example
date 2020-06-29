@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Context from "services/appContext";
 import appReducer from "services/appReducer";
 import { initApp } from "services/blogActions";
-import { initialState, AppPages } from "types/app";
+import { initialState, AppPages, WALLET_TYPE } from "types/app";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useStyles from "styles/App.styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
@@ -18,12 +18,15 @@ import Drafts from "pages/Drafts";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { defaultTheme } from "utils/createTheme";
 import useQueryString from "utils/useQueryStringParams";
+import WalletModal from "components/WalletModal";
+import { login } from "services/userActions";
 
 const App: React.FunctionComponent = () => {
   const classes = useStyles();
   const [state, dispatch] = React.useReducer(appReducer, initialState);
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 
   const { value: route, onSetValue: setRoute } = useQueryString("page", "");
   const { value: docId, onSetValue: setDocId } = useQueryString("id", "");
@@ -34,6 +37,19 @@ const App: React.FunctionComponent = () => {
     console.timeLog("finish initApp()");
     setLoading(false);
   }, []);
+
+  const toggleModalOpen = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const handleLogin = async (wallet: WALLET_TYPE) => {
+    try {
+      toggleModalOpen();
+      await login({ state, dispatch })(wallet);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleRoute = (page: AppPages, docId?: string) => {
     setRoute(page);
@@ -55,12 +71,16 @@ const App: React.FunctionComponent = () => {
           </div>
         ) : (
           <>
-            <Header handleRoute={handleRoute} />
+            <Header handleRoute={handleRoute} handleLogin={toggleModalOpen} />
             <div className={classes.root}>
               {route === "read" ? (
                 <Read id={docId as string} handleRoute={handleRoute} />
               ) : route === "write" ? (
-                <Write id={docId as string} handleRoute={handleRoute} />
+                <Write
+                  id={docId as string}
+                  handleRoute={handleRoute}
+                  handleLogin={toggleModalOpen}
+                />
               ) : route === "bookmarks" ? (
                 <Bookmarks handleRoute={handleRoute} />
               ) : route === "drafts" ? (
@@ -70,6 +90,13 @@ const App: React.FunctionComponent = () => {
               )}
             </div>
             <Footer />
+            {modalOpen && (
+              <WalletModal
+                open={modalOpen}
+                onClose={toggleModalOpen}
+                onSelectWallet={handleLogin}
+              />
+            )}
           </>
         )}
       </ThemeProvider>

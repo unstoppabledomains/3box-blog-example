@@ -153,7 +153,7 @@ const AvatarMenu: React.FunctionComponent<Props & RoutingProps> = ({
                       </MenuItem>
                       <MenuItem onClick={handleAddAuthor}>
                         <div className={classes.menuIcon}>
-                          <PersonAdd color="primary" />
+                          <PersonAdd />
                         </div>
                         <Typography className={classes.menuItem}>
                           Add Author

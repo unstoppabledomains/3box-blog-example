@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogPost, ThreadObject, RoutingProps } from "types/app";
+import { BlogPost, ThreadObject, RoutingProps, AuthProps } from "types/app";
 import Editor from "components/Editor";
 import {
   addPost,
@@ -12,8 +12,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import appContext from "services/appContext";
-// import { loginTimeout as login } from "services/userActions";
-import { login } from "services/userActions";
 import useStyles from "styles/pages/Write.styles";
 import useAsyncEffect from "use-async-effect";
 import Paper from "@material-ui/core/Paper";
@@ -23,9 +21,10 @@ interface Props {
   id: string;
 }
 
-const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
+const WritePost: React.FunctionComponent<Props & RoutingProps & AuthProps> = ({
   id,
   handleRoute,
+  handleLogin,
 }) => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
@@ -37,7 +36,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
   const { secondary, error } = state.theme.palette;
   useAsyncEffect(async () => {
     if (!state.user.loggedIn && !state.user.loading) {
-      await handleLogin();
+      handleLogin();
     } else if (!state.user.isAdmin) {
       handleRoute("");
     } else if (id) {
@@ -46,21 +45,14 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
       setDraftId(index);
       setPost(drafts[index]);
     }
-    setLoading(state.user.loading);
+    // setLoading(state.user.loading);
   }, [id, state.user.loading]);
-
-  const handleLogin = async () => {
-    const user = await login({ state, dispatch })();
-    if (!user || !user.loggedIn || !user.isAdmin) {
-      handleRoute("");
-    }
-  };
 
   const handleBodyChange = (body: string) => setPost({ ...post, body });
   const handleChange = ({
     target: { value, id },
   }: React.ChangeEvent<HTMLInputElement>) => {
-    setPost({ ...post, [id]: value });
+    setPost({ ...post, [id]: value.replace(":", "") });
   };
 
   const handlePublish = async () => {
@@ -103,7 +95,9 @@ const WritePost: React.FunctionComponent<Props & RoutingProps> = ({
         Add Post
       </Typography>
       {loading ? (
-        <CircularProgress />
+        <div className={classes.loadingContainer}>
+          <CircularProgress />
+        </div>
       ) : (
         <>
           <Typography className={classes.label}>Title</Typography>
