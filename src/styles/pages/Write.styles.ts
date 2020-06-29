@@ -2,6 +2,13 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme: Theme) =>
   createStyles({
+    loadingContainer: {
+      width: "100%",
+      minHeight: "50vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
     root: {
       display: "flex",
       flexDirection: "column",

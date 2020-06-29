@@ -36,7 +36,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps & AuthProps> = ({
   const { secondary, error } = state.theme.palette;
   useAsyncEffect(async () => {
     if (!state.user.loggedIn && !state.user.loading) {
-      await handleLogin();
+      handleLogin();
     } else if (!state.user.isAdmin) {
       handleRoute("");
     } else if (id) {
@@ -45,7 +45,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps & AuthProps> = ({
       setDraftId(index);
       setPost(drafts[index]);
     }
-    setLoading(state.user.loading);
+    // setLoading(state.user.loading);
   }, [id, state.user.loading]);
 
   const handleBodyChange = (body: string) => setPost({ ...post, body });
@@ -95,7 +95,9 @@ const WritePost: React.FunctionComponent<Props & RoutingProps & AuthProps> = ({
         Add Post
       </Typography>
       {loading ? (
-        <CircularProgress />
+        <div className={classes.loadingContainer}>
+          <CircularProgress />
+        </div>
       ) : (
         <>
           <Typography className={classes.label}>Title</Typography>
