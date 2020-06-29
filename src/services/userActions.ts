@@ -23,6 +23,9 @@ export const login = ({ state, dispatch }: AppContext) => async (
       window.alert(web3Alert);
       throw new Error("Local storage is not enabled to use 3Box profiles");
     } else if (walletConnect) {
+      if (windowObj.walletConnect) {
+        windowObj.walletConnect.close();
+      }
       windowObj.walletConnect = new WalletConnect({
         infuraId: process.env.REACT_APP_INFURA_KEY,
       });
