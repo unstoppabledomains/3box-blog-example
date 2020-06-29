@@ -108,6 +108,9 @@ export const login = ({ state, dispatch }: AppContext) => async (
 export const logout = ({ state, dispatch }: AppContext) => async () => {
   dispatch({ type: UPDATE_AUTH });
   const { box } = state;
+  if ((window as any).walletConnect) {
+    window.walletConnect.close();
+  }
   await box.logout();
   dispatch({ type: LOG_OUT });
 };
