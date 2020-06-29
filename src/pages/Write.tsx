@@ -52,7 +52,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps & AuthProps> = ({
   const handleChange = ({
     target: { value, id },
   }: React.ChangeEvent<HTMLInputElement>) => {
-    setPost({ ...post, [id]: value });
+    setPost({ ...post, [id]: value.replace(":", "") });
   };
 
   const handlePublish = async () => {
