@@ -1,16 +1,18 @@
 import React from "react";
 import appContext from "services/appContext";
-// import { logout, loginTimeout as login } from "services/userActions";
-import { login, logout } from "services/userActions";
+import { logout } from "services/userActions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import useStyles from "styles/components/Header.styles";
-import { RoutingProps } from "types/app";
+import { RoutingProps, AuthProps } from "types/app";
 import Hidden from "@material-ui/core/Hidden";
 import StandardHeader from "./StandardHeader";
 import MobileHeader from "./MobileHeader";
 
-const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
+const Header: React.FunctionComponent<RoutingProps & AuthProps> = ({
+  handleRoute,
+  handleLogin,
+}) => {
   const classes = useStyles();
   const { state, dispatch } = React.useContext(appContext);
   const { title, logo } = state;
@@ -32,14 +34,6 @@ const Header: React.FunctionComponent<RoutingProps> = ({ handleRoute }) => {
 
   const handleBookmarks = () => {
     handleRoute("bookmarks");
-  };
-
-  const handleLogin = async () => {
-    try {
-      await login({ state, dispatch })();
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const handleLogout = async () => {

@@ -1,49 +1,42 @@
 import { LOG_IN, LOG_OUT, UPDATE_AUTH } from "types/actions";
 import { getPosts } from "./blogActions";
-import { AppContext, User } from "types/app";
+import { AppContext, User, WALLET_TYPE } from "types/app";
 import localStorageTest from "utils/localStorageTest";
 import Box from "3box";
+import WalletConnect from "@walletconnect/web3-provider";
 
 const web3Alert = `This website utilizes Web3 technology to manage authentication and decentralized storage. To enable these features please enable cookies for this website in your browser settings.
 
 You will still be able to read articles, however other features will not be available.`;
 
-export const loginTimeout = ({ state, dispatch }: AppContext) => async () =>
-  new Promise<User | undefined>((resolve, reject) => {
-    console.log("start loginTimeout");
-    const loginTimer = setTimeout(() => {
-      reject("Timed out");
-      window.alert(web3Alert);
-      return;
-    }, 180000);
-    login({ state, dispatch })()
-      .then((res) => {
-        resolve(res);
-        clearTimeout(loginTimer);
-      })
-      .catch((res) => reject(res));
-  });
-
-export const login = ({ state, dispatch }: AppContext) => async () => {
+export const login = ({ state, dispatch }: AppContext) => async (
+  walletType: WALLET_TYPE
+) => {
   dispatch({ type: UPDATE_AUTH });
   const windowObj = window as any;
+  const walletConnect = walletType === "walletConnect";
   console.log("start auth");
   console.time("finish login");
   try {
+    console.log(process.env.REACT_APP_INFURA_KEY);
     if (!localStorageTest()) {
       window.alert(web3Alert);
       throw new Error("Local storage is not enabled to use 3Box profiles");
+    } else if (walletConnect) {
+      windowObj.walletConnect = new WalletConnect({
+        infuraId: process.env.REACT_APP_INFURA_KEY,
+      });
     } else if (
       typeof window.ethereum === "undefined" &&
       (typeof window.web3 === "undefined" ||
         typeof window.web3.currentProvider === "undefined")
     ) {
-      // TODO Window alert
       throw new Error("No web3 provider");
     }
     const provider =
-      //   (walletConnect && windowObj.walletConnect) ||
-      windowObj.ethereum || windowObj.web3.currentProvider;
+      (walletConnect && windowObj.walletConnect) ||
+      windowObj.ethereum ||
+      windowObj.web3.currentProvider;
     const walletAddress = (await provider.enable())[0];
     if (!walletAddress) {
       throw new Error("No wallet address found");
@@ -93,7 +86,6 @@ export const login = ({ state, dispatch }: AppContext) => async () => {
       isAdmin: moderators.includes(userDid3),
       did3: userDid3,
     };
-    // localStorage.setItem("isLoggedIn", "true");
     dispatch({
       type: LOG_IN,
       value: {
@@ -117,7 +109,6 @@ export const logout = ({ state, dispatch }: AppContext) => async () => {
   dispatch({ type: UPDATE_AUTH });
   const { box } = state;
   await box.logout();
-  //   window.localStorage.setItem("isLoggedIn", "false");
   dispatch({ type: LOG_OUT });
 };
 
