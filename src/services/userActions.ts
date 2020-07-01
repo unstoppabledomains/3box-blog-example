@@ -18,7 +18,6 @@ export const login = ({ state, dispatch }: AppContext) => async (
   console.log("start auth");
   console.time("finish login");
   try {
-    console.log(process.env.REACT_APP_INFURA_KEY);
     if (!localStorageTest()) {
       window.alert(web3Alert);
       throw new Error("Local storage is not enabled to use 3Box profiles");
