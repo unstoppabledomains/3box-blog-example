@@ -45,7 +45,7 @@ const WritePost: React.FunctionComponent<Props & RoutingProps & AuthProps> = ({
       setDraftId(index);
       setPost(drafts[index]);
     }
-    // setLoading(state.user.loading);
+    setLoading(state.user.loading);
   }, [id, state.user.loading]);
 
   const handleBodyChange = (body: string) => setPost({ ...post, body });
